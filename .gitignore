@@ -1,0 +1,48 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# builds
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# local data & databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+/prisma/dev.db*
+
+# env & secrets
+.env
+.env.*
+!.env.example
+
+# logs & coverage
+*.log
+coverage/
+.nyc_output/
+
+# uploads generated at runtime
+uploads/
+tmp/
+
+# editors & os
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
