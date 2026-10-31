@@ -34,3 +34,9 @@ _No sessions logged yet._
 - Batch: 1 item (stopped at 1 — clock; P04-2 not started)
 - P04-1 built, commit 3130235, handed to review
 - Landed on work (fast-forward to fd0b5e7). Next unchecked item: P04-2.
+
+## 31 October 2026, 19:44 UTC · builder · run 41234024072
+- Batch: 1 item (limit 2; stopped at 1 — P04-3 too large to start with the time left)
+- P04-2 built, commit ae7ba8e, handed to review
+- Landed on work (fast-forward to 17ed311). Next unchecked item: P04-3.
+- Checked: npm run lint, npm run typecheck, npm run build, npm run db:setup; production-server smoke test of the auth gate and department scoping.
