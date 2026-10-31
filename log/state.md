@@ -10,9 +10,9 @@ role: builder
 run: 41234024072
 item: P04-2
 branch: opencode/todo-41234024072-p04-2-auth-rbac
-phase: committed
-updated: 31 Oct 2026, 19:42 UTC
-next: tick TODO, append REVIEW entry, commit handoff
+phase: handoff-committed
+updated: 31 Oct 2026, 19:43 UTC
+next: land branch on work
 notes: lint, typecheck, build all pass; smoke-tested auth gate and department scoping on the production server
 ```
 

@@ -40,3 +40,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** —
 - **Verdict notes:** —
+
+### P04-2 · round 1 — Auth and department-scoped RBAC
+
+- **Built:** 31 Oct 2026, 19:43 UTC
+- **Commit:** `ae7ba8e` — P04-2: add authentication and department-scoped RBAC
+- **Scope:** Signed http-only session cookie, login page with demo-account picker, logout, requireUser() gate, permission matrix (can/assertCan/departmentFilter) used server-side on the dashboard, real user in the topbar, README run-it-locally + demo accounts + role matrix
+- **Checked by builder:** `npm run lint`, `npm run typecheck`, `npm run build`, `npm run db:setup`; production-server smoke test — `/` and `/dashboard` redirect to `/login` unauthenticated, valid session renders dashboard, tampered cookie rejected, owner (company-wide) sees 18 headcount / $631,900 pipeline vs Sales staff (7 / $597,100), staff activity log gated
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
