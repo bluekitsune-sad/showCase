@@ -30,4 +30,13 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 ## Queue
 
-_Nothing waiting. Entries appear here as work is completed._
+### P04-1 · round 1 — Scaffold Nexus Business Suite
+
+- **Built:** 31 Oct 2026, 04:26 UTC
+- **Commit:** `3130235` — P04-1: scaffold Nexus Business Suite
+- **Scope:** Next.js 16 + TS strict + Tailwind 4 + Prisma 7/SQLite scaffold, design tokens, app shell (sidebar/topbar/theme), full Prisma schema, deterministic seed (18 users, 40 leads, 25 customers, 60 tasks, 30 days attendance, leave, recruitment, activity log), dashboard reading real seeded counts with loading/error states
+- **Checked by builder:** `npm run lint`, `npm run typecheck`, `npm run build`, `npx prisma db push`, `npx tsx prisma/seed.ts`, production-server smoke test (`/dashboard` 200 with all sections; `/` redirects)
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —

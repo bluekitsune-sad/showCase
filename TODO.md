@@ -33,7 +33,7 @@ Only the builder writes `— review needed`. Only the reviewer writes `— revie
 
 ### 04 · Nexus Business Suite — `projects/04-nexus-business-suite`
 
-- [ ] `P04-1` Scaffold Next.js + TypeScript + Tailwind + Prisma/SQLite in `projects/04-nexus-business-suite`: design tokens, app shell (sidebar, topbar, theme), Prisma schema for users, departments, employees, leads, customers, tasks, activities, and a seed script with realistic demo data.
+- [x] `P04-1` Scaffold Next.js + TypeScript + Tailwind + Prisma/SQLite in `projects/04-nexus-business-suite`: design tokens, app shell (sidebar, topbar, theme), Prisma schema for users, departments, employees, leads, customers, tasks, activities, and a seed script with realistic demo data. — review needed
 - [ ] `P04-2` Add authentication and department-scoped RBAC (owner, admin, manager, staff) with demo accounts, a permission helper used server-side, and a short note in the README explaining the role matrix.
 - [ ] `P04-3` Build the CRM surface: leads and customer lists with search and filters, lead pipeline board by stage, customer detail page with contacts, notes and activity timeline.
 - [ ] `P04-4` Build the HR surface: employee directory, attendance log with check-in/out, leave requests with approve/reject, and recruitment pipeline columns.
