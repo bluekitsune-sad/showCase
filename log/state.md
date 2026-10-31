@@ -5,14 +5,14 @@ The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **be
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: building` leaves it alone.
 
 ```
-status: idle
-role: -
-run: -
-item: -
-branch: -
-phase: -
-updated: 2026-10-31 03:05 UTC
-next: P04-1
+status: building
+role: builder
+run: 41166837673
+item: P04-1
+branch: opencode/todo-41166837673-p04-1-scaffold
+phase: implementing
+updated: 31 Oct 2026, 04:02 UTC
+next: scaffold Next.js + TypeScript + Tailwind + Prisma/SQLite app with design tokens, shell, schema and seed
 notes: -
 ```
 
