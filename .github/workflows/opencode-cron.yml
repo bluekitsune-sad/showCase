@@ -424,11 +424,11 @@ jobs:
               secret, or uses real personal data.
 
             BEFORE EACH ENTRY
+            - If REVIEW.md has no entry marked "Review: needed": change
+              nothing, create no branch and no commit, and stop quietly.
             - git fetch origin
             - git checkout -b opencode/review-${{ github.run_id }}-<slug> origin/work
             - Every branch you create MUST start with "opencode/".
-            - If REVIEW.md has no entry marked "Review: needed": change
-              nothing, create no branch and no commit, and stop quietly.
 
             HOW TO REVIEW (adversarial but fair)
             - Read the entry: what was claimed, the commit SHA, the scope, and
