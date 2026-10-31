@@ -88,7 +88,7 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
 
         <div className="border-t border-line px-4 py-3">
           <p className="text-[11px] leading-relaxed text-ink-subtle">
-            Demo data is synthetic. Auth and role-scoped views arrive next.
+            Demo data is synthetic. Your role decides what you can see and do.
           </p>
         </div>
       </aside>

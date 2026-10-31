@@ -2,36 +2,66 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { LEAD_STAGE_LABELS, type LeadStage } from "@/lib/domain";
 import { formatDateUtc, formatMoney } from "@/lib/format";
+import {
+  can,
+  departmentFilter,
+  ownerDepartmentFilter,
+  scopeFor,
+  scopeLabel,
+  type Actor,
+} from "@/lib/permissions";
+import { requireUser } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
 type StageCount = { stage: string; count: number; totalMinor: number };
 
-async function getOverview() {
+async function getOverview(actor: Actor) {
+  const scoped = scopeFor(actor) !== "all";
   const [leadStageRows, customers, employees, openTasks, overdueTasks, todayAttendance, recentActivity] =
     await Promise.all([
       prisma.lead.groupBy({
         by: ["stage"],
         _count: { _all: true },
         _sum: { valueMinor: true },
+        where: ownerDepartmentFilter(actor),
       }),
-      prisma.customer.count({ where: { status: "active" } }),
-      prisma.employee.count({ where: { status: "active" } }),
-      prisma.task.count({ where: { status: { in: ["todo", "in_progress", "blocked"] } } }),
+      prisma.customer.count({
+        where: {
+          status: "active",
+          ...(scoped ? { sourceLead: ownerDepartmentFilter(actor) } : {}),
+        },
+      }),
+      prisma.employee.count({
+        where: { status: "active", ...departmentFilter(actor) },
+      }),
+      prisma.task.count({
+        where: {
+          status: { in: ["todo", "in_progress", "blocked"] },
+          ...(scoped ? { assignee: departmentFilter(actor) } : {}),
+        },
+      }),
       prisma.task.count({
         where: {
           status: { in: ["todo", "in_progress", "blocked"] },
           dueDate: { lt: new Date() },
+          ...(scoped ? { assignee: departmentFilter(actor) } : {}),
         },
       }),
       prisma.attendance.count({
-        where: { date: { gte: startOfTodayUtc() }, status: { in: ["present", "remote"] } },
+        where: {
+          date: { gte: startOfTodayUtc() },
+          status: { in: ["present", "remote"] },
+          employee: departmentFilter(actor),
+        },
       }),
-      prisma.activityLog.findMany({
-        orderBy: { createdAt: "desc" },
-        take: 8,
-        include: { actor: { select: { name: true } } },
-      }),
+      scoped
+        ? Promise.resolve([])
+        : prisma.activityLog.findMany({
+            orderBy: { createdAt: "desc" },
+            take: 8,
+            include: { actor: { select: { name: true } } },
+          }),
     ]);
 
   const stageCounts: StageCount[] = leadStageRows.map((row) => ({
@@ -57,6 +87,7 @@ async function getOverview() {
     overdueTasks,
     todayAttendance,
     recentActivity,
+    activityAllowed: can(actor, "activity.read"),
   };
 }
 
@@ -99,14 +130,24 @@ function StatCard({
 }
 
 export default async function DashboardPage() {
-  const data = await getOverview();
+  const user = await requireUser("/dashboard");
+  const actor: Actor = {
+    id: user.id,
+    role: user.role,
+    departmentId: user.departmentId,
+  };
+  const data = await getOverview(actor);
+  const scoped = scopeFor(actor) !== "all";
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-semibold tracking-tight text-ink">Dashboard</h1>
         <p className="mt-1 text-sm text-ink-muted">
-          Company snapshot for {formatDateUtc(new Date(), "en-GB")} · demo data
+          {formatDateUtc(new Date(), "en-GB")} · showing{" "}
+          <span className="font-medium text-ink">{scopeLabel(actor).toLowerCase()}</span>
+          {" · "}
+          {scoped ? "department-scoped by your role" : "company-wide"}
         </p>
       </div>
 
@@ -119,12 +160,12 @@ export default async function DashboardPage() {
         <StatCard
           label="Active customers"
           value={String(data.customers)}
-          hint="Converted and trading"
+          hint={scoped ? "Converted from your leads" : "Converted and trading"}
         />
         <StatCard
           label="Headcount"
           value={String(data.employees)}
-          hint="Active employees"
+          hint={scoped ? "In your department" : "Active employees"}
         />
         <StatCard
           label="Open tasks"
@@ -143,7 +184,9 @@ export default async function DashboardPage() {
           <h2 className="text-sm font-semibold text-ink">Pipeline by stage</h2>
           {data.stageCounts.length === 0 ? (
             <p className="mt-3 text-sm text-ink-muted">
-              No leads yet. Add one from the CRM surface.
+              {scoped
+                ? "No leads owned by your department yet."
+                : "No leads yet. Add one from the CRM surface."}
             </p>
           ) : (
             <table className="mt-3 w-full text-sm">
@@ -178,12 +221,16 @@ export default async function DashboardPage() {
           <p className="mt-2 text-2xl font-semibold tabular-nums text-ink">
             {data.todayAttendance}
             <span className="ml-1 text-sm font-normal text-ink-muted">
-              of {data.employees} checked in
+              {scoped ? "in your department checked in" : "checked in"}
             </span>
           </p>
           <div className="mt-4 border-t border-line pt-4">
             <h2 className="text-sm font-semibold text-ink">Recent activity</h2>
-            {data.recentActivity.length === 0 ? (
+            {!data.activityAllowed ? (
+              <p className="mt-2 text-sm text-ink-muted">
+                The full activity log is limited to owners and admins.
+              </p>
+            ) : data.recentActivity.length === 0 ? (
               <p className="mt-2 text-sm text-ink-muted">
                 Nothing logged yet. Mutations will appear here.
               </p>
