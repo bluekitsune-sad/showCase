@@ -26,3 +26,8 @@ Rules: one entry per session, written at the end. Say what actually happened, in
 <!-- entries below, newest at the bottom -->
 
 _No sessions logged yet._
+
+## 31 Oct 2026, 04:27 UTC · builder · run 41166837673
+- Batch: 1 item (stopped at 1 — clock; P04-2 not started)
+- P04-1 built, commit 3130235, handed to review
+- Landed on work (fast-forward to fd0b5e7). Next unchecked item: P04-2.

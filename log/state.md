@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **be
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: building` leaves it alone.
 
 ```
-status: building
-role: builder
-run: 41166837673
-item: P04-1
-branch: opencode/todo-41166837673-p04-1-scaffold
-phase: handoff-committed
-updated: 31 Oct 2026, 04:26 UTC
-next: land branch on work, then session update
-notes: work commit 3130235; batch stops at 1 item — P04-2 (auth/RBAC) left for next run
+status: idle
+role: -
+run: -
+item: -
+branch: -
+phase: -
+updated: 31 Oct 2026, 04:27 UTC
+next: P04-2
+notes: -
 ```
 
 **Fields**
