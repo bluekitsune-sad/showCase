@@ -17,11 +17,16 @@ name: OpenCode
 #    5. If the agent is blocked or the requirement is ambiguous it STOPS and
 #       opens an issue mentioning you (@${{ github.repository_owner }}) with
 #       numbered questions instead of guessing.
-#    6. Every session ends by replacing the single "Last updated" line at
+#    6. Every code change is handed to the reviewer: the builder ticks the
+#       TODO item with "— review needed" and writes a REVIEW.md entry. The
+#       scheduled `review-worker` (opencode-cron.yml) picks it up, re-runs the
+#       checks and either approves it or sends it back. Nothing is finished
+#       until it is reviewed.
+#    7. Every session ends by replacing the single "Last updated" line at
 #       the very bottom of README.md with the current date and UTC time.
 #       README.md itself is written in YOUR voice — the agent is instructed
 #       never to mention automation, agents or workflows there.
-#    7. Commits are authored as bluekitsune-sad (the GitHub noreply address
+#    8. Commits are authored as bluekitsune-sad (the GitHub noreply address
 #       configured below, in "Configure git identity"), so history reads as
 #       one person's work. Change it there if you want something else.
 #
@@ -159,7 +164,12 @@ jobs:
               must run with no key and no spend.
             - If this issue creates follow-up work, append concrete "- [ ]"
               items to TODO.md in the matching section. If it completes an
-              existing TODO item, tick it "- [x]" in the same commit.
+              existing TODO item, tick it "- [x]", append "— review needed",
+              and add the matching REVIEW.md entry in the same commit — use
+              the handoff protocol in AGENTS.md. If the work is not tracked
+              in TODO.md, still add a REVIEW.md entry with the ID
+              "ISS-${{ github.event.issue.number }}" and "Review: needed".
+              Never write "approved" yourself.
             - Branch from the work branch:
                 git fetch origin work
                 git checkout -b opencode/issue-${{ github.event.issue.number }}-<short-slug> origin/work
@@ -341,6 +351,10 @@ jobs:
               cross-project imports, no root workspace.
             - If the comment asks for follow-up work rather than an immediate
               fix, add "- [ ]" items to TODO.md instead of guessing scope.
+            - After changing code, hand the work to the reviewer: tick the
+              matching TODO item "- [x]" with "— review needed", or add a
+              REVIEW.md entry with ID "CMT-${{ github.event.issue.number || github.event.pull_request.number }}",
+              and never write "approved" yourself. See AGENTS.md.
             - When the comment is on a pull request: commit your changes to
               THAT pull request's existing branch (never a new branch), then
               leave a PR comment (gh pr comment) explaining what changed.

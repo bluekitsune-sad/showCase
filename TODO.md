@@ -1,13 +1,25 @@
 # TODO
 
-The build queue. The scheduled worker reads this file from top to bottom, takes the **first unchecked `- [ ]` item**, finishes it, verifies it, and ticks it `- [x]`. Order is priority.
+The build queue. The builder reads this file from top to bottom, takes the **first unchecked `- [ ]` item**, finishes it, verifies it, and ticks it `- [x]`. Order is priority. The reviewer then signs it off — see `REVIEW.md`.
+
+**Lifecycle of an item**
+
+```text
+- [ ] `P04-1` ...                                  picked up
+- [x] `P04-1` ... — review needed                  built, awaiting the reviewer
+- [x] `P04-1` ... — reviewed 2026-10-31            approved
+- [ ] `P04-1` ... — changes requested              sent back, must be fixed
+```
+
+Only the builder writes `— review needed`. Only the reviewer writes `— reviewed` or `— changes requested`.
 
 **Rules**
 
 - One line = one sitting of work. If an item is bigger than that, split it into smaller `- [ ]` lines first.
-- Never delete an item. Ticked items stay as history.
+- Never delete an item. Finished items stay as history.
 - Never reorder someone else's items.
 - Anything under **Blocked** is skipped until the owner answers.
+- An item with `— changes requested` is back in the queue: read the findings in `REVIEW.md` before touching it.
 
 **Adding work**
 

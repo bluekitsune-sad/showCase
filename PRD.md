@@ -14,7 +14,7 @@
 
 A public portfolio repository containing **12 self-contained products**, each a working demo rather than a mockup: six categories, two projects per category, one aimed at individuals and small businesses, one aimed at larger organisations.
 
-The repository is also a small software factory. A scheduled workflow picks the next item from `TODO.md`, builds it, verifies it, marks it done, and lands it on the `work` branch. The owner merges `work` into `main` manually when satisfied.
+The repository is also a small software factory with two roles. A **builder** picks the next item from `TODO.md`, builds and verifies it, marks it `— review needed`, and lands it on `work`. A **reviewer** then re-runs the checks independently and either signs the item off or sends it back with findings. The owner merges `work` into `main` manually when satisfied.
 
 **What success looks like:** a visitor opens the repo, clicks a project, and finds a running product with a real problem statement, realistic data, screenshots, and honest documentation. And the owner can add a line to `TODO.md` and have new work appear without touching code.
 
@@ -123,7 +123,8 @@ A project is done when all of the following are true:
 4. Every feature checkbox in the project spec is either implemented or explicitly listed as out of scope.
 5. README contains: problem, screenshots or a described walkthrough, feature list, stack, how to run, known limits.
 6. Status row in the root README updated to `Shipped`.
-7. No secrets, no real personal data, no paid keys required.
+7. Passed independent review and marked `— reviewed` in `TODO.md`.
+8. No secrets, no real personal data, no paid keys required.
 
 ### Product quality
 
@@ -154,31 +155,50 @@ A project is done when all of the following are true:
 
 ## 7. How the build system works
 
+Two roles, one queue each:
+
+| Role | Queue | Job | Output |
+| --- | --- | --- | --- |
+| **Builder** | `TODO.md` | `todo-worker` | code + `— review needed` |
+| **Reviewer** | `REVIEW.md` | `review-worker` | `approved` or `changes requested` |
+
+The builder never signs off on its own work, and the reviewer never expands scope. A `TODO` item is only finished when both markers agree: ticked **and** reviewed.
+
 ### Trigger and cadence
 
-- `opencode-cron.yml` runs three times a day (04:00, 10:00, 16:00 UTC = 09:00, 15:00, 21:00 PKT), plus manual dispatch.
+- `opencode-cron.yml` runs three times a day (04:00, 10:00, 16:00 UTC = 09:00, 15:00, 21:00 PKT), builder first, reviewer second. Manual dispatch accepts `both`, `build`, or `review`.
 - `opencode.yml` handles owner-opened issues, `/opencode` comments, and PR reviews on demand.
 
-### The loop
+### The build loop
 
-1. Check out the repository and ensure the `work` branch exists (created from `main` on first run).
+1. Check out the repository and ensure `work` exists (created from `main` on first run).
 2. Read `AGENTS.md`, `PRD.md`, `TODO.md`, then the spec of the project being worked on.
-3. Take the **first unchecked item** in `TODO.md`.
+3. Take the **first unchecked item** in `TODO.md` — including anything sent back with `— changes requested`.
 4. If the item is too large, split it into smaller items first, then do the first one.
-5. Create `opencode/<run-id>-<slug>` from `work`, implement, verify, mark `- [x]`.
+5. Create `opencode/todo-<run-id>-<slug>` from `work`, implement, verify, then make two commits: the work, and the tick plus `REVIEW.md` entry.
 6. Merge the branch into `work` and delete it. Repeat up to five items per run.
 7. At the end of every session, replace the single `Last updated` line at the bottom of `README.md`.
-8. If something needs a human decision, open an issue mentioning the owner and move the item under **Blocked**.
+
+### The review loop
+
+1. Read `REVIEW.md` and take the oldest entry with `Review: needed`.
+2. Read the diff, open the touched files, and **run the checks independently**.
+3. Judge four gates: correctness, safety, honesty, standards.
+4. Approve → flip the entry and mark `— reviewed <date>` in `TODO.md`. Reject → return the item to `- [ ]` with `— changes requested`, record numbered findings, and add follow-up items.
+5. After two rejections the item goes to **Blocked** and an issue is opened.
+6. Land the verdict on `work`, up to four entries per run.
 
 ### Ownership of branches
 
 - `main` — released, owner-merged only.
-- `work` — integration branch; receives every completed item.
-- `opencode/*` — short-lived task branches, deleted after landing.
+- `work` — integration branch; receives every completed item and every verdict.
+- `opencode/todo-*` — builder branches, deleted after landing.
+- `opencode/review-*` — reviewer branches, deleted after landing.
 
 ### The owner's role
 
 - Add or reorder items in `TODO.md`.
+- Read `REVIEW.md` to see what was accepted, what was sent back, and why.
 - Answer `question:` issues.
 - Merge `work` into `main` when the batch looks good:
 
@@ -194,7 +214,8 @@ Adding work never requires touching the workflow:
 
 - **Small change** → add a `- [ ]` line under the relevant project section.
 - **New project** → create `projects/<slug>/README.md` from `docs/project-template.md`, add a section to `TODO.md` with its first task, and add a row to the root README table.
-- **Big idea with no detail** → add one line. The agent splits it into subtasks before starting.
+- **Big idea with no detail** → add one line. The builder splits it into subtasks before starting.
+- **Rejected work** → the reviewer has already written the fix list; the builder picks it up automatically.
 
 ---
 
@@ -215,6 +236,8 @@ Adding work never requires touching the workflow:
 
 - Time from "idea added to TODO" to "usable increment on `work`" — target: under 24 hours.
 - Percentage of checked items that actually work when clicked — target: 100%. A dishonest checkbox is worse than an empty one.
+- Percentage of shipped items that passed review on the first attempt — target: above 70%; a downward trend means the TODO items are too vague.
+- Review turnaround — target: every `review needed` entry is reviewed within one scheduled run.
 - Number of projects a visitor can run locally without asking a question — target: 12/12.
 - Zero secrets, zero broken links, zero failing default checks on `work`.
 
@@ -249,3 +272,4 @@ Adding work never requires touching the workflow:
 | Date | Change |
 | --- | --- |
 | 2026-10-31 | Initial PRD: 12 projects, 3 phases, shared standards, build system |
+| 2026-10-31 | Split the build system into two roles: builder (`TODO.md`) and reviewer (`REVIEW.md`), with a review gate before an item is finished |
