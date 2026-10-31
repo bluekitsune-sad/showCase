@@ -3,7 +3,7 @@
 **Category:** 2 — I need a business application
 **Built for:** Medium-sized companies whose operations live in spreadsheets and chat
 **Label:** For businesses & enterprises
-**Status:** Planned
+**Status:** In progress
 **Folder:** `projects/04-nexus-business-suite`
 **Stack:** Next.js (App Router) · TypeScript · Tailwind CSS · Prisma + SQLite · RBAC
 

@@ -1,0 +1,257 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+// SQLite cannot store enum types, so role, stage, status and similar
+// fields are plain strings validated in src/lib/domain.ts at the boundary.
+datasource db {
+  provider = "sqlite"
+}
+
+model Department {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  slug        String        @unique
+  description String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  users       User[]
+  employees   Employee[]
+  jobOpenings JobOpening[]
+}
+
+model User {
+  id                 Int              @id @default(autoincrement())
+  email              String           @unique
+  name               String
+  passwordHash       String
+  role               String           // owner | admin | manager | staff
+  departmentId       Int?
+  department         Department?      @relation(fields: [departmentId], references: [id])
+  active             Boolean          @default(true)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  employee           Employee?
+  ownedLeads         Lead[]
+  assignedTasks      Task[]           @relation("TaskAssignee")
+  createdTasks       Task[]           @relation("TaskCreator")
+  notes              Note[]
+  activities         ActivityLog[]
+  notifications      Notification[]
+  decidedLeave       LeaveRequest[]   @relation("LeaveDecider")
+}
+
+model Employee {
+  id            Int              @id @default(autoincrement())
+  userId        Int              @unique
+  user          User             @relation(fields: [userId], references: [id])
+  departmentId  Int
+  department    Department       @relation(fields: [departmentId], references: [id])
+  jobTitle      String
+  managerId     Int?
+  manager       Employee?        @relation("EmployeeManager", fields: [managerId], references: [id])
+  directReports Employee[]       @relation("EmployeeManager")
+  hiredAt       DateTime
+  salaryMinor   Int              // integer minor units (cents)
+  currency      String           @default("USD")
+  status        String           @default("active") // active | on_leave | ended
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  attendance    Attendance[]
+  leaveRequests LeaveRequest[]
+}
+
+model Attendance {
+  id         Int       @id @default(autoincrement())
+  employeeId Int
+  employee   Employee  @relation(fields: [employeeId], references: [id])
+  date       DateTime  // UTC midnight of the working day
+  checkIn    DateTime?
+  checkOut   DateTime?
+  status     String    // present | remote | absent | leave | holiday
+  createdAt  DateTime  @default(now())
+
+  @@unique([employeeId, date])
+  @@index([date])
+}
+
+model LeaveRequest {
+  id          Int       @id @default(autoincrement())
+  employeeId  Int
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  type        String    // annual | sick | personal | unpaid
+  startDate   DateTime
+  endDate     DateTime
+  status      String    @default("pending") // pending | approved | rejected
+  reason      String?
+  decidedById Int?
+  decidedBy   User?     @relation("LeaveDecider", fields: [decidedById], references: [id])
+  decidedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status])
+}
+
+model JobOpening {
+  id           Int         @id @default(autoincrement())
+  title        String
+  departmentId Int
+  department   Department  @relation(fields: [departmentId], references: [id])
+  description  String
+  status       String      @default("open") // open | on_hold | closed
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  applicants   Applicant[]
+}
+
+model Applicant {
+  id           Int        @id @default(autoincrement())
+  jobOpeningId Int
+  jobOpening   JobOpening @relation(fields: [jobOpeningId], references: [id])
+  name         String
+  email        String
+  phone        String?
+  stage        String     @default("applied") // applied | screening | interview | offer | hired | rejected
+  appliedAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([stage])
+}
+
+model Lead {
+  id         Int       @id @default(autoincrement())
+  name       String
+  company    String
+  email      String?
+  phone      String?
+  source     String    // referral | website | outbound | event | partner | other
+  stage      String    @default("new") // new | contacted | qualified | proposal | negotiation | won | lost
+  valueMinor Int       // integer minor units (cents)
+  currency   String    @default("USD")
+  ownerId    Int?
+  owner      User?     @relation(fields: [ownerId], references: [id])
+  notes      Note[]
+  tasks      Task[]
+  customer   Customer?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([stage])
+  @@index([ownerId])
+}
+
+model Customer {
+  id            Int       @id @default(autoincrement())
+  name          String
+  company       String
+  email         String?
+  phone         String?
+  status        String    @default("active") // active | at_risk | churned
+  sourceLeadId  Int?      @unique
+  sourceLead    Lead?     @relation(fields: [sourceLeadId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  contacts      Contact[]
+  notes         Note[]
+  tasks         Task[]
+
+  @@index([status])
+}
+
+model Contact {
+  id         Int      @id @default(autoincrement())
+  customerId Int
+  customer   Customer @relation(fields: [customerId], references: [id])
+  name       String
+  email      String?
+  phone      String?
+  title      String?
+  isPrimary  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([customerId])
+}
+
+model Note {
+  id         Int       @id @default(autoincrement())
+  body       String
+  authorId   Int
+  author     User      @relation(fields: [authorId], references: [id])
+  leadId     Int?
+  lead       Lead?     @relation(fields: [leadId], references: [id])
+  customerId Int?
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  createdAt  DateTime  @default(now())
+
+  @@index([leadId])
+  @@index([customerId])
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  status      String   @default("planning") // planning | active | on_hold | completed | archived
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tasks       Task[]
+}
+
+model Task {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  status      String    @default("todo") // todo | in_progress | blocked | done
+  priority    String    @default("medium") // low | medium | high | urgent
+  dueDate     DateTime?
+  completedAt DateTime?
+  assigneeId  Int?
+  assignee    User?     @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  createdById Int?
+  createdBy   User?     @relation("TaskCreator", fields: [createdById], references: [id])
+  leadId      Int?
+  lead        Lead?     @relation(fields: [leadId], references: [id])
+  customerId  Int?
+  customer    Customer? @relation(fields: [customerId], references: [id])
+  projectId   Int?
+  project     Project?  @relation(fields: [projectId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status])
+  @@index([assigneeId])
+  @@index([dueDate])
+}
+
+model Notification {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+  title     String
+  body      String
+  type      String    // task_assigned | leave_decided | lead_update | mention | system
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, readAt])
+}
+
+model ActivityLog {
+  id         Int      @id @default(autoincrement())
+  actorId    Int?
+  actor      User?    @relation(fields: [actorId], references: [id])
+  action     String   // e.g. lead.stage_changed, task.created, leave.approved
+  entityType String   // lead | customer | task | employee | leave | project | user
+  entityId   Int?
+  summary    String
+  metadata   String?  // JSON string (SQLite has no Json type)
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}

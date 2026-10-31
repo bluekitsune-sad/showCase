@@ -64,7 +64,7 @@ This repository is my working portfolio. Each entry is a self-contained product 
 | 01 | [Maison Store](projects/01-maison-store) | Individuals & customers | Planned |
 | 02 | [Corporate Digital Presence](projects/02-corporate-cms) | Businesses | Planned |
 | 03 | [ShopFlow](projects/03-shopflow) | Individuals & customers | Planned |
-| 04 | [Nexus Business Suite](projects/04-nexus-business-suite) | Businesses | Planned |
+| 04 | [Nexus Business Suite](projects/04-nexus-business-suite) | Businesses | In progress |
 | 05 | [CityBites](projects/05-citybites) | Individuals & customers | Planned |
 | 06 | [FieldForce](projects/06-fieldforce) | Businesses | Planned |
 | 07 | [DocuMind](projects/07-documind) | Individuals & customers | Planned |
