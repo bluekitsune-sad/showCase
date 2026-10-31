@@ -1,0 +1,28 @@
+# Session log
+
+Append-only. One entry per agent session, newest at the bottom. Both roles write here.
+
+**Format**
+
+```markdown
+## 31 Oct 2026, 08:12 UTC · builder · run 1928374655
+- Batch: 2 items (limit 2)
+- P04-1 built, commit a1b2c3d, handed to review
+- P04-2 built, commit d4e5f6a, handed to review
+- Landed on work. Next unchecked item: P04-3.
+```
+
+```markdown
+## 31 Oct 2026, 08:52 UTC · reviewer · run 1928374655
+- Reviewed: P04-1 approved · P04-2 changes requested (2 follow-ups added)
+- Re-ran: npm run lint, npm run typecheck, npm run build
+- Landed verdicts on work. Next review: P04-3.
+```
+
+Rules: one entry per session, written at the end. Say what actually happened, including a run that did nothing. Never rewrite an older entry.
+
+---
+
+<!-- entries below, newest at the bottom -->
+
+_No sessions logged yet._

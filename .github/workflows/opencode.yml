@@ -195,6 +195,8 @@ jobs:
               date -u "+%-d %B %Y, %H:%M UTC". Never add a second line.
               If a project changed state, update its row in the README
               status table in the same commit.
+            - Append one session entry to log/log.md (role: owner-request)
+              describing what you changed and what you ran.
             - README.md is written in the owner's voice: never mention
               agents, automation, prompts, workflows, branches or commits.
 
@@ -374,6 +376,8 @@ jobs:
               below `<!-- last-updated -->` at the very bottom of README.md
               with `_Last updated: <D Month YYYY, HH:MM UTC>._` from
               date -u "+%-d %B %Y, %H:%M UTC". Never add a second line.
+            - Append one session entry to log/log.md (role: owner-comment)
+              with what you changed and what you ran.
             - README.md is written in the owner's voice: never mention
               agents, automation, prompts, workflows, branches or commits.
 

@@ -12,6 +12,8 @@ A portfolio of twelve standalone products, built incrementally by two agents and
 
 ```
 projects/<slug>/     one product: its own manifest, deps, scripts, README
+log/state.md         the checkpoint: what was in progress when the last session stopped
+log/log.md           append-only session log, one entry per run, both roles
 TODO.md              the build queue — the only place work is scheduled
 REVIEW.md            the review queue — what has been built and not yet signed off
 PRD.md               portfolio plan, shared standards, definition of done
@@ -87,9 +89,35 @@ git push origin --delete <task-branch> || true
 
 If the merge conflicts: `git merge --abort`, push the task branch anyway (the workflow sweeps it later), describe the conflict in the commit body, and move on. Never resolve a conflict by deleting someone else's work.
 
+### Batches, checkpoints and logs
+
+Work happens in **batches**, not marathons: one scheduled run is one batch of up to 2 build items or 3 reviews, roughly 35 minutes. A batch that runs out of time stops after the item it is on — it never starts something it cannot finish.
+
+Every session writes two files:
+
+| File | Rule |
+| --- | --- |
+| `log/state.md` | Rewritten, never appended. The checkpoint: status, role, run, item, branch, phase, next action. Read it before doing anything. |
+| `log/log.md` | Appended, never rewritten. One entry per session at the end, in the format at the top of that file. |
+
+**Resume rule.** A run that is killed leaves committed work on its `opencode/*` branch and a checkpoint saying what was happening. The next session of the same role continues from that checkpoint instead of restarting:
+
+- `status: building` + branch exists on `origin` → check it out and continue from `phase` / `next`.
+- `status: building` + branch gone → if the TODO item is ticked, the work landed; if not, continue from `origin/work` on a new branch, reusing whatever is already there.
+- `status: reviewing` → the reviewer owns it; the builder leaves it alone.
+- A role never clears a checkpoint the other role wrote.
+
+What survives a cut run is what is committed and pushed. Commit as soon as something works; do not batch everything into one commit at the end.
+
 ---
 
 ## 5. Builder: choosing work
+
+### Resume before you start
+
+Read `log/state.md` first. If `status: building` and the branch it names still exists on `origin`, check that branch out and continue from the recorded phase. Do not create a second branch for the same item and do not redo work that is already committed. If the branch is gone and the item is still unticked, continue from `origin/work` on a fresh branch, reusing whatever is already there.
+
+Then:
 
 - Scan `TODO.md` from the top; take the **first unchecked `- [ ]` item**.
 - Skip the `Blocked` section entirely.
@@ -100,17 +128,24 @@ If the merge conflicts: `git merge --abort`, push the task branch anyway (the wo
 
 ### Builder: finishing an item
 
-The tick and the review request are two commits, in this order:
+Two commits plus the checkpoint, in this order:
 
 ```bash
+# 0. checkpoint before writing code
+git add log/state.md            # status building, phase implementing, branch, next
+git commit -m "P04-1: start"
+
 git add -A
 git commit -m "P04-1: scaffold Nexus Business Suite"        # 1. the work
 SHA=$(git rev-parse --short HEAD)
 
-# 2. tick the TODO line and append the REVIEW.md entry (using $SHA), then:
-git add TODO.md REVIEW.md
+# 2. tick the TODO line, append the REVIEW.md entry using $SHA,
+#    set phase to handoff-committed
+git add TODO.md REVIEW.md log/state.md
 git commit -m "P04-1: mark done, request review"
 ```
+
+After the merge lands, set `status: idle`, `phase: -`, `next:` to the next unchecked item, and commit that with the session-end commit.
 
 `TODO.md` line, before and after:
 
@@ -124,6 +159,8 @@ Then append one entry to the bottom of `REVIEW.md` using the format at the top o
 ---
 
 ## 6. Reviewer: running a review
+
+Read `log/state.md` first. If `status: reviewing` and the branch it names still exists on `origin`, continue that review from the recorded phase. If `status: building`, leave it alone — the builder owns it — and review something else. Never clear another role's checkpoint.
 
 1. Read `REVIEW.md` top to bottom and take the oldest entry with `Review: needed`.
 2. Read the entry, then read the actual diff (`git show <sha>`) and the files it touched with `git show <sha>:<path>`.
@@ -143,6 +180,7 @@ Then append one entry to the bottom of `REVIEW.md` using the format at the top o
 6. Update the files:
    - Approved → `TODO.md`: `— review needed` becomes `— reviewed <YYYY-MM-DD>`. `REVIEW.md`: `**Review:** approved`, fill `Reviewed` and `Verdict notes` (what you ran, what you checked).
    - Rejected → `TODO.md`: back to `- [ ]` with `— changes requested`; `REVIEW.md`: `**Review:** changes requested` plus numbered findings with file references; add follow-up items to the matching TODO section with IDs like `P04-3-r1`.
+7. One batch is at most 3 reviews or about 25 minutes. Write the checkpoint before each review and the `log/log.md` entry before committing.
 
 The reviewer may fix typos, broken imports, failing lint, wrong doc statements and missing empty states. It may **not** re-implement a feature, expand scope, or restructure a project during review.
 
@@ -288,6 +326,9 @@ Screenshots are added as real captures once the UI exists. Never write "screensh
 - Mark done by changing `[ ]` to `[x]` on the same branch, only after verification.
 - If an item turns out to be wrong or unnecessary, move it under **Blocked** with a one-line reason; do not silently delete it.
 - REVIEW entries are append-only. A verdict is written once and then corrected only with a dated note explaining why.
+- `log/log.md` is append-only: one entry per session, written at the end, even for a session that did nothing. Never rewrite an older entry.
+- `log/state.md` is rewritten, never appended, and describes exactly one in-progress action. `status: idle` means nothing is in flight.
+- A checkpoint is cleared only by the role that wrote it, and only after the work is landed and logged.
 
 ---
 
@@ -357,6 +398,16 @@ review: P04-3 approved
 - TODO.md: reviewed 2026-10-31
 ```
 
+End of every session, on `work`:
+
+```
+chore: session update
+
+- log/state.md: idle, next P04-4
+- log/log.md: builder batch entry (2 items)
+- README.md: last updated line
+```
+
 Rules: subject ≤ 72 characters, imperative. Body explains what changed and how it was verified. Never an empty commit. Never `--no-verify`.
 
 ---
@@ -388,6 +439,9 @@ Then move the item under `## Blocked — do NOT implement` in `TODO.md` with a l
 | Item ticked but no REVIEW.md entry | The item is not done; add the entry or revert the tick |
 | Reviewer approves without running a check | That is a failed review; redo it and say what you ran |
 | Same item rejected twice | Move it to Blocked and open an issue |
+| Run was cut off mid-item | Next session resumes from `log/state.md`; never start the item again from zero |
+| `log/state.md` says building but the branch is gone and the item is ticked | The work landed — set the checkpoint to idle and move on |
+| `log/state.md` says building but nothing was ever built | Clear it with a dated note in the log; do not leave a stale checkpoint |
 | Build failing on `work` | Fix it before starting anything new; a red `work` blocks everyone |
 | Project became a monorepo | Split it back; projects are independent |
 | README mentions "agent" or "automation" | Rewrite in the owner's voice |

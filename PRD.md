@@ -166,7 +166,8 @@ The builder never signs off on its own work, and the reviewer never expands scop
 
 ### Trigger and cadence
 
-- `opencode-cron.yml` runs three times a day (04:00, 10:00, 16:00 UTC = 09:00, 15:00, 21:00 PKT), builder first, reviewer second. Manual dispatch accepts `both`, `build`, or `review`.
+- `opencode-cron.yml` runs **seven times a day** — 03:00, 05:30, 08:00, 10:30, 13:00, 15:30, 18:00 UTC (08:00, 10:30, 13:00, 15:30, 18:00, 20:30, 23:00 PKT). Every slot runs the builder first and the reviewer second, so each role gets seven sessions a day. Manual dispatch accepts `both`, `build`, or `review`.
+- Each session is a **batch**: up to 2 build items or 3 reviews, roughly 35 minutes. A batch stops when the limit or the clock is reached, never mid-item.
 - `opencode.yml` handles owner-opened issues, `/opencode` comments, and PR reviews on demand.
 
 ### The build loop
@@ -176,8 +177,8 @@ The builder never signs off on its own work, and the reviewer never expands scop
 3. Take the **first unchecked item** in `TODO.md` — including anything sent back with `— changes requested`.
 4. If the item is too large, split it into smaller items first, then do the first one.
 5. Create `opencode/todo-<run-id>-<slug>` from `work`, implement, verify, then make two commits: the work, and the tick plus `REVIEW.md` entry.
-6. Merge the branch into `work` and delete it. Repeat up to five items per run.
-7. At the end of every session, replace the single `Last updated` line at the bottom of `README.md`.
+6. Merge the branch into `work` and delete it. Then take the next item, up to 2 per batch.
+7. At the end of every session, write the checkpoint and log entry, and replace the single `Last updated` line at the bottom of `README.md`.
 
 ### The review loop
 
@@ -186,7 +187,22 @@ The builder never signs off on its own work, and the reviewer never expands scop
 3. Judge four gates: correctness, safety, honesty, standards.
 4. Approve → flip the entry and mark `— reviewed <date>` in `TODO.md`. Reject → return the item to `- [ ]` with `— changes requested`, record numbered findings, and add follow-up items.
 5. After two rejections the item goes to **Blocked** and an issue is opened.
-6. Land the verdict on `work`, up to four entries per run.
+6. Land the verdict on `work`, up to 3 entries per batch.
+
+### Batches, checkpoints and logs
+
+Every session is a batch, and every batch leaves two files behind:
+
+| File | Purpose | Rule |
+| --- | --- | --- |
+| `log/state.md` | Resume checkpoint: status, role, run, item, branch, phase, next action | Rewritten, never appended |
+| `log/log.md` | Session history: one entry per run, tagged builder or reviewer | Appended, never rewritten |
+
+If a session is cut off, the next session of that role reads the checkpoint, checks out the recorded branch if it still exists, and continues from the recorded phase. A builder that finds `status: reviewing` leaves it alone; a reviewer that finds `status: building` does the same. A checkpoint is only cleared by the role that wrote it.
+
+The checkpoint moves through `implementing → committed → handoff-committed → landing → idle`. Only committed and pushed work survives a killed runner, so both roles commit as soon as something works instead of batching it at the end.
+
+The reviewer logs no-op sessions too, so "nothing to review" is visible in the history rather than assumed.
 
 ### Ownership of branches
 
@@ -273,3 +289,4 @@ Adding work never requires touching the workflow:
 | --- | --- |
 | 2026-10-31 | Initial PRD: 12 projects, 3 phases, shared standards, build system |
 | 2026-10-31 | Split the build system into two roles: builder (`TODO.md`) and reviewer (`REVIEW.md`), with a review gate before an item is finished |
+| 2026-10-31 | Runs became batches: 7 builder and 7 reviewer sessions a day, 2 items / 3 reviews per batch, with `log/state.md` checkpoints and an append-only `log/log.md` so a cut run resumes instead of restarting |
