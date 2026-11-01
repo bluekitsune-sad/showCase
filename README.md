@@ -64,7 +64,7 @@ This repository is my working portfolio. Each entry is a self-contained product 
 | 01 | [Maison Store](projects/01-maison-store) | Individuals & customers | Planned |
 | 02 | [Corporate Digital Presence](projects/02-corporate-cms) | Businesses | Planned |
 | 03 | [ShopFlow](projects/03-shopflow) | Individuals & customers | Planned |
-| 04 | [Nexus Business Suite](projects/04-nexus-business-suite) | Businesses | Planned |
+| 04 | [Nexus Business Suite](projects/04-nexus-business-suite) | Businesses | In progress |
 | 05 | [CityBites](projects/05-citybites) | Individuals & customers | Planned |
 | 06 | [FieldForce](projects/06-fieldforce) | Businesses | Planned |
 | 07 | [DocuMind](projects/07-documind) | Individuals & customers | Planned |
@@ -113,4 +113,4 @@ MIT — see [LICENSE](LICENSE). Use the code, learn from it, build on it.
 [github.com/bluekitsune-sad](https://github.com/bluekitsune-sad) — open an issue on any project if you want to talk about building something similar.
 
 <!-- last-updated -->
-_Last updated: 31 October 2026, 03:15 UTC._
+_Last updated: 31 October 2026, 19:44 UTC._

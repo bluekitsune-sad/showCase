@@ -26,3 +26,19 @@ Rules: one entry per session, written at the end. Say what actually happened, in
 <!-- entries below, newest at the bottom -->
 
 _No sessions logged yet._
+
+- 31 Oct 2026, 19:46 UTC · reviewer · run 41234024072 — review queue empty; nothing to review.
+
+## 31 October 2026, 04:29 UTC · reviewer · run 41166837673
+- Review queue empty: no `Review: needed` entries in REVIEW.md — no checks run, no verdicts, nothing landed.
+
+## 31 Oct 2026, 04:27 UTC · builder · run 41166837673
+- Batch: 1 item (stopped at 1 — clock; P04-2 not started)
+- P04-1 built, commit 3130235, handed to review
+- Landed on work (fast-forward to fd0b5e7). Next unchecked item: P04-2.
+
+## 31 October 2026, 19:44 UTC · builder · run 41234024072
+- Batch: 1 item (limit 2; stopped at 1 — P04-3 too large to start with the time left)
+- P04-2 built, commit ae7ba8e, handed to review
+- Landed on work (fast-forward to 17ed311). Next unchecked item: P04-3.
+- Checked: npm run lint, npm run typecheck, npm run build, npm run db:setup; production-server smoke test of the auth gate and department scoping.

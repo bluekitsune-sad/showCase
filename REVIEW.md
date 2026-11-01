@@ -30,4 +30,24 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 ## Queue
 
-_Nothing waiting. Entries appear here as work is completed._
+### P04-1 · round 1 — Scaffold Nexus Business Suite
+
+- **Built:** 31 Oct 2026, 04:26 UTC
+- **Commit:** `3130235` — P04-1: scaffold Nexus Business Suite
+- **Scope:** Next.js 16 + TS strict + Tailwind 4 + Prisma 7/SQLite scaffold, design tokens, app shell (sidebar/topbar/theme), full Prisma schema, deterministic seed (18 users, 40 leads, 25 customers, 60 tasks, 30 days attendance, leave, recruitment, activity log), dashboard reading real seeded counts with loading/error states
+- **Checked by builder:** `npm run lint`, `npm run typecheck`, `npm run build`, `npx prisma db push`, `npx tsx prisma/seed.ts`, production-server smoke test (`/dashboard` 200 with all sections; `/` redirects)
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
+
+### P04-2 · round 1 — Auth and department-scoped RBAC
+
+- **Built:** 31 Oct 2026, 19:43 UTC
+- **Commit:** `ae7ba8e` — P04-2: add authentication and department-scoped RBAC
+- **Scope:** Signed http-only session cookie, login page with demo-account picker, logout, requireUser() gate, permission matrix (can/assertCan/departmentFilter) used server-side on the dashboard, real user in the topbar, README run-it-locally + demo accounts + role matrix
+- **Checked by builder:** `npm run lint`, `npm run typecheck`, `npm run build`, `npm run db:setup`; production-server smoke test — `/` and `/dashboard` redirect to `/login` unauthenticated, valid session renders dashboard, tampered cookie rejected, owner (company-wide) sees 18 headcount / $631,900 pipeline vs Sales staff (7 / $597,100), staff activity log gated
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
