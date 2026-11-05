@@ -276,6 +276,8 @@ Python projects add:
 - No dead code, no unused dependencies, no placeholder `Lorem ipsum` in shipped surfaces.
 - Every feature needs its empty, loading and error state.
 - Accessibility: real labels, focus states, 4.5:1 contrast, keyboard paths.
+- UI work: load `impeccable` **or** `frontend-design` before writing markup — one of them, not both — and extend the project's existing tokens instead of inventing a new look. They are vendored copies under `.opencode/skills/`, they never outrank this file, and neither justifies a new dependency.
+- Cost awareness: a metered run pays per request, so load `frugal-session` and `token-budget` and follow them. Read narrowly, write once, summarise output.
 
 ---
 

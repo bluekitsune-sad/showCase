@@ -246,8 +246,8 @@ jobs:
 
             REQUEST BUDGET — READ BEFORE ANYTHING ELSE
             Every tool call is a paid request against a small daily
-            allowance. Load the `frugal-session` skill and follow it. The
-            short version:
+            allowance. Load the `frugal-session` and `token-budget` skills and
+            follow them. The short version:
             - Search before you read: grep/glob first, then read a file with
               offset/limit, never a whole tree.
             - Never read the same file twice. Keep what you learned in your
@@ -350,6 +350,12 @@ jobs:
             - Build the usable increment first: real routes, real data, real
               empty/loading/error states. No placeholder Lorem ipsum in a
               surface you claim is done.
+            - When the item is a UI surface (a page, screen, component, form
+              or empty state), load `impeccable` OR `frontend-design` before
+              writing markup — one of them, not both — and extend the
+              project's existing tokens instead of inventing a new look.
+              `AGENTS.md` still outranks them: accessibility, the three states
+              and the owner's voice are not negotiable.
             - Verify honestly: run the project's own checks (npm run lint,
               npm run typecheck, npm run build, pytest, ruff check). Report
               the actual outcome. If a check cannot run here, say so and
@@ -605,8 +611,8 @@ jobs:
 
             REQUEST BUDGET — READ BEFORE ANYTHING ELSE
             Every tool call is a paid request against a small daily
-            allowance. Load the `frugal-session` skill and follow it. The
-            short version:
+            allowance. Load the `frugal-session` and `token-budget` skills and
+            follow them. The short version:
             - Read the diff first (`git show <sha> --stat`), then only the
               files that matter. Never read a whole tree.
             - Never read the same file twice.
@@ -676,6 +682,10 @@ jobs:
                  money in minor units, accessibility basics, and the README
                  voice rule: no mention of agents, automation, prompts,
                  workflows, branches or commits.
+            - For UI items, load `impeccable` (its critique playbook) once and
+              judge hierarchy, typography, the three states and accessibility
+              against the spec. Report findings; do not redesign the surface
+              yourself — that belongs in a TODO item.
 
             VERDICT
             - Small, unambiguous defects (typo, broken import, failing lint,
