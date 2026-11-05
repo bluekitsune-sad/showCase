@@ -102,10 +102,20 @@ on:
           - both
           - build
           - review
+      model:
+        description: "Model override (provider/model). Blank = the default below."
+        type: string
+        default: ""
 
 # Default permissions: read-only
 permissions:
   contents: read
+
+env:
+  # The free tier is a daily request allowance shared by the whole account, so
+  # a long agent batch can spend it in one sitting. Swap this line (or pass the
+  # `model` input on a manual run) to a free model that still has allowance.
+  DEFAULT_MODEL: opencode/deepseek-v4.1-flash-free
 
 concurrency:
   group: opencode-scheduled-todo
@@ -178,7 +188,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          model: opencode/mimo-v2.6-flash-free
+          model: ${{ inputs.model || env.DEFAULT_MODEL }}
           use_github_token: true
           prompt: |
             You are the BUILDER for this repository. You write code; you do
@@ -491,7 +501,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          model: opencode/mimo-v2.6-flash-free
+          model: ${{ inputs.model || env.DEFAULT_MODEL }}
           use_github_token: true
           prompt: |
             You are the REVIEWER for this repository. You did not write the
