@@ -42,3 +42,10 @@ _No sessions logged yet._
 - P04-2 built, commit ae7ba8e, handed to review
 - Landed on work (fast-forward to 17ed311). Next unchecked item: P04-3.
 - Checked: npm run lint, npm run typecheck, npm run build, npm run db:setup; production-server smoke test of the auth gate and department scoping.
+
+## 5 November 2026 · owner · maintenance, no build session
+- No build items ran: the model allowance for the runner's default identity has answered 429 "Free usage limit reached" on every scheduled run since 31 Oct. Nothing to review either — REVIEW.md still holds P04-1 and P04-2.
+- Cadence cut to two slots a day (05:00, 17:00 UTC) and one build item per batch. A metered allowance is spent per request, and a 20-minute batch that finishes an item costs less than a 45-minute one that half-finishes two.
+- Reviewer now runs `always()` and checks out `origin/work`; agent steps are `continue-on-error` with their own timeouts so a dead model call cannot eat the job or skip the landing sweep. A quota probe skips the batch on HTTP 429 instead of retrying for the whole job.
+- Skills added under `.opencode/skills/`: `frugal-session`, `token-budget`, and vendored `impeccable` 4.8.0 (pbakaus, Apache-2.0, launcher not bundled) and `frontend-design` (anthropics/skills, Apache-2.0). Builders load one design skill for UI items; reviewers use the critique playbook to report, not redesign.
+- Still waiting on a working model credential before the next build session. Next unchecked item: P04-3.
