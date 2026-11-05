@@ -62,12 +62,21 @@ name: OpenCode Scheduled TODO Worker
 #    truncated batch never loses completed work.
 #
 #  MODEL / AUTH:
-#    - Change `model:` on each job (format: provider/model).
+#    - Change `DEFAULT_MODEL` below, or pass the `model` input on a manual
+#      run (format: provider/model). No need to edit both jobs.
 #    - Runs in `use_github_token: true` mode (built-in GITHUB_TOKEN; no
 #      OpenCode App / OIDC needed). To switch to OIDC/app mode: remove
 #      `use_github_token` + the GITHUB_TOKEN env, add `id-token: write`,
 #      pass a provider key via `env:`
 #      (e.g. ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}).
+#    - Free models are metered per account. Without an OPENCODE_API_KEY
+#      secret the runner uses the anonymous GitHub identity, whose free
+#      allowance runs out after roughly one long batch and then answers
+#      429 "Free usage limit reached" until it resets. Add
+#      OPENCODE_API_KEY (opencode.ai -> Console -> API keys) as a repo
+#      secret to spend your own account's allowance instead. The
+#      "Check model quota" step probes the limit first and skips the batch
+#      instead of retrying for 45 minutes.
 #
 #  BRANCH CONVENTION (important):
 #    Every branch either role creates MUST start with `opencode/` and is
@@ -177,16 +186,44 @@ jobs:
             --jq '.[].name' | sort > /tmp/branches-before.txt
           echo "Recorded $(wc -l < /tmp/branches-before.txt) branches"
 
+      # Free usage is a request allowance per account. One refused call is
+      # retried by the agent until the step timeout, so ask first and skip the
+      # batch instead of burning 45 minutes on a limit that has not reset.
+      - name: Check model quota
+        id: quota
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          MODEL: ${{ inputs.model || env.DEFAULT_MODEL }}
+        run: |
+          set -uo pipefail
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          if [ -z "${OPENCODE_API_KEY:-}" ]; then
+            echo "No OPENCODE_API_KEY secret set — the agent will use the default identity."
+            exit 0
+          fi
+          code=$(curl -sS -o /tmp/probe.json -w '%{http_code}' --max-time 30 \
+            -X POST https://opencode.ai/inference/openai/v1/chat/completions \
+            -H "Authorization: Bearer $OPENCODE_API_KEY" \
+            -H 'Content-Type: application/json' \
+            -d "{\"model\":\"${MODEL#*/}\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"max_tokens\":1}") || code=000
+          echo "quota probe HTTP $code"
+          if [ "$code" = "429" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::Model quota exhausted for $MODEL — skipping this batch. $(head -c 300 /tmp/probe.json 2>/dev/null)"
+          fi
+
       # continue-on-error keeps the landing sweep and the reviewer alive when
       # the model call dies (quota, outage, timeout). The step timeout stops a
       # retry loop from eating the whole job budget.
       - name: Run OpenCode builder
         id: agent
+        if: steps.quota.outputs.skip != 'true'
         continue-on-error: true
         timeout-minutes: 45
         uses: anomalyco/opencode/github@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
           model: ${{ inputs.model || env.DEFAULT_MODEL }}
           use_github_token: true
@@ -491,15 +528,40 @@ jobs:
             --jq '.[].name' | sort > /tmp/branches-before.txt
           echo "Recorded $(wc -l < /tmp/branches-before.txt) branches"
 
+      - name: Check model quota
+        id: quota
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          MODEL: ${{ inputs.model || env.DEFAULT_MODEL }}
+        run: |
+          set -uo pipefail
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          if [ -z "${OPENCODE_API_KEY:-}" ]; then
+            echo "No OPENCODE_API_KEY secret set — the agent will use the default identity."
+            exit 0
+          fi
+          code=$(curl -sS -o /tmp/probe.json -w '%{http_code}' --max-time 30 \
+            -X POST https://opencode.ai/inference/openai/v1/chat/completions \
+            -H "Authorization: Bearer $OPENCODE_API_KEY" \
+            -H 'Content-Type: application/json' \
+            -d "{\"model\":\"${MODEL#*/}\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"max_tokens\":1}") || code=000
+          echo "quota probe HTTP $code"
+          if [ "$code" = "429" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::Model quota exhausted for $MODEL — skipping this batch. $(head -c 300 /tmp/probe.json 2>/dev/null)"
+          fi
+
       # Same reasoning as the builder: a dead model call must not take the
       # verdict streak or the landing sweep down with it.
       - name: Run OpenCode reviewer
         id: agent
+        if: steps.quota.outputs.skip != 'true'
         continue-on-error: true
         timeout-minutes: 25
         uses: anomalyco/opencode/github@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
           model: ${{ inputs.model || env.DEFAULT_MODEL }}
           use_github_token: true
