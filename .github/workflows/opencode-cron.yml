@@ -149,6 +149,16 @@ jobs:
             echo "Created work branch from main."
           fi
 
+      # The checkout lands on the default branch. Everything the agent reads
+      # (TODO.md, REVIEW.md, log/state.md) lives on `work`, so switch before
+      # the agent starts or it works from a stale queue.
+      - name: Switch to the work branch
+        run: |
+          set -euo pipefail
+          git fetch origin work
+          git checkout -B work origin/work
+          echo "On $(git rev-parse --short HEAD) of work."
+
       - name: Snapshot remote branches (before agent)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -157,7 +167,13 @@ jobs:
             --jq '.[].name' | sort > /tmp/branches-before.txt
           echo "Recorded $(wc -l < /tmp/branches-before.txt) branches"
 
+      # continue-on-error keeps the landing sweep and the reviewer alive when
+      # the model call dies (quota, outage, timeout). The step timeout stops a
+      # retry loop from eating the whole job budget.
       - name: Run OpenCode builder
+        id: agent
+        continue-on-error: true
+        timeout-minutes: 45
         uses: anomalyco/opencode/github@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -349,6 +365,11 @@ jobs:
               secret files; no node_modules; no build output.
             - Never create an empty commit.
 
+      - name: Report builder outcome
+        if: steps.agent.outcome != 'success'
+        run: |
+          echo "::warning::The builder agent did not finish (outcome: ${{ steps.agent.outcome }}). Check the log above: a 429 'Free usage limit reached' means the model quota is exhausted, not that the repo is broken."
+
       # SAFETY NET — candidates are (a) every NEW opencode/* branch from
       # this run (diff vs the before-snapshot) plus (b) every pre-existing
       # opencode/todo-* branch still on the remote (self-healing sweep of
@@ -404,9 +425,11 @@ jobs:
   review-worker:
     name: Reviewer — one batch through the review queue
     needs: todo-worker
+    # The reviewer reviews what is already on `work`, so it must run even when
+    # the builder was cancelled, failed or timed out. Reviewing does not depend
+    # on the builder succeeding.
     if: |
       always() &&
-      needs.todo-worker.result != 'cancelled' &&
       (
         github.event_name == 'schedule' ||
         inputs.mode == 'review' ||
@@ -440,6 +463,16 @@ jobs:
             echo "Created work branch from main."
           fi
 
+      # REVIEW.md entries land on `work`, not on the default branch. Without
+      # this the reviewer reads an empty queue from `main` and signs nothing.
+      - name: Switch to the work branch
+        run: |
+          set -euo pipefail
+          git fetch origin work
+          git checkout -B work origin/work
+          echo "On $(git rev-parse --short HEAD) of work."
+          echo "Pending reviews: $(grep -c 'Review:\*\* needed' REVIEW.md || true)"
+
       - name: Snapshot remote branches (before agent)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -448,7 +481,12 @@ jobs:
             --jq '.[].name' | sort > /tmp/branches-before.txt
           echo "Recorded $(wc -l < /tmp/branches-before.txt) branches"
 
+      # Same reasoning as the builder: a dead model call must not take the
+      # verdict streak or the landing sweep down with it.
       - name: Run OpenCode reviewer
+        id: agent
+        continue-on-error: true
+        timeout-minutes: 25
         uses: anomalyco/opencode/github@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -570,6 +608,11 @@ jobs:
               during review. Review findings become TODO items instead.
             - Touch the README "Last updated" line — the builder owns it.
             - Comment on, approve, or merge any pull request.
+
+      - name: Report reviewer outcome
+        if: steps.agent.outcome != 'success'
+        run: |
+          echo "::warning::The reviewer agent did not finish (outcome: ${{ steps.agent.outcome }}). Check the log above: a 429 'Free usage limit reached' means the model quota is exhausted."
 
       - name: Land leftover branches into work
         env:
