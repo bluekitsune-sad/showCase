@@ -72,19 +72,23 @@ name: OpenCode Scheduled TODO Worker
 #      (e.g. ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}).
 #    - Free models are metered per account, by request, not by minute.
 #      Without an OPENCODE_API_KEY secret the runner uses the anonymous
-#      GitHub identity, whose free allowance runs out after roughly one
-#      long batch and then answers 429 "Free usage limit reached" until it
-#      resets.
+#      GitHub identity. Since 31 Oct that identity has answered 429
+#      "FreeUsageLimitError" on every scheduled run, including the 05:00 UTC
+#      slot five hours after the daily reset. The `Retry-After` on those 429s
+#      is not a countdown: probes with no auth, a bogus token and a junk token
+#      all return the same value, and it resolves to end of the UTC day. So it
+#      is a wall-clock boundary, not a promise that a wait will help — the
+#      free anonymous path is simply not entitled any more. Add your own key.
 #    - Which secret matches which model prefix:
 #        opencode/...    -> OPENCODE_API_KEY   (opencode.ai -> Console)
 #        openrouter/...  -> OPENROUTER_API_KEY (free :free models allow
 #                           50 requests/day, 1,000 once $10 of credit has
 #                           been bought once — a single agent session is
-#                          100-200 requests, so 50 is not enough)
+#                           100-200 requests, so 50 is not enough)
 #        google/...      -> GEMINI_API_KEY
-#    - The "Check model quota" step probes the limit first and skips the
-#      batch instead of retrying for 25 minutes. It only knows the
-#      opencode/... gateway.
+#    - The "Check model quota" step probes the limit first, with your key if
+#      there is one and anonymously if not, and skips the batch on 429 instead
+#      of retrying for half an hour. It only knows the opencode/... gateway.
 #
 #  BRANCH CONVENTION (important):
 #    Every branch either role creates MUST start with `opencode/` and is
@@ -207,19 +211,27 @@ jobs:
             opencode/*) ;;
             *) echo "Not an opencode/... model — no probe for it, letting the agent try."; exit 0 ;;
           esac
-          if [ -z "${OPENCODE_API_KEY:-}" ]; then
-            echo "No OPENCODE_API_KEY secret set — the agent will use the default identity."
-            exit 0
+          # Probe with the identity the agent would actually use. The anonymous
+          # probe matters as much as the keyed one: the free allowance is metered
+          # per identity, and its 429 is a plain "not entitled" that the agent
+          # answers by retrying for the rest of the job budget.
+          auth=()
+          if [ -n "${OPENCODE_API_KEY:-}" ]; then
+            auth=(-H "Authorization: Bearer $OPENCODE_API_KEY")
+            ident="OPENCODE_API_KEY"
+          else
+            ident="anonymous"
           fi
-          code=$(curl -sS -o /tmp/probe.json -w '%{http_code}' --max-time 30 \
+          code=$(curl -sS -D /tmp/probe.h -o /tmp/probe.json -w '%{http_code}' --max-time 30 \
             -X POST https://opencode.ai/inference/openai/v1/chat/completions \
-            -H "Authorization: Bearer $OPENCODE_API_KEY" \
+            ${auth[@]+"${auth[@]}"} \
             -H 'Content-Type: application/json' \
             -d "{\"model\":\"${MODEL#*/}\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"max_tokens\":1}") || code=000
-          echo "quota probe HTTP $code"
+          echo "quota probe HTTP $code (identity: $ident)"
+          grep -i '^retry-after:' /tmp/probe.h 2>/dev/null || true
           if [ "$code" = "429" ]; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
-            echo "::warning::Model quota exhausted for $MODEL — skipping this batch. $(head -c 300 /tmp/probe.json 2>/dev/null)"
+            echo "::warning::$MODEL refused the $ident identity with 429 — skipping this batch instead of retrying for half an hour. $(head -c 200 /tmp/probe.json 2>/dev/null)"
           fi
 
       # continue-on-error keeps the landing sweep and the reviewer alive when
@@ -573,19 +585,27 @@ jobs:
             opencode/*) ;;
             *) echo "Not an opencode/... model — no probe for it, letting the agent try."; exit 0 ;;
           esac
-          if [ -z "${OPENCODE_API_KEY:-}" ]; then
-            echo "No OPENCODE_API_KEY secret set — the agent will use the default identity."
-            exit 0
+          # Probe with the identity the agent would actually use. The anonymous
+          # probe matters as much as the keyed one: the free allowance is metered
+          # per identity, and its 429 is a plain "not entitled" that the agent
+          # answers by retrying for the rest of the job budget.
+          auth=()
+          if [ -n "${OPENCODE_API_KEY:-}" ]; then
+            auth=(-H "Authorization: Bearer $OPENCODE_API_KEY")
+            ident="OPENCODE_API_KEY"
+          else
+            ident="anonymous"
           fi
-          code=$(curl -sS -o /tmp/probe.json -w '%{http_code}' --max-time 30 \
+          code=$(curl -sS -D /tmp/probe.h -o /tmp/probe.json -w '%{http_code}' --max-time 30 \
             -X POST https://opencode.ai/inference/openai/v1/chat/completions \
-            -H "Authorization: Bearer $OPENCODE_API_KEY" \
+            ${auth[@]+"${auth[@]}"} \
             -H 'Content-Type: application/json' \
             -d "{\"model\":\"${MODEL#*/}\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"max_tokens\":1}") || code=000
-          echo "quota probe HTTP $code"
+          echo "quota probe HTTP $code (identity: $ident)"
+          grep -i '^retry-after:' /tmp/probe.h 2>/dev/null || true
           if [ "$code" = "429" ]; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
-            echo "::warning::Model quota exhausted for $MODEL — skipping this batch. $(head -c 300 /tmp/probe.json 2>/dev/null)"
+            echo "::warning::$MODEL refused the $ident identity with 429 — skipping this batch instead of retrying for half an hour. $(head -c 200 /tmp/probe.json 2>/dev/null)"
           fi
 
       # Same reasoning as the builder: a dead model call must not take the
