@@ -18,6 +18,7 @@ TODO.md              the build queue — the only place work is scheduled
 REVIEW.md            the review queue — what has been built and not yet signed off
 PRD.md               portfolio plan, shared standards, definition of done
 docs/                templates and reference material
+.opencode/skills/    owner-owned skills the agents load — do not edit
 .github/workflows/   automation — do not edit
 ```
 
@@ -48,7 +49,7 @@ Every change passes through two roles. They are separate runs and separate promp
 ## 3. Golden rules
 
 1. **Never push to `main`.** Never force-push. Never rewrite published history.
-2. **Never edit `.github/**`.** Workflows, actions and repo automation are owner-only. If a task seems to require it, stop and open an issue.
+2. **Never edit `.github/**` or `.opencode/**`.** Workflows, actions, skills and repo automation are owner-only. If a task seems to require it, stop and open an issue.
 3. **One TODO item per branch and per commit series.** Small, verifiable, landed.
 4. **Never mark a TODO item done unless it works**, and never review it without checking.
 5. **Never commit secrets.** No `.env`, tokens, keys, dumps, or real user data. Demo data is synthetic.
@@ -91,7 +92,9 @@ If the merge conflicts: `git merge --abort`, push the task branch anyway (the wo
 
 ### Batches, checkpoints and logs
 
-Work happens in **batches**, not marathons: one scheduled run is one batch of up to 2 build items or 3 reviews, roughly 35 minutes. A batch that runs out of time stops after the item it is on — it never starts something it cannot finish.
+Work happens in **batches**, not marathons: one scheduled run is one batch of 1 build item or up to 3 reviews, roughly 20 minutes. A batch that runs out of time stops after the item it is on — it never starts something it cannot finish.
+
+**Request budget.** A model allowance is metered per request, not per minute, and every tool call is one request. Both roles load the `frugal-session` skill (`.opencode/skills/frugal-session/SKILL.md`) at the start of a session: read narrowly, never read the same file twice, write a file once instead of five edits, summarise output instead of echoing it, and stop when the item works. A run that wanders spends two or three times the allowance of a run that plans.
 
 Every session writes two files:
 
@@ -180,7 +183,7 @@ Read `log/state.md` first. If `status: reviewing` and the branch it names still 
 6. Update the files:
    - Approved → `TODO.md`: `— review needed` becomes `— reviewed <YYYY-MM-DD>`. `REVIEW.md`: `**Review:** approved`, fill `Reviewed` and `Verdict notes` (what you ran, what you checked).
    - Rejected → `TODO.md`: back to `- [ ]` with `— changes requested`; `REVIEW.md`: `**Review:** changes requested` plus numbered findings with file references; add follow-up items to the matching TODO section with IDs like `P04-3-r1`.
-7. One batch is at most 3 reviews or about 25 minutes. Write the checkpoint before each review and the `log/log.md` entry before committing.
+7. One batch is at most 3 reviews or about 20 minutes. Load the `frugal-session` skill first. Write the checkpoint before each review and the `log/log.md` entry before committing.
 
 The reviewer may fix typos, broken imports, failing lint, wrong doc statements and missing empty states. It may **not** re-implement a feature, expand scope, or restructure a project during review.
 
@@ -404,7 +407,7 @@ End of every session, on `work`:
 chore: session update
 
 - log/state.md: idle, next P04-4
-- log/log.md: builder batch entry (2 items)
+- log/log.md: builder batch entry (1 item)
 - README.md: last updated line
 ```
 

@@ -14,7 +14,7 @@ name: OpenCode Scheduled TODO Worker
 #      spec. Resumes any interrupted item, otherwise takes the first
 #      unchecked `- [ ]` item in TODO.md. Builds and verifies it, then marks
 #      it `- [x] ... — review needed` and appends a REVIEW.md entry.
-#      Up to 2 items or ~35 minutes per batch.
+#      Up to 1 item or ~20 minutes per batch.
 #
 #    BATCH 2 — REVIEWER (`review-worker`, runs after the builder)
 #      resumes any interrupted review, otherwise takes the oldest
@@ -45,9 +45,10 @@ name: OpenCode Scheduled TODO Worker
 #        git checkout main && git merge work && git push
 #
 #  SCHEDULE (cron is UTC; owner is UTC+5):
-#    7 slots a day -> 08:00, 10:30, 13:00, 15:30, 18:00, 20:30, 23:00 PKT,
-#    which is 03:00, 05:30, 08:00, 10:30, 13:00, 15:30, 18:00 UTC.
-#      * Want fewer runs?      -> drop lines from the `schedule:` list below.
+#    2 slots a day -> 10:00 and 22:00 PKT, which is 05:00 and 17:00 UTC.
+#    Deliberately small: a model allowance is spent per request, and one
+#    bounded batch produces more finished work per request than two long
+#    ones. With a paid allowance, add slots back here.
 #      * Want every 2 hours?   -> "0 */2 * * *"
 #      * Want hourly?          -> "0 * * * *"
 #    GitHub may delay scheduled runs during busy windows, and disables
@@ -56,9 +57,9 @@ name: OpenCode Scheduled TODO Worker
 #    mode: both / build only / review only.
 #
 #  LOOP KNOBS:
-#    Batch sizes and time boxes live in the prompts below ("up to 2 items",
-#    "up to 3 reviews"). Job timeouts: builder 60 min, reviewer 35 min.
-#    One item is always landed into `work` before the next starts, so a
+#    Batch sizes and time boxes live in the prompts below ("up to 1 item",
+#    "up to 3 reviews"). Job timeouts: builder 35 min, reviewer 30 min.
+#    One item is always landed into `work` before the batch ends, so a
 #    truncated batch never loses completed work.
 #
 #  MODEL / AUTH:
@@ -69,14 +70,21 @@ name: OpenCode Scheduled TODO Worker
 #      `use_github_token` + the GITHUB_TOKEN env, add `id-token: write`,
 #      pass a provider key via `env:`
 #      (e.g. ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}).
-#    - Free models are metered per account. Without an OPENCODE_API_KEY
-#      secret the runner uses the anonymous GitHub identity, whose free
-#      allowance runs out after roughly one long batch and then answers
-#      429 "Free usage limit reached" until it resets. Add
-#      OPENCODE_API_KEY (opencode.ai -> Console -> API keys) as a repo
-#      secret to spend your own account's allowance instead. The
-#      "Check model quota" step probes the limit first and skips the batch
-#      instead of retrying for 45 minutes.
+#    - Free models are metered per account, by request, not by minute.
+#      Without an OPENCODE_API_KEY secret the runner uses the anonymous
+#      GitHub identity, whose free allowance runs out after roughly one
+#      long batch and then answers 429 "Free usage limit reached" until it
+#      resets.
+#    - Which secret matches which model prefix:
+#        opencode/...    -> OPENCODE_API_KEY   (opencode.ai -> Console)
+#        openrouter/...  -> OPENROUTER_API_KEY (free :free models allow
+#                           50 requests/day, 1,000 once $10 of credit has
+#                           been bought once — a single agent session is
+#                          100-200 requests, so 50 is not enough)
+#        google/...      -> GEMINI_API_KEY
+#    - The "Check model quota" step probes the limit first and skips the
+#      batch instead of retrying for 25 minutes. It only knows the
+#      opencode/... gateway.
 #
 #  BRANCH CONVENTION (important):
 #    Every branch either role creates MUST start with `opencode/` and is
@@ -95,10 +103,8 @@ name: OpenCode Scheduled TODO Worker
 
 on:
   schedule:
-    # 03:00, 08:00, 13:00, 18:00 UTC
-    - cron: "0 3,8,13,18 * * *"
-    # 05:30, 10:30, 15:30 UTC
-    - cron: "30 5,10,15 * * *"
+    # 05:00 and 17:00 UTC = 10:00 and 22:00 PKT
+    - cron: "0 5,17 * * *"
 
   # Allow you to run it manually from GitHub Actions
   workflow_dispatch:
@@ -142,7 +148,7 @@ jobs:
       inputs.mode == 'both'
 
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 35
 
     permissions:
       contents: write
@@ -188,7 +194,7 @@ jobs:
 
       # Free usage is a request allowance per account. One refused call is
       # retried by the agent until the step timeout, so ask first and skip the
-      # batch instead of burning 45 minutes on a limit that has not reset.
+      # batch instead of burning 25 minutes on a limit that has not reset.
       - name: Check model quota
         id: quota
         env:
@@ -197,6 +203,10 @@ jobs:
         run: |
           set -uo pipefail
           echo "skip=false" >> "$GITHUB_OUTPUT"
+          case "$MODEL" in
+            opencode/*) ;;
+            *) echo "Not an opencode/... model — no probe for it, letting the agent try."; exit 0 ;;
+          esac
           if [ -z "${OPENCODE_API_KEY:-}" ]; then
             echo "No OPENCODE_API_KEY secret set — the agent will use the default identity."
             exit 0
@@ -219,11 +229,13 @@ jobs:
         id: agent
         if: steps.quota.outputs.skip != 'true'
         continue-on-error: true
-        timeout-minutes: 45
+        timeout-minutes: 25
         uses: anomalyco/opencode/github@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         with:
           model: ${{ inputs.model || env.DEFAULT_MODEL }}
           use_github_token: true
@@ -231,6 +243,19 @@ jobs:
             You are the BUILDER for this repository. You write code; you do
             not sign it off. A separate reviewer checks your work afterwards.
             The owner merges `work` into `main` by hand.
+
+            REQUEST BUDGET — READ BEFORE ANYTHING ELSE
+            Every tool call is a paid request against a small daily
+            allowance. Load the `frugal-session` skill and follow it. The
+            short version:
+            - Search before you read: grep/glob first, then read a file with
+              offset/limit, never a whole tree.
+            - Never read the same file twice. Keep what you learned in your
+              head, not in a second read.
+            - Write a file once, complete, instead of five small edits.
+            - Do not re-run a check after an edit that cannot change it.
+            - Summarise command output; never echo large logs back.
+            - This is ~20 minutes of work: pick a scope you can finish.
 
             READ FIRST, IN THIS ORDER
             1. log/state.md — the checkpoint. Whoever ran last wrote it.
@@ -241,10 +266,12 @@ jobs:
             6. projects/<folder>/README.md — the spec of the item you pick.
 
             BATCH SIZE
-            This run is one batch: up to 2 items, about 35 minutes. Stop at
-            whichever limit comes first. Never start an item you cannot
-            finish inside the batch — if the clock is nearly up, land what
-            you have and stop.
+            This run is one batch: ONE item, about 20 minutes. Finish it and
+            land it. Never start a second item, and never start an item you
+            cannot finish inside the box — if the clock is nearly up, land
+            what you have and stop. Half a finished item is worth more than
+            two half-built ones, because the next run would have to re-read
+            all the same context to resume.
 
             RESUME FIRST (before picking new work)
             - git fetch origin
@@ -484,7 +511,7 @@ jobs:
       )
 
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 30
 
     permissions:
       contents: write
@@ -536,6 +563,10 @@ jobs:
         run: |
           set -uo pipefail
           echo "skip=false" >> "$GITHUB_OUTPUT"
+          case "$MODEL" in
+            opencode/*) ;;
+            *) echo "Not an opencode/... model — no probe for it, letting the agent try."; exit 0 ;;
+          esac
           if [ -z "${OPENCODE_API_KEY:-}" ]; then
             echo "No OPENCODE_API_KEY secret set — the agent will use the default identity."
             exit 0
@@ -557,11 +588,13 @@ jobs:
         id: agent
         if: steps.quota.outputs.skip != 'true'
         continue-on-error: true
-        timeout-minutes: 25
+        timeout-minutes: 22
         uses: anomalyco/opencode/github@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         with:
           model: ${{ inputs.model || env.DEFAULT_MODEL }}
           use_github_token: true
@@ -569,6 +602,18 @@ jobs:
             You are the REVIEWER for this repository. You did not write the
             work you are about to check, and you do not assume it is correct.
             Your job is to protect the owner from work that only looks done.
+
+            REQUEST BUDGET — READ BEFORE ANYTHING ELSE
+            Every tool call is a paid request against a small daily
+            allowance. Load the `frugal-session` skill and follow it. The
+            short version:
+            - Read the diff first (`git show <sha> --stat`), then only the
+              files that matter. Never read a whole tree.
+            - Never read the same file twice.
+            - Run the project's checks once, not after every thought.
+            - Summarise command output; never echo large logs back.
+            - One thorough review beats three shallow ones: if the box is
+              nearly up, stop after the entry you are on.
 
             READ FIRST
             1. log/state.md — the checkpoint. Read it before anything else.
@@ -579,8 +624,10 @@ jobs:
             6. projects/<folder>/README.md — the spec it claims to satisfy.
 
             BATCH SIZE
-            This run is one batch: up to 3 review entries, about 25 minutes.
-            One thorough review beats three shallow ones.
+            This run is one batch: up to 3 review entries, about 20 minutes.
+            One thorough review beats three shallow ones. Never open a fourth
+            entry, and stop cleanly after the one you are on when the box is
+            nearly up — a verdict half-written is worth nothing.
 
             RESUME FIRST
             - If log/state.md says status: reviewing and its branch still

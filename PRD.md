@@ -166,8 +166,8 @@ The builder never signs off on its own work, and the reviewer never expands scop
 
 ### Trigger and cadence
 
-- `opencode-cron.yml` runs **seven times a day** — 03:00, 05:30, 08:00, 10:30, 13:00, 15:30, 18:00 UTC (08:00, 10:30, 13:00, 15:30, 18:00, 20:30, 23:00 PKT). Every slot runs the builder first and the reviewer second, so each role gets seven sessions a day. Manual dispatch accepts `both`, `build`, or `review`.
-- Each session is a **batch**: up to 2 build items or 3 reviews, roughly 35 minutes. A batch stops when the limit or the clock is reached, never mid-item.
+- `opencode-cron.yml` runs **twice a day** — 05:00 and 17:00 UTC (10:00 and 22:00 PKT). Every slot runs the builder first and the reviewer second, so each role gets two sessions a day. Manual dispatch accepts `both`, `build`, or `review`, plus an optional `model` override.
+- Each session is a **batch**: 1 build item or up to 3 reviews, roughly 20 minutes. A batch stops when the limit or the clock is reached, never mid-item.
 - `opencode.yml` handles owner-opened issues, `/opencode` comments, and PR reviews on demand.
 
 ### The build loop
@@ -177,7 +177,7 @@ The builder never signs off on its own work, and the reviewer never expands scop
 3. Take the **first unchecked item** in `TODO.md` — including anything sent back with `— changes requested`.
 4. If the item is too large, split it into smaller items first, then do the first one.
 5. Create `opencode/todo-<run-id>-<slug>` from `work`, implement, verify, then make two commits: the work, and the tick plus `REVIEW.md` entry.
-6. Merge the branch into `work` and delete it. Then take the next item, up to 2 per batch.
+6. Merge the branch into `work` and delete it. That is the batch: one item per session.
 7. At the end of every session, write the checkpoint and log entry, and replace the single `Last updated` line at the bottom of `README.md`.
 
 ### The review loop
@@ -290,3 +290,4 @@ Adding work never requires touching the workflow:
 | 2026-10-31 | Initial PRD: 12 projects, 3 phases, shared standards, build system |
 | 2026-10-31 | Split the build system into two roles: builder (`TODO.md`) and reviewer (`REVIEW.md`), with a review gate before an item is finished |
 | 2026-10-31 | Runs became batches: 7 builder and 7 reviewer sessions a day, 2 items / 3 reviews per batch, with `log/state.md` checkpoints and an append-only `log/log.md` so a cut run resumes instead of restarting |
+| 2026-11-05 | Cadence cut to two slots a day with one build item per batch. The model allowance is metered per request, and a 20-minute batch that finishes an item spends less than a 45-minute batch that half-finishes two. Both roles load the `frugal-session` skill. |
