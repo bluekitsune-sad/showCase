@@ -42,6 +42,15 @@ export const LEAD_SOURCES = [
 ] as const;
 export type LeadSource = (typeof LEAD_SOURCES)[number];
 
+export const LEAD_SOURCE_LABELS: Record<LeadSource, string> = {
+  referral: "Referral",
+  website: "Website",
+  outbound: "Outbound",
+  event: "Event",
+  partner: "Partner",
+  other: "Other",
+};
+
 export const TASK_STATUSES = ["todo", "in_progress", "blocked", "done"] as const;
 export type TaskStatus = (typeof TASK_STATUSES)[number];
 
@@ -76,6 +85,12 @@ export type AttendanceStatus = (typeof ATTENDANCE_STATUSES)[number];
 export const CUSTOMER_STATUSES = ["active", "at_risk", "churned"] as const;
 export type CustomerStatus = (typeof CUSTOMER_STATUSES)[number];
 
+export const CUSTOMER_STATUS_LABELS: Record<CustomerStatus, string> = {
+  active: "Active",
+  at_risk: "At risk",
+  churned: "Churned",
+};
+
 export const PROJECT_STATUSES = [
   "planning",
   "active",
@@ -101,6 +116,14 @@ export function isRole(value: string): value is Role {
 
 export function isLeadStage(value: string): value is LeadStage {
   return (LEAD_STAGES as readonly string[]).includes(value);
+}
+
+export function isLeadSource(value: string): value is LeadSource {
+  return (LEAD_SOURCES as readonly string[]).includes(value);
+}
+
+export function isCustomerStatus(value: string): value is CustomerStatus {
+  return (CUSTOMER_STATUSES as readonly string[]).includes(value);
 }
 
 export function isTaskStatus(value: string): value is TaskStatus {
