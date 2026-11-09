@@ -264,9 +264,15 @@ jobs:
               grep -i '^retry-after:' /tmp/probe.h 2>/dev/null || true
               if [ "$code" = "429" ]; then
                 if [ "$ident" = "anonymous" ]; then
+                  # No key at all: there is nothing for the agent to try.
                   skip "$MODEL refused the anonymous identity with 429 — signed out there is no opencode allowance at all. Add OPENCODE_API_KEY (opencode.ai -> Console -> API keys) and this batch will run. $(head -c 200 /tmp/probe.json 2>/dev/null)"
                 else
-                  skip "$MODEL refused OPENCODE_API_KEY with 429 — that account's free requests for today are spent. $(head -c 200 /tmp/probe.json 2>/dev/null)"
+                  # With a key set this probe is not a verdict. Free models are
+                  # served to the OpenCode client only, so a bare request is
+                  # answered 429 whatever the key's real state is — valid, spent
+                  # or mistyped all look identical from here. Let the agent try
+                  # and report what it actually gets.
+                  echo "::notice::Probe got 429 with OPENCODE_API_KEY set. Free models are only served to the OpenCode client, so this is expected for a bare request — letting the agent try."
                 fi
               fi
               ;;
@@ -671,9 +677,15 @@ jobs:
               grep -i '^retry-after:' /tmp/probe.h 2>/dev/null || true
               if [ "$code" = "429" ]; then
                 if [ "$ident" = "anonymous" ]; then
+                  # No key at all: there is nothing for the agent to try.
                   skip "$MODEL refused the anonymous identity with 429 — signed out there is no opencode allowance at all. Add OPENCODE_API_KEY (opencode.ai -> Console -> API keys) and this batch will run. $(head -c 200 /tmp/probe.json 2>/dev/null)"
                 else
-                  skip "$MODEL refused OPENCODE_API_KEY with 429 — that account's free requests for today are spent. $(head -c 200 /tmp/probe.json 2>/dev/null)"
+                  # With a key set this probe is not a verdict. Free models are
+                  # served to the OpenCode client only, so a bare request is
+                  # answered 429 whatever the key's real state is — valid, spent
+                  # or mistyped all look identical from here. Let the agent try
+                  # and report what it actually gets.
+                  echo "::notice::Probe got 429 with OPENCODE_API_KEY set. Free models are only served to the OpenCode client, so this is expected for a bare request — letting the agent try."
                 fi
               fi
               ;;
