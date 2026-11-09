@@ -10,9 +10,9 @@ role: reviewer
 run: 42631910817
 item: P04-1
 branch: opencode/review-42631910817-p04-1
-phase: checking
+phase: verdict
 updated: 9 Nov 2026, 14:20 UTC
-next: run lint/typecheck/build/prisma checks for P04-1, inspect diff, write verdict
+next: land P04-1 review, then start P04-2
 notes: batch of up to 3 reviews; oldest first P04-1, then P04-2, P04-3
 ```
 

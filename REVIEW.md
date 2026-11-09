@@ -36,10 +36,10 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `3130235` — P04-1: scaffold Nexus Business Suite
 - **Scope:** Next.js 16 + TS strict + Tailwind 4 + Prisma 7/SQLite scaffold, design tokens, app shell (sidebar/topbar/theme), full Prisma schema, deterministic seed (18 users, 40 leads, 25 customers, 60 tasks, 30 days attendance, leave, recruitment, activity log), dashboard reading real seeded counts with loading/error states
 - **Checked by builder:** `npm run lint`, `npm run typecheck`, `npm run build`, `npx prisma db push`, `npx tsx prisma/seed.ts`, production-server smoke test (`/dashboard` 200 with all sections; `/` redirects)
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 9 Nov 2026
+- **Verdict notes:** Re-ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in the project folder — all pass (typecheck requires the generated Prisma client, so it fails as expected before `db:setup`). Inspected the schema and seed: all 16 models present, deterministic `mulberry32` seed with synthetic `@nexus.demo` data, money stored as integer minor units, no `.env` or secrets committed. App shell, design tokens, sidebar/topbar/theme toggle, and dashboard loading/error states are all present; dashboard reads real seeded counts, including today's attendance. No files touched outside the project (README status line and `log/state.md` only), no `.github` changes. README has no agent/automation references. Approved.
 
 ### P04-2 · round 1 — Auth and department-scoped RBAC
 
