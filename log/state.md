@@ -10,10 +10,10 @@ role: builder
 run: 42631910817
 item: P04-3
 branch: opencode/todo-42631910817-crm
-phase: implementing
-updated: 9 Nov 2026, 14:12 UTC
-next: Build CRM surfaces (leads list, pipeline board, customers list, customer detail)
-notes: -
+phase: handoff-committed
+updated: 9 Nov 2026, 14:18 UTC
+next: Land the P04-3 branch on work
+notes: Built and verified; awaiting landing
 ```
 
 **Fields**

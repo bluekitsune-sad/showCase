@@ -51,3 +51,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** —
 - **Verdict notes:** —
+
+### P04-3 · round 1 — Build the CRM surface
+
+- **Built:** 9 Nov 2026, 14:18 UTC
+- **Commit:** `b957459` — P04-3: build the CRM surface
+- **Scope:** Leads list with search, stage/source filters and pipeline totals; lead pipeline board by stage with audited stage moves; customers list with search and status filters; customer detail with contacts, notes and activity timeline; server-side permission and department checks on every mutation
+- **Checked by builder:** `npm run lint`, `npm run typecheck`, `npm run build`, `npm run db:setup`; production-server smoke test — `/leads`, `/pipeline`, `/customers`, `/customers/1` return 200 for the owner; unauthenticated `/leads` returns 307 to login; operations staff gets the not-found view for a sales-owned customer; stage move persisted with a `lead.stage_changed` activity entry; note creation persisted with a `note.added` activity entry; a staff stage-change POST left the lead unchanged
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
