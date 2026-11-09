@@ -47,10 +47,10 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `ae7ba8e` — P04-2: add authentication and department-scoped RBAC
 - **Scope:** Signed http-only session cookie, login page with demo-account picker, logout, requireUser() gate, permission matrix (can/assertCan/departmentFilter) used server-side on the dashboard, real user in the topbar, README run-it-locally + demo accounts + role matrix
 - **Checked by builder:** `npm run lint`, `npm run typecheck`, `npm run build`, `npm run db:setup`; production-server smoke test — `/` and `/dashboard` redirect to `/login` unauthenticated, valid session renders dashboard, tampered cookie rejected, owner (company-wide) sees 18 headcount / $631,900 pipeline vs Sales staff (7 / $597,100), staff activity log gated
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 9 Nov 2026
+- **Verdict notes:** Re-ran `npm run lint`, `npm run typecheck`, `npm run build` on the project — all pass. Read `session.ts`, `password.ts`, `permissions.ts`, the login/logout server actions and the app layout: the HMAC-signed http-only cookie is verified with `timingSafeEqual`, expiry is enforced, and `requireUser()` gates the whole `(app)` route group server-side. Permission checks run in the query layer (`departmentFilter`/`ownerDepartmentFilter`), not just the UI; the activity feed is read-only for owner/admin. Runtime smoke test with `npm run start` on :3500: unauthenticated `/dashboard` → 307 to `/login`; a tampered cookie → 307; a signed owner session (id 1) rendered 18 headcount, $631,900 pipeline and 20 customers; a Sales staff session (Diego, id 8) rendered 7 headcount, $597,100 pipeline and 6 customers with the department-scoped label and no activity feed. Demo password scheme and the `AUTH_SECRET` fallback are explicitly documented as local-demo-only. No secrets, no `.github` changes, no work outside the project. Approved.
 
 ### P04-3 · round 1 — Build the CRM surface
 

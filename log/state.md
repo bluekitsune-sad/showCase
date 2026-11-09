@@ -8,12 +8,12 @@ Rewrite this file. Never append to it. Only clear a state you wrote yourself —
 status: reviewing
 role: reviewer
 run: 42631910817
-item: P04-1
-branch: opencode/review-42631910817-p04-1
+item: P04-2
+branch: opencode/review-42631910817-p04-2
 phase: verdict
-updated: 9 Nov 2026, 14:20 UTC
-next: land P04-1 review, then start P04-2
-notes: batch of up to 3 reviews; oldest first P04-1, then P04-2, P04-3
+updated: 9 Nov 2026, 14:24 UTC
+next: inspect P04-2 auth/RBAC diff and write verdict
+notes: P04-1 approved and landed; P04-3 remains in queue
 ```
 
 **Fields**
