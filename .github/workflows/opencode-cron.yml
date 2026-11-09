@@ -74,33 +74,29 @@ name: OpenCode Scheduled TODO Worker
 #      pass a provider key via `env:`
 #      (e.g. ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}).
 #    - Free models are metered per account, by request, not by minute.
-#      Without an OPENCODE_API_KEY secret the runner uses the anonymous
-#      GitHub identity. Since 31 Oct that identity has answered 429
-#      "FreeUsageLimitError" on every scheduled run, including the 05:00 UTC
-#      slot five hours after the daily reset. The `Retry-After` on those 429s
-#      is not a countdown: probes with no auth, a bogus token and a junk token
-#      all return the same value, and it resolves to end of the UTC day. So it
-#      is a wall-clock boundary, not a promise that a wait will help — that
-#      identity is simply not entitled, so it needs its own key.
+#      Without an OPENCODE_API_KEY secret the runner is signed out, and a
+#      signed-out OpenCode does not expose its own models at all — the
+#      gateway answers 429 "FreeUsageLimitError". The `Retry-After` on those
+#      429s is not a countdown: probes with no auth, a bogus token and a junk
+#      token all return the same value and it resolves to end of the UTC day,
+#      so it is a wall-clock boundary, not a promise that waiting helps.
+#      Since 31 Oct that is the whole story of every scheduled run.
+#    - What actually unblocks a run: an OpenCode API key, which is free to
+#      create at opencode.ai -> Console -> API keys. Sign in with GitHub, make
+#      the key for your Personal workspace, and add it as the repository
+#      secret OPENCODE_API_KEY. The free models (`opencode/*-free`, zero input
+#      price) are then available to the Action, because the Action is OpenCode
+#      itself — no credits and no subscription involved.
 #    - Which secret matches which model prefix:
-#        google/...      -> GEMINI_API_KEY     (Google AI Studio, free tier,
-#                           no card: pick "Create API key", copy the string.
-#                           Free requests are metered per project per day and
-#                           reset at midnight Pacific. `gemini-3.5-flash-lite`
-#                           is the one to use: reasoning, tool calls, 1M
-#                           context, and the largest free daily allowance of
-#                           the Gemini models. Free tier may use your prompts
-#                           to improve Google's products, which is fine for a
-#                           public repo and not fine for anything private.)
-#        opencode/...    -> OPENCODE_API_KEY   (opencode.ai -> Console)
+#        opencode/...    -> OPENCODE_API_KEY   (free account, free models)
 #        openrouter/...  -> OPENROUTER_API_KEY (free :free models allow
 #                           50 requests/day without lifetime credit — a single
-#                           agent session is 100-200 requests, so 50 is not
-#                           enough to finish a batch)
+#                           agent session is 100-200 requests, so 50 does not
+#                           finish a batch)
 #    - The "Check model quota" step probes the chosen model first — with your
 #      key if there is one, anonymously if not — and skips the batch instead of
-#      retrying for half an hour. It understands the opencode gateway and the
-#      Gemini free tier; any other provider is left to the agent.
+#      retrying for half an hour. It understands the opencode gateway; any
+#      other provider is left to the agent.
 #
 #  BRANCH CONVENTION (important):
 #    Every branch either role creates MUST start with `opencode/` and is
@@ -145,9 +141,7 @@ permissions:
 env:
   # Which model the scheduled runs use. Change this one line to switch, or pass
   # the `model` input on a manual run. Nothing else needs editing.
-  #
-  #   free, no card:  google/gemini-3.5-flash-lite   (needs GEMINI_API_KEY)
-  #   current:        opencode/deepseek-v4.1-flash-free (opencode.ai account)
+  #   free models: opencode/deepseek-v4.1-flash-free  (needs OPENCODE_API_KEY)
   DEFAULT_MODEL: opencode/deepseek-v4.1-flash-free
 
 concurrency:
@@ -216,23 +210,19 @@ jobs:
           REQUESTED: ${{ inputs.model }}
           CONFIGURED: ${{ env.DEFAULT_MODEL }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           set -uo pipefail
           chosen="${REQUESTED:-}"
           if [ -z "$chosen" ]; then
             chosen="${CONFIGURED:-}"
-            # The configured model cannot authenticate without its own key.
-            # When Google's key is the one that exists, use the free Gemini
-            # tier rather than running a model that is guaranteed to fail.
-            case "$chosen" in
-              opencode/*)
-                if [ -z "${OPENCODE_API_KEY:-}" ] && [ -n "${GEMINI_API_KEY:-}" ]; then
-                  chosen="google/gemini-3.5-flash-lite"
-                fi
-                ;;
-            esac
           fi
+          case "$chosen" in
+            opencode/*)
+              if [ -z "${OPENCODE_API_KEY:-}" ]; then
+                echo "::warning::No OPENCODE_API_KEY secret. Signed out, OpenCode does not expose its own models at all, so this batch will skip. Create a key at opencode.ai -> Console -> API keys and add it as a repository secret named OPENCODE_API_KEY."
+              fi
+              ;;
+          esac
           echo "model=$chosen" >> "$GITHUB_OUTPUT"
           echo "Model for this batch: $chosen"
 
@@ -243,7 +233,6 @@ jobs:
         id: quota
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           MODEL: ${{ steps.model.outputs.model }}
         run: |
           set -uo pipefail
@@ -274,28 +263,12 @@ jobs:
               echo "quota probe HTTP $code (identity: $ident)"
               grep -i '^retry-after:' /tmp/probe.h 2>/dev/null || true
               if [ "$code" = "429" ]; then
-                skip "$MODEL refused the $ident identity with 429 — skipping this batch instead of retrying for half an hour. $(head -c 200 /tmp/probe.json 2>/dev/null)"
+                if [ "$ident" = "anonymous" ]; then
+                  skip "$MODEL refused the anonymous identity with 429 — signed out there is no opencode allowance at all. Add OPENCODE_API_KEY (opencode.ai -> Console -> API keys) and this batch will run. $(head -c 200 /tmp/probe.json 2>/dev/null)"
+                else
+                  skip "$MODEL refused OPENCODE_API_KEY with 429 — that account's free requests for today are spent. $(head -c 200 /tmp/probe.json 2>/dev/null)"
+                fi
               fi
-              ;;
-            google/*)
-              # The free Gemini tier is metered per project per day and resets
-              # at midnight Pacific, so an exhausted day is worth detecting in
-              # a second rather than 25 minutes of 429 retries.
-              if [ -z "${GEMINI_API_KEY:-}" ]; then
-                skip "google/* needs GEMINI_API_KEY and no such secret is set — skipping this batch."
-                exit 0
-              fi
-              code=$(curl -sS -o /tmp/probe.json -w '%{http_code}' --max-time 30 \
-                -X POST "https://generativelanguage.googleapis.com/v1beta/models/${MODEL#*/}:generateContent?key=$GEMINI_API_KEY" \
-                -H 'Content-Type: application/json' \
-                -d '{"contents":[{"parts":[{"text":"ping"}]}],"generationConfig":{"maxOutputTokens":1}}') || code=000
-              echo "quota probe HTTP $code (google free tier)"
-              case "$code" in
-                200) ;;
-                429) skip "$MODEL has spent the day's free requests — it resets at midnight Pacific. $(head -c 200 /tmp/probe.json 2>/dev/null)" ;;
-                400|401|403|404) skip "$MODEL is not usable with this key (HTTP $code). $(head -c 200 /tmp/probe.json 2>/dev/null)" ;;
-                *) echo "probe returned $code — letting the agent try." ;;
-              esac
               ;;
             *)
               echo "No probe for $MODEL — letting the agent try."
@@ -647,23 +620,19 @@ jobs:
           REQUESTED: ${{ inputs.model }}
           CONFIGURED: ${{ env.DEFAULT_MODEL }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           set -uo pipefail
           chosen="${REQUESTED:-}"
           if [ -z "$chosen" ]; then
             chosen="${CONFIGURED:-}"
-            # The configured model cannot authenticate without its own key.
-            # When Google's key is the one that exists, use the free Gemini
-            # tier rather than running a model that is guaranteed to fail.
-            case "$chosen" in
-              opencode/*)
-                if [ -z "${OPENCODE_API_KEY:-}" ] && [ -n "${GEMINI_API_KEY:-}" ]; then
-                  chosen="google/gemini-3.5-flash-lite"
-                fi
-                ;;
-            esac
           fi
+          case "$chosen" in
+            opencode/*)
+              if [ -z "${OPENCODE_API_KEY:-}" ]; then
+                echo "::warning::No OPENCODE_API_KEY secret. Signed out, OpenCode does not expose its own models at all, so this batch will skip. Create a key at opencode.ai -> Console -> API keys and add it as a repository secret named OPENCODE_API_KEY."
+              fi
+              ;;
+          esac
           echo "model=$chosen" >> "$GITHUB_OUTPUT"
           echo "Model for this batch: $chosen"
 
@@ -671,7 +640,6 @@ jobs:
         id: quota
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           MODEL: ${{ steps.model.outputs.model }}
         run: |
           set -uo pipefail
@@ -702,28 +670,12 @@ jobs:
               echo "quota probe HTTP $code (identity: $ident)"
               grep -i '^retry-after:' /tmp/probe.h 2>/dev/null || true
               if [ "$code" = "429" ]; then
-                skip "$MODEL refused the $ident identity with 429 — skipping this batch instead of retrying for half an hour. $(head -c 200 /tmp/probe.json 2>/dev/null)"
+                if [ "$ident" = "anonymous" ]; then
+                  skip "$MODEL refused the anonymous identity with 429 — signed out there is no opencode allowance at all. Add OPENCODE_API_KEY (opencode.ai -> Console -> API keys) and this batch will run. $(head -c 200 /tmp/probe.json 2>/dev/null)"
+                else
+                  skip "$MODEL refused OPENCODE_API_KEY with 429 — that account's free requests for today are spent. $(head -c 200 /tmp/probe.json 2>/dev/null)"
+                fi
               fi
-              ;;
-            google/*)
-              # The free Gemini tier is metered per project per day and resets
-              # at midnight Pacific, so an exhausted day is worth detecting in
-              # a second rather than 25 minutes of 429 retries.
-              if [ -z "${GEMINI_API_KEY:-}" ]; then
-                skip "google/* needs GEMINI_API_KEY and no such secret is set — skipping this batch."
-                exit 0
-              fi
-              code=$(curl -sS -o /tmp/probe.json -w '%{http_code}' --max-time 30 \
-                -X POST "https://generativelanguage.googleapis.com/v1beta/models/${MODEL#*/}:generateContent?key=$GEMINI_API_KEY" \
-                -H 'Content-Type: application/json' \
-                -d '{"contents":[{"parts":[{"text":"ping"}]}],"generationConfig":{"maxOutputTokens":1}}') || code=000
-              echo "quota probe HTTP $code (google free tier)"
-              case "$code" in
-                200) ;;
-                429) skip "$MODEL has spent the day's free requests — it resets at midnight Pacific. $(head -c 200 /tmp/probe.json 2>/dev/null)" ;;
-                400|401|403|404) skip "$MODEL is not usable with this key (HTTP $code). $(head -c 200 /tmp/probe.json 2>/dev/null)" ;;
-                *) echo "probe returned $code — letting the agent try." ;;
-              esac
               ;;
             *)
               echo "No probe for $MODEL — letting the agent try."
