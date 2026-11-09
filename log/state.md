@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **be
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: building` leaves it alone.
 
 ```
-status: idle
-role: -
-run: -
-item: -
-branch: -
-phase: -
-updated: 9 Nov 2026, 14:19 UTC
-next: P04-4
-notes: -
+status: reviewing
+role: reviewer
+run: 42631910817
+item: P04-1
+branch: opencode/review-42631910817-p04-1
+phase: checking
+updated: 9 Nov 2026, 14:20 UTC
+next: run lint/typecheck/build/prisma checks for P04-1, inspect diff, write verdict
+notes: batch of up to 3 reviews; oldest first P04-1, then P04-2, P04-3
 ```
 
 **Fields**
