@@ -5,14 +5,14 @@ The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **be
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: building` leaves it alone.
 
 ```
-status: idle
-role: -
-run: -
-item: -
-branch: -
-phase: -
-updated: 31 Oct 2026, 19:44 UTC
-next: P04-3
+status: building
+role: builder
+run: 42631910817
+item: P04-3
+branch: opencode/todo-42631910817-crm
+phase: implementing
+updated: 9 Nov 2026, 14:12 UTC
+next: Build CRM surfaces (leads list, pipeline board, customers list, customer detail)
 notes: -
 ```
 
