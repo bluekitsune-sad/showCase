@@ -10,10 +10,10 @@ role: builder
 run: 42631910817
 item: P04-3
 branch: opencode/todo-42631910817-crm
-phase: handoff-committed
-updated: 9 Nov 2026, 14:18 UTC
-next: Land the P04-3 branch on work
-notes: Built and verified; awaiting landing
+phase: landing
+updated: 9 Nov 2026, 14:20 UTC
+next: Merge the P04-3 branch into work
+notes: Merge in progress; handoff commit 3628717
 ```
 
 **Fields**
