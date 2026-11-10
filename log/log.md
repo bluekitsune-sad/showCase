@@ -63,3 +63,9 @@ _No sessions logged yet._
 - Removed the Google route on the owner's decision. Scheduled runs are opencode-only again: the chooser no longer falls back to a Gemini model, and the probe speaks only to the opencode gateway.
 - What unblocks a run, per the OpenCode docs: signed out, the `opencode` provider is not exposed at all, so an anonymous runner can never reach those models. An API key from opencode.ai -> Console -> API keys, added as `OPENCODE_API_KEY`, restores them, and the free `opencode/*-free` models cost nothing per token.
 - Review queue is still 2 entries: P04-1 (3130235) and P04-2 (ae7ba8e), both `Review: needed`. Next unchecked item: P04-3.
+
+## 10 November 2026, 01:02 UTC · reviewer · run 42729354012
+- Reviewed: P04-3 approved (attempt 1).
+- Re-ran: `npm install`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build`; production smoke on :3510 — unauth /leads 307 → /login, owner CRM pages 200, staff CRM pages scoped.
+- Cleared a stale P04-2 checkpoint (item already approved, branch gone).
+- Landed verdict on work. Review queue empty. Next unchecked item: P04-4.
