@@ -69,3 +69,7 @@ _No sessions logged yet._
 - Re-ran: `npm install`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build`; production smoke on :3510 — unauth /leads 307 → /login, owner CRM pages 200, staff CRM pages scoped.
 - Cleared a stale P04-2 checkpoint (item already approved, branch gone).
 - Landed verdict on work. Review queue empty. Next unchecked item: P04-4.
+
+## 10 November 2026, 13:43 UTC · reviewer · run 42823181119
+- Reviewed: none — REVIEW.md has no entry marked `Review: needed` (P04-1, P04-2, P04-3 all approved). Nothing changed.
+- Next unchecked item: P04-4.
