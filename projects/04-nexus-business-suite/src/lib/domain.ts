@@ -67,11 +67,30 @@ export type TaskPriority = (typeof TASK_PRIORITIES)[number];
 export const EMPLOYEE_STATUSES = ["active", "on_leave", "ended"] as const;
 export type EmployeeStatus = (typeof EMPLOYEE_STATUSES)[number];
 
+export const EMPLOYEE_STATUS_LABELS: Record<EmployeeStatus, string> = {
+  active: "Active",
+  on_leave: "On leave",
+  ended: "Ended",
+};
+
 export const LEAVE_STATUSES = ["pending", "approved", "rejected"] as const;
 export type LeaveStatus = (typeof LEAVE_STATUSES)[number];
 
+export const LEAVE_STATUS_LABELS: Record<LeaveStatus, string> = {
+  pending: "Pending",
+  approved: "Approved",
+  rejected: "Rejected",
+};
+
 export const LEAVE_TYPES = ["annual", "sick", "personal", "unpaid"] as const;
 export type LeaveType = (typeof LEAVE_TYPES)[number];
+
+export const LEAVE_TYPE_LABELS: Record<LeaveType, string> = {
+  annual: "Annual leave",
+  sick: "Sick leave",
+  personal: "Personal",
+  unpaid: "Unpaid",
+};
 
 export const ATTENDANCE_STATUSES = [
   "present",
@@ -81,6 +100,14 @@ export const ATTENDANCE_STATUSES = [
   "holiday",
 ] as const;
 export type AttendanceStatus = (typeof ATTENDANCE_STATUSES)[number];
+
+export const ATTENDANCE_STATUS_LABELS: Record<AttendanceStatus, string> = {
+  present: "Present",
+  remote: "Remote",
+  absent: "Absent",
+  leave: "Leave",
+  holiday: "Holiday",
+};
 
 export const CUSTOMER_STATUSES = ["active", "at_risk", "churned"] as const;
 export type CustomerStatus = (typeof CUSTOMER_STATUSES)[number];
@@ -110,6 +137,24 @@ export const APPLICANT_STAGES = [
 ] as const;
 export type ApplicantStage = (typeof APPLICANT_STAGES)[number];
 
+export const APPLICANT_STAGE_LABELS: Record<ApplicantStage, string> = {
+  applied: "Applied",
+  screening: "Screening",
+  interview: "Interview",
+  offer: "Offer",
+  hired: "Hired",
+  rejected: "Rejected",
+};
+
+export const JOB_OPENING_STATUSES = ["open", "on_hold", "closed"] as const;
+export type JobOpeningStatus = (typeof JOB_OPENING_STATUSES)[number];
+
+export const JOB_OPENING_STATUS_LABELS: Record<JobOpeningStatus, string> = {
+  open: "Open",
+  on_hold: "On hold",
+  closed: "Closed",
+};
+
 export function isRole(value: string): value is Role {
   return (ROLES as readonly string[]).includes(value);
 }
@@ -128,4 +173,28 @@ export function isCustomerStatus(value: string): value is CustomerStatus {
 
 export function isTaskStatus(value: string): value is TaskStatus {
   return (TASK_STATUSES as readonly string[]).includes(value);
+}
+
+export function isEmployeeStatus(value: string): value is EmployeeStatus {
+  return (EMPLOYEE_STATUSES as readonly string[]).includes(value);
+}
+
+export function isLeaveStatus(value: string): value is LeaveStatus {
+  return (LEAVE_STATUSES as readonly string[]).includes(value);
+}
+
+export function isLeaveType(value: string): value is LeaveType {
+  return (LEAVE_TYPES as readonly string[]).includes(value);
+}
+
+export function isAttendanceStatus(value: string): value is AttendanceStatus {
+  return (ATTENDANCE_STATUSES as readonly string[]).includes(value);
+}
+
+export function isApplicantStage(value: string): value is ApplicantStage {
+  return (APPLICANT_STAGES as readonly string[]).includes(value);
+}
+
+export function isJobOpeningStatus(value: string): value is JobOpeningStatus {
+  return (JOB_OPENING_STATUSES as readonly string[]).includes(value);
 }

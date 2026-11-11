@@ -26,10 +26,10 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: "People",
     items: [
-      { label: "Employees", href: "/employees", planned: true },
-      { label: "Attendance", href: "/attendance", planned: true },
-      { label: "Leave", href: "/leave", planned: true },
-      { label: "Recruitment", href: "/recruitment", planned: true },
+      { label: "Employees", href: "/employees" },
+      { label: "Attendance", href: "/attendance" },
+      { label: "Leave", href: "/leave" },
+      { label: "Recruitment", href: "/recruitment" },
     ],
   },
   {
