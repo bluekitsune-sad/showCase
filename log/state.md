@@ -10,9 +10,9 @@ role: builder
 run: 43119149482
 item: P04-4
 branch: opencode/todo-43119149482-p04-4
-phase: committed
+phase: handoff-committed
 updated: 11 Nov 2026, 23:22 UTC
-next: commit handoff, tick P04-4, request review
+next: merge task branch into work and push
 notes: -
 ```
 

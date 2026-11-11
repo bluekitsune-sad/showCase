@@ -62,3 +62,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** 10 Nov 2026
 - **Verdict notes:** Re-ran `npm install`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in the project — all pass (Next.js 16.4.3, all CRM routes built). Read `leads/actions.ts`, `customers/actions.ts`, both list pages, the pipeline board, the customer detail page, `permissions.ts` and `session.ts`. Department scoping runs in the query layer (`ownerDepartmentFilter` for leads/pipeline, a sourceLead→owner department filter for customers); each mutation calls `requireUser`, `can`, then `canAccessDepartment`, and writes its `ActivityLog` row in the same `$transaction`. Cross-department customer detail returns `notFound()`. Empty, loading and error states are present. Runtime smoke on `npm run start` (:3510): unauthenticated `/leads` → 307 to `/login`; owner session → 200 on `/leads`, `/pipeline`, `/customers`, `/customers/1`; Sales staff session → 200 on the CRM pages rendering "Own department" scoping. Money stays in integer minor units, no secrets or real data, no `.github` changes, nothing touched outside the project. README has no agent/automation references. Approved; no findings.
+
+### P04-4 · round 1 — Build the HR surface
+
+- **Built:** 11 Nov 2026, 23:28 UTC
+- **Commit:** `bd3f861` — P04-4: add HR surfaces
+- **Scope:** Employee directory with search and department filter; attendance log with date view and self check-in/out; leave requests with submit form and approve/reject decisions; recruitment pipeline columns by applicant stage; department scoping and activity log entries on every mutation; People nav enabled
+- **Checked by builder:** `npm run typecheck`, `npm run lint`, `npm run build`
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
