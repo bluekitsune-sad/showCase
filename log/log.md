@@ -81,3 +81,9 @@ _No sessions logged yet._
 ## 11 November 2026, 12:55 UTC · reviewer · run 43020806853
 - Reviewed: none — REVIEW.md has no entry marked `Review: needed` (P04-1, P04-2, P04-3 all approved). No checks run, nothing changed.
 - Next unchecked item: P04-4.
+
+## 11 November 2026, 23:28 UTC · builder · run 43119149482
+- Batch: 1 item (limit 1)
+- P04-4 built, commit bd3f861, handed to review (cb2a822)
+- Added employee directory, attendance check-in/out, leave request/decision, recruitment pipeline; typecheck, lint and build pass
+- Landed on work. Next unchecked item: P04-5.
