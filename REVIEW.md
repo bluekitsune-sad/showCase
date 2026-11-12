@@ -84,3 +84,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** —
 - **Verdict notes:** —
+
+### P04-6a · round 1 — Dashboard attendance rate and trend charts
+
+- **Built:** 12 Nov 2026, 22:40 UTC
+- **Commit:** `6eb5880` — P04-6a: add dashboard attendance rate and trend charts
+- **Scope:** Attendance rate KPI from the latest recorded day with present/total hint; pipeline-created six-month and 14-day attendance-rate bar charts built from department-scoped data; shared accessible TrendBars component with empty states and a compact money formatter
+- **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser runtime smoke was run in this environment
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —

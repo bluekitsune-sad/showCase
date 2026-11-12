@@ -10,10 +10,10 @@ role: builder
 run: 43321608363
 item: P04-6a
 branch: opencode/todo-43321608363-nexus-dashboard
-phase: implementing
-updated: 12 Nov 2026, 14:05 UTC
-next: add attendance rate and pipeline/attendance trend charts to the dashboard
-notes: P04-6 split into P04-6a-d; starting with the dashboard trends
+phase: handoff-committed
+updated: 12 Nov 2026, 22:40 UTC
+next: land the task branch on work
+notes: P04-6 split into P04-6a-d; P04-6a built and handed to review
 ```
 
 **Fields**
