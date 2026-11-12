@@ -10,9 +10,9 @@ role: builder
 run: 43228578675
 item: P04-5
 branch: opencode/todo-43228578675-p04-5
-phase: committed
+phase: handoff-committed
 updated: 12 Nov 2026, 13:39 UTC
-next: tick P04-5, append the review entry and hand off
+next: land the branch on work, then write the session update
 notes: lint, typecheck, build and prisma validate pass; owner pages smoke-tested on a seeded db
 ```
 

@@ -37,7 +37,7 @@ Only the builder writes `— review needed`. Only the reviewer writes `— revie
 - [x] `P04-2` Add authentication and department-scoped RBAC (owner, admin, manager, staff) with demo accounts, a permission helper used server-side, and a short note in the README explaining the role matrix. — reviewed 2026-11-09
 - [x] `P04-3` Build the CRM surface: leads and customer lists with search and filters, lead pipeline board by stage, customer detail page with contacts, notes and activity timeline. — reviewed 2026-11-10
 - [x] `P04-4` Build the HR surface: employee directory, attendance log with check-in/out, leave requests with approve/reject, and recruitment pipeline columns. — review needed
-- [ ] `P04-5` Build tasks and projects: project list, task board with assignee and due date, notifications feed, and an append-only activity log written on every mutation.
+- [x] `P04-5` Build tasks and projects: project list, task board with assignee and due date, notifications feed, and an append-only activity log written on every mutation. — review needed
 - [ ] `P04-6` Build the executive dashboard (revenue pipeline, headcount, attendance rate, open tasks, trend charts), a reports page with CSV export, audit trail viewer, plus responsive and accessibility pass; update the project README case study.
 
 ### 01 · Maison Store — `projects/01-maison-store`

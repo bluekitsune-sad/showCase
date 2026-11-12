@@ -73,3 +73,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** —
 - **Verdict notes:** —
+
+### P04-5 · round 1 — Build tasks and projects
+
+- **Built:** 12 Nov 2026, 13:39 UTC
+- **Commit:** `39f8234` — P04-5: add projects, task board and notifications
+- **Scope:** Project list with search/status filters, task progress and audited create/status changes; task board by status with assignee, due date and overdue markers; task create/update writing activity log entries and assignment notifications; personal notifications feed with unread state and mark-all-read; server-side task scoping (staff own, managers department); Work nav enabled
+- **Checked by builder:** `npm run typecheck`, `npm run lint`, `npm run build`, `npx prisma validate`; `npm run db:setup` then production-server smoke test — `/dashboard`, `/tasks`, `/projects`, `/notifications`, `/pipeline` all return 200 for an owner session
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
