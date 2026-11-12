@@ -87,3 +87,9 @@ _No sessions logged yet._
 - P04-4 built, commit bd3f861, handed to review (cb2a822)
 - Added employee directory, attendance check-in/out, leave request/decision, recruitment pipeline; typecheck, lint and build pass
 - Landed on work. Next unchecked item: P04-5.
+
+## 12 November 2026, 13:39 UTC · builder · run 43228578675
+- Batch: 1 item (limit 1)
+- P04-5 built, commit 39f8234, handed to review (f03115f)
+- Added projects list, task board with assignee/due dates, notifications feed, and activity log plus notifications on task/project mutations; typecheck, lint, build and prisma validate pass; owner pages smoke-tested on a seeded database
+- Landed on work. Next unchecked item: P04-6.
