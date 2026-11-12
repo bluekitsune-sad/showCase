@@ -1,7 +1,12 @@
-import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { TrendBars } from "@/components/dashboard/trend-bars";
 import { LEAD_STAGE_LABELS, type LeadStage } from "@/lib/domain";
-import { formatDateUtc, formatMoney } from "@/lib/format";
+import {
+  formatDateUtc,
+  formatMoney,
+  formatMoneyCompact,
+  formatPercent,
+} from "@/lib/format";
 import {
   can,
   departmentFilter,
@@ -15,54 +20,104 @@ import { requireUser } from "@/lib/session";
 export const dynamic = "force-dynamic";
 
 type StageCount = { stage: string; count: number; totalMinor: number };
+type TrendPoint = { label: string; value: number; display: string };
+
+const MONTH_LABEL = new Intl.DateTimeFormat("en-GB", {
+  month: "short",
+  timeZone: "UTC",
+});
+const DAY_LABEL = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "short",
+  timeZone: "UTC",
+});
+
+function startOfUtcDay(date: Date): Date {
+  const d = new Date(date);
+  d.setUTCHours(0, 0, 0, 0);
+  return d;
+}
+
+function daysAgoUtc(days: number): Date {
+  const d = startOfUtcDay(new Date());
+  d.setUTCDate(d.getUTCDate() - days);
+  return d;
+}
+
+function monthKey(date: Date): string {
+  return `${date.getUTCFullYear()}-${date.getUTCMonth()}`;
+}
+
+function lastMonthsUtc(count: number): Date[] {
+  const now = new Date();
+  const months: Date[] = [];
+  for (let offset = count - 1; offset >= 0; offset -= 1) {
+    months.push(
+      new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - offset, 1)),
+    );
+  }
+  return months;
+}
 
 async function getOverview(actor: Actor) {
   const scoped = scopeFor(actor) !== "all";
-  const [leadStageRows, customers, employees, openTasks, overdueTasks, todayAttendance, recentActivity] =
-    await Promise.all([
-      prisma.lead.groupBy({
-        by: ["stage"],
-        _count: { _all: true },
-        _sum: { valueMinor: true },
-        where: ownerDepartmentFilter(actor),
-      }),
-      prisma.customer.count({
-        where: {
-          status: "active",
-          ...(scoped ? { sourceLead: ownerDepartmentFilter(actor) } : {}),
-        },
-      }),
-      prisma.employee.count({
-        where: { status: "active", ...departmentFilter(actor) },
-      }),
-      prisma.task.count({
-        where: {
-          status: { in: ["todo", "in_progress", "blocked"] },
-          ...(scoped ? { assignee: departmentFilter(actor) } : {}),
-        },
-      }),
-      prisma.task.count({
-        where: {
-          status: { in: ["todo", "in_progress", "blocked"] },
-          dueDate: { lt: new Date() },
-          ...(scoped ? { assignee: departmentFilter(actor) } : {}),
-        },
-      }),
-      prisma.attendance.count({
-        where: {
-          date: { gte: startOfTodayUtc() },
-          status: { in: ["present", "remote"] },
-          employee: departmentFilter(actor),
-        },
-      }),
-      scoped
-        ? Promise.resolve([])
-        : prisma.activityLog.findMany({
-            orderBy: { createdAt: "desc" },
-            take: 8,
-            include: { actor: { select: { name: true } } },
-          }),
-    ]);
+  const [
+    leadStageRows,
+    leadTrendRows,
+    attendanceRows,
+    customers,
+    employees,
+    openTasks,
+    overdueTasks,
+    recentActivity,
+  ] = await Promise.all([
+    prisma.lead.groupBy({
+      by: ["stage"],
+      _count: { _all: true },
+      _sum: { valueMinor: true },
+      where: ownerDepartmentFilter(actor),
+    }),
+    prisma.lead.findMany({
+      where: ownerDepartmentFilter(actor),
+      select: { createdAt: true, valueMinor: true, stage: true },
+    }),
+    prisma.attendance.findMany({
+      where: {
+        date: { gte: daysAgoUtc(13) },
+        employee: departmentFilter(actor),
+      },
+      select: { date: true, status: true },
+    }),
+    prisma.customer.count({
+      where: {
+        status: "active",
+        ...(scoped ? { sourceLead: ownerDepartmentFilter(actor) } : {}),
+      },
+    }),
+    prisma.employee.count({
+      where: { status: "active", ...departmentFilter(actor) },
+    }),
+    prisma.task.count({
+      where: {
+        status: { in: ["todo", "in_progress", "blocked"] },
+        ...(scoped ? { assignee: departmentFilter(actor) } : {}),
+      },
+    }),
+    prisma.task.count({
+      where: {
+        status: { in: ["todo", "in_progress", "blocked"] },
+        dueDate: { lt: new Date() },
+        ...(scoped ? { assignee: departmentFilter(actor) } : {}),
+      },
+    }),
+    scoped
+      ? Promise.resolve([])
+      : prisma.activityLog.findMany({
+          orderBy: { createdAt: "desc" },
+          take: 8,
+          include: { actor: { select: { name: true } } },
+        }),
+  ]);
 
   const stageCounts: StageCount[] = leadStageRows.map((row) => ({
     stage: row.stage,
@@ -77,6 +132,52 @@ async function getOverview(actor: Actor) {
     .filter((s) => !["won", "lost"].includes(s.stage))
     .reduce((sum, s) => sum + s.count, 0);
 
+  const pipelineByMonth = new Map<string, number>();
+  for (const lead of leadTrendRows) {
+    if (lead.stage === "lost") continue;
+    const key = monthKey(lead.createdAt);
+    pipelineByMonth.set(key, (pipelineByMonth.get(key) ?? 0) + lead.valueMinor);
+  }
+  const pipelineTrend: TrendPoint[] = lastMonthsUtc(6).map((month) => {
+    const value = pipelineByMonth.get(monthKey(month)) ?? 0;
+    return {
+      label: MONTH_LABEL.format(month),
+      value,
+      display: formatMoneyCompact(value),
+    };
+  });
+
+  const attendanceByDay = new Map<
+    string,
+    { date: Date; present: number; total: number }
+  >();
+  for (const row of attendanceRows) {
+    const key = row.date.toISOString().slice(0, 10);
+    const entry = attendanceByDay.get(key) ?? {
+      date: row.date,
+      present: 0,
+      total: 0,
+    };
+    entry.total += 1;
+    if (row.status === "present" || row.status === "remote") entry.present += 1;
+    attendanceByDay.set(key, entry);
+  }
+  const attendanceDays = [...attendanceByDay.values()].sort(
+    (a, b) => a.date.getTime() - b.date.getTime(),
+  );
+  const attendanceTrend: TrendPoint[] = attendanceDays.map((entry) => {
+    const rate = entry.total > 0 ? entry.present / entry.total : 0;
+    return {
+      label: DAY_LABEL.format(entry.date),
+      value: rate,
+      display: formatPercent(rate),
+    };
+  });
+  const latestAttendance =
+    attendanceDays.length > 0
+      ? attendanceDays[attendanceDays.length - 1]
+      : null;
+
   return {
     stageCounts,
     pipelineMinor,
@@ -85,16 +186,16 @@ async function getOverview(actor: Actor) {
     employees,
     openTasks,
     overdueTasks,
-    todayAttendance,
     recentActivity,
     activityAllowed: can(actor, "activity.read"),
+    pipelineTrend,
+    attendanceTrend,
+    attendanceRate:
+      latestAttendance && latestAttendance.total > 0
+        ? latestAttendance.present / latestAttendance.total
+        : null,
+    attendanceSummary: latestAttendance,
   };
-}
-
-function startOfTodayUtc(): Date {
-  const d = new Date();
-  d.setUTCHours(0, 0, 0, 0);
-  return d;
 }
 
 const STAGE_ORDER: LeadStage[] = [
@@ -151,7 +252,7 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <StatCard
           label="Open pipeline"
           value={formatMoney(data.pipelineMinor)}
@@ -168,6 +269,22 @@ export default async function DashboardPage() {
           hint={scoped ? "In your department" : "Active employees"}
         />
         <StatCard
+          label="Attendance rate"
+          value={
+            data.attendanceRate == null ? "—" : formatPercent(data.attendanceRate)
+          }
+          hint={
+            data.attendanceSummary
+              ? `${data.attendanceSummary.present} of ${data.attendanceSummary.total} in on ${formatDateUtc(data.attendanceSummary.date)}`
+              : "No records in the last 14 days"
+          }
+          tone={
+            data.attendanceRate != null && data.attendanceRate < 0.8
+              ? "danger"
+              : "default"
+          }
+        />
+        <StatCard
           label="Open tasks"
           value={String(data.openTasks)}
           hint={
@@ -177,6 +294,33 @@ export default async function DashboardPage() {
           }
           tone={data.overdueTasks > 0 ? "danger" : "default"}
         />
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
+        <div className="lg:col-span-3">
+          <TrendBars
+            title="Pipeline created"
+            caption="Open and won value · last 6 months"
+            points={data.pipelineTrend}
+            emptyMessage={
+              scoped
+                ? "No pipeline created by your department in the last six months."
+                : "No pipeline created in the last six months."
+            }
+            ariaLabel="Bar chart of pipeline value created each month for the last six months"
+          />
+        </div>
+        <div className="lg:col-span-2">
+          <TrendBars
+            title="Attendance rate"
+            caption="Last 14 days"
+            points={data.attendanceTrend}
+            emptyMessage="No attendance records in the last 14 days."
+            ariaLabel="Bar chart of the daily attendance rate for the last 14 days"
+            tone="success"
+            maxValue={1}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
@@ -217,42 +361,32 @@ export default async function DashboardPage() {
         </section>
 
         <section className="rounded-lg border border-line bg-surface p-4 lg:col-span-2">
-          <h2 className="text-sm font-semibold text-ink">Attendance today</h2>
-          <p className="mt-2 text-2xl font-semibold tabular-nums text-ink">
-            {data.todayAttendance}
-            <span className="ml-1 text-sm font-normal text-ink-muted">
-              {scoped ? "in your department checked in" : "checked in"}
-            </span>
-          </p>
-          <div className="mt-4 border-t border-line pt-4">
-            <h2 className="text-sm font-semibold text-ink">Recent activity</h2>
-            {!data.activityAllowed ? (
-              <p className="mt-2 text-sm text-ink-muted">
-                The full activity log is limited to owners and admins.
-              </p>
-            ) : data.recentActivity.length === 0 ? (
-              <p className="mt-2 text-sm text-ink-muted">
-                Nothing logged yet. Mutations will appear here.
-              </p>
-            ) : (
-              <ul className="mt-2 space-y-2">
-                {data.recentActivity.map((entry) => (
-                  <li key={entry.id} className="flex items-baseline justify-between gap-2 text-sm">
-                    <span className="truncate text-ink-muted">{entry.summary}</span>
-                    <span className="shrink-0 text-xs text-ink-subtle">
-                      {entry.actor?.name ?? "System"}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <p className="mt-4 text-xs">
-            <Link href="/activity" className="text-accent underline-offset-2 hover:underline">
-              View full activity log
-            </Link>{" "}
-            <span className="text-ink-subtle">(arrives with the work module)</span>
-          </p>
+          <h2 className="text-sm font-semibold text-ink">Recent activity</h2>
+          {!data.activityAllowed ? (
+            <p className="mt-2 text-sm text-ink-muted">
+              The full activity log is limited to owners and admins.
+            </p>
+          ) : data.recentActivity.length === 0 ? (
+            <p className="mt-2 text-sm text-ink-muted">
+              Nothing logged yet. Mutations will appear here.
+            </p>
+          ) : (
+            <ul className="mt-2 space-y-2">
+              {data.recentActivity.map((entry) => (
+                <li key={entry.id} className="flex items-baseline justify-between gap-2 text-sm">
+                  <span className="truncate text-ink-muted">{entry.summary}</span>
+                  <span className="shrink-0 text-xs text-ink-subtle">
+                    {entry.actor?.name ?? "System"}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+          {data.activityAllowed && (
+            <p className="mt-4 text-xs text-ink-subtle">
+              Showing the 8 most recent entries.
+            </p>
+          )}
         </section>
       </div>
     </div>

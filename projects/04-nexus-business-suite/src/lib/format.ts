@@ -28,6 +28,19 @@ export function formatDateTimeUtc(date: Date, locale = "en-US"): string {
   }).format(date);
 }
 
+export function formatMoneyCompact(
+  minor: number,
+  currency = "USD",
+  locale = "en-US",
+): string {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency,
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(minor / 100);
+}
+
 export function formatPercent(value: number, locale = "en-US"): string {
   return new Intl.NumberFormat(locale, {
     style: "percent",
