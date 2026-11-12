@@ -93,3 +93,9 @@ _No sessions logged yet._
 - P04-5 built, commit 39f8234, handed to review (f03115f)
 - Added projects list, task board with assignee/due dates, notifications feed, and activity log plus notifications on task/project mutations; typecheck, lint, build and prisma validate pass; owner pages smoke-tested on a seeded database
 - Landed on work. Next unchecked item: P04-6.
+
+## 12 November 2026, 13:42 UTC · reviewer · run 43228578675
+- Reviewed: P04-4 approved (commit bd3f861)
+- Re-ran: npm ci, npm run db:setup, npm run lint, npm run typecheck, npm run build — all pass
+- Runtime smoke on :3520: owner 200 on all four HR routes; anonymous /leave 307 to login; staff saw only their own leave with the own-records label; staff /recruitment access-denied
+- Landed verdict on work. Next review: P04-5.

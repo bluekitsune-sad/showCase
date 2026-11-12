@@ -69,10 +69,10 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `bd3f861` — P04-4: add HR surfaces
 - **Scope:** Employee directory with search and department filter; attendance log with date view and self check-in/out; leave requests with submit form and approve/reject decisions; recruitment pipeline columns by applicant stage; department scoping and activity log entries on every mutation; People nav enabled
 - **Checked by builder:** `npm run typecheck`, `npm run lint`, `npm run build`
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 12 Nov 2026
+- **Verdict notes:** Re-ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/04-nexus-business-suite` — all pass; the build emits `/employees`, `/attendance`, `/leave` and `/recruitment` as dynamic routes. Read both action files, all four pages, `badges.tsx`, the `domain.ts`/`nav.ts` diffs, `permissions.ts` and the Prisma models. Auth and role checks run server-side on every page and mutation: `requireUser` gates each route, `can()` gates read/mutate, `departmentFilter` scopes the employee and recruitment queries, attendance uses owner/admin = all, manager = own department, staff = own record, and leave adds `canAccessDepartment` to the approve/reject action on top of the role check. Check-in/out is per-employee against the `@@unique([employeeId, date])` row and both mutations write their `ActivityLog` entries in the same transaction; leave request and decision do the same. Every page has an empty state, the shared `(app)/loading.tsx` and `(app)/error.tsx` cover loading/error, and forms have real labels and table headers. Runtime smoke on `npm run start` (:3520): unauthenticated `/leave` → 307 to `/login`; owner session → 200 on all four HR routes; Sales staff (id 8) `/leave` rendered only their own record with the "Own records" scope label and no other employee names; People staff (id 16) likewise saw only their own leave; staff `/recruitment` rendered the access-denied view. No secrets, no real data, no `.github` changes, nothing touched outside the project. README voice is clean. Approved, no blocking findings. Two non-blocking notes for later polish: the input regex accepts impossible calendar dates (e.g. `2026-02-31` rolls over rather than being rejected), and the sidebar shows the Recruitment link to staff who then hit the access-denied page.
 
 ### P04-5 · round 1 — Build tasks and projects
 
