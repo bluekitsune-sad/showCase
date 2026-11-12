@@ -99,3 +99,10 @@ _No sessions logged yet._
 - Re-ran: npm ci, npm run db:setup, npm run lint, npm run typecheck, npm run build — all pass
 - Runtime smoke on :3520: owner 200 on all four HR routes; anonymous /leave 307 to login; staff saw only their own leave with the own-records label; staff /recruitment access-denied
 - Landed verdict on work. Next review: P04-5.
+
+## 12 November 2026, 22:41 UTC · builder · run 43321608363
+- Batch: 1 item (limit 1)
+- Split P04-6 into P04-6a-d: dashboard trends, reports + CSV, audit viewer, responsive/README pass
+- P04-6a built, commit 6eb5880, handed to review (070851d)
+- Added attendance-rate KPI, six-month pipeline-created chart and 14-day attendance-rate chart from department-scoped data; `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck` and `npm run build` pass; no browser runtime smoke
+- Landed on work. Next unchecked item: P04-6b.

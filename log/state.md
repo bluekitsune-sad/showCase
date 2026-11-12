@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **be
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: building` leaves it alone.
 
 ```
-status: building
-role: builder
+status: idle
+role: -
 run: 43321608363
-item: P04-6a
-branch: opencode/todo-43321608363-nexus-dashboard
-phase: handoff-committed
-updated: 12 Nov 2026, 22:40 UTC
-next: land the task branch on work
-notes: P04-6 split into P04-6a-d; P04-6a built and handed to review
+item: -
+branch: -
+phase: -
+updated: 12 Nov 2026, 22:41 UTC
+next: P04-6b (next unchecked item)
+notes: P04-6a landed and waiting in the review queue; P04-5 still waiting
 ```
 
 **Fields**
