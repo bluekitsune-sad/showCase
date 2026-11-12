@@ -10,10 +10,10 @@ role: builder
 run: 43228578675
 item: P04-5
 branch: opencode/todo-43228578675-p04-5
-phase: implementing
-updated: 12 Nov 2026, 13:35 UTC
-next: add work lib, task/project actions, pages and notifications
-notes: -
+phase: committed
+updated: 12 Nov 2026, 13:39 UTC
+next: tick P04-5, append the review entry and hand off
+notes: lint, typecheck, build and prisma validate pass; owner pages smoke-tested on a seeded db
 ```
 
 **Fields**

@@ -64,6 +64,13 @@ export const TASK_STATUS_LABELS: Record<TaskStatus, string> = {
 export const TASK_PRIORITIES = ["low", "medium", "high", "urgent"] as const;
 export type TaskPriority = (typeof TASK_PRIORITIES)[number];
 
+export const TASK_PRIORITY_LABELS: Record<TaskPriority, string> = {
+  low: "Low",
+  medium: "Medium",
+  high: "High",
+  urgent: "Urgent",
+};
+
 export const EMPLOYEE_STATUSES = ["active", "on_leave", "ended"] as const;
 export type EmployeeStatus = (typeof EMPLOYEE_STATUSES)[number];
 
@@ -127,6 +134,14 @@ export const PROJECT_STATUSES = [
 ] as const;
 export type ProjectStatus = (typeof PROJECT_STATUSES)[number];
 
+export const PROJECT_STATUS_LABELS: Record<ProjectStatus, string> = {
+  planning: "Planning",
+  active: "Active",
+  on_hold: "On hold",
+  completed: "Completed",
+  archived: "Archived",
+};
+
 export const APPLICANT_STAGES = [
   "applied",
   "screening",
@@ -173,6 +188,14 @@ export function isCustomerStatus(value: string): value is CustomerStatus {
 
 export function isTaskStatus(value: string): value is TaskStatus {
   return (TASK_STATUSES as readonly string[]).includes(value);
+}
+
+export function isTaskPriority(value: string): value is TaskPriority {
+  return (TASK_PRIORITIES as readonly string[]).includes(value);
+}
+
+export function isProjectStatus(value: string): value is ProjectStatus {
+  return (PROJECT_STATUSES as readonly string[]).includes(value);
 }
 
 export function isEmployeeStatus(value: string): value is EmployeeStatus {

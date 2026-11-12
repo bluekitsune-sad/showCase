@@ -35,8 +35,9 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: "Work",
     items: [
-      { label: "Projects", href: "/projects", planned: true },
-      { label: "Tasks", href: "/tasks", planned: true },
+      { label: "Projects", href: "/projects" },
+      { label: "Tasks", href: "/tasks" },
+      { label: "Notifications", href: "/notifications" },
     ],
   },
   {
