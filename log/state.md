@@ -10,10 +10,10 @@ role: builder
 run: 43428980485
 item: P04-6b
 branch: opencode/todo-43428980485-p04-6b
-phase: implementing
+phase: committed
 updated: 13 Nov 2026, 12:56 UTC
 next: run lint, typecheck and build, then hand off
-notes: reports page, CSV export and nav entry written
+notes: reports page, CSV export and nav entry written; lint, typecheck, build and runtime query smoke pass
 ```
 
 **Fields**
