@@ -113,3 +113,10 @@ _No sessions logged yet._
 - Added `/reports` with server-side `report.view` gate, UTC date ranges, department-scoped pipeline/headcount/attendance/task tables and empty states; `/reports/export` re-checks permission and returns CSV for each report; Reports nav entry enabled
 - Ran `npm ci`, `npm run db:generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; runtime query smoke showed owner and manager totals differ as expected; no browser session smoke
 - Landed on work. Next unchecked item: P04-6c.
+
+## 13 November 2026, 13:04 UTC · reviewer · run 43428980485
+- Batch: 3 reviews (P04-5, P04-6a, P04-6b)
+- Reviewed: P04-5 approved, P04-6a approved, P04-6b approved
+- Re-ran in projects/04-nexus-business-suite: npm ci, npm run db:setup, npm run lint, npm run typecheck, npm run build — all pass
+- Runtime smoke on :3520 (signed cookies): staff and manager task scoping held with no cross-department leak; owner and staff dashboards 200; reports 200 for owner/manager, access-denied for staff, CSV export 200/403/401/400 as expected, owner vs manager CSV totals differed
+- Landed all three verdicts on work. Review queue empty. Next review: none (next TODO: P04-6c).
