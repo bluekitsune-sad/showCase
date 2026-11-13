@@ -10,9 +10,9 @@ role: builder
 run: 43428980485
 item: P04-6b
 branch: opencode/todo-43428980485-p04-6b
-phase: handoff-committed
+phase: landing
 updated: 13 Nov 2026, 12:56 UTC
-next: land on work and write the session update
+next: merge the task branch into work
 notes: reports page, CSV export and nav entry written; lint, typecheck, build and runtime query smoke pass
 ```
 
