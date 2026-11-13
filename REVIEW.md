@@ -95,3 +95,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** —
 - **Verdict notes:** —
+
+### P04-6b · round 1 — Reports page and CSV export
+
+- **Built:** 13 Nov 2026, 12:58 UTC
+- **Commit:** `e387a75` — P04-6b: add reports page and CSV export
+- **Scope:** `/reports` gated by server-side `report.view`, department-scoped pipeline/headcount/attendance/task reports with UTC date-range filters and empty states; `/reports/export` re-checks permission and streams the matching CSV; Reports entry added under Overview
+- **Checked by builder:** `npm run lint`, `npm run typecheck`, `npm run build`, `npm run db:setup` — all pass; runtime query smoke returned owner totals (6 leads, 18 headcount, 396 attendance days, 24 tasks) and different manager totals, confirming scoping; no browser session smoke
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
