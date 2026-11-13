@@ -106,3 +106,10 @@ _No sessions logged yet._
 - P04-6a built, commit 6eb5880, handed to review (070851d)
 - Added attendance-rate KPI, six-month pipeline-created chart and 14-day attendance-rate chart from department-scoped data; `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck` and `npm run build` pass; no browser runtime smoke
 - Landed on work. Next unchecked item: P04-6b.
+
+## 13 November 2026, 12:59 UTC · builder · run 43428980485
+- Batch: 1 item (limit 1)
+- P04-6b built, commit e387a75, handed to review (2180f28)
+- Added `/reports` with server-side `report.view` gate, UTC date ranges, department-scoped pipeline/headcount/attendance/task tables and empty states; `/reports/export` re-checks permission and returns CSV for each report; Reports nav entry enabled
+- Ran `npm ci`, `npm run db:generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; runtime query smoke showed owner and manager totals differ as expected; no browser session smoke
+- Landed on work. Next unchecked item: P04-6c.
