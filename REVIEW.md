@@ -91,10 +91,10 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `6eb5880` — P04-6a: add dashboard attendance rate and trend charts
 - **Scope:** Attendance rate KPI from the latest recorded day with present/total hint; pipeline-created six-month and 14-day attendance-rate bar charts built from department-scoped data; shared accessible TrendBars component with empty states and a compact money formatter
 - **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser runtime smoke was run in this environment
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 13 Nov 2026
+- **Verdict notes:** Re-ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/04-nexus-business-suite` — all pass. Read the dashboard diff, `trend-bars.tsx` and the new `formatMoneyCompact` helper. Attendance rate and both trend series are built from department-scoped queries (`departmentFilter` / `ownerDepartmentFilter`), so owner/admin see the company, managers and staff their department; leads exclude `lost` and are bucketed by UTC creation month, attendance by UTC day over the last 14 days, and the KPI uses the latest recorded day in that window. Values are integer minor units formatted at render (`/ 100` only in the formatter), and the component shows an empty message when there are no points or the maximum is zero, with `role="img"`, an aria label and a screen-reader list. Runtime smoke on `npm run start` (:3520): owner and staff dashboards both returned 200 with the attendance KPI and both charts rendered. No secrets, no real data, no `.github` changes, nothing touched outside the project. README voice is clean. Approved, no blocking findings. Non-blocking notes: the attendance denominator counts holiday and leave rows as non-present, which may understate the rate; and the staff dashboard shows a department-level attendance aggregate rather than only their own record, consistent with the aggregate count the dashboard already showed before this item.
 
 ### P04-6b · round 1 — Reports page and CSV export
 
