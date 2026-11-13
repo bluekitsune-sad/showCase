@@ -8,12 +8,12 @@ Rewrite this file. Never append to it. Only clear a state you wrote yourself —
 status: reviewing
 role: reviewer
 run: 43428980485
-item: P04-6a
-branch: opencode/review-43428980485-p04-6a
+item: P04-6b
+branch: opencode/review-43428980485-p04-6b
 phase: landing
-updated: 13 Nov 2026, 13:40 UTC
-next: land P04-6a approved, then review P04-6b
-notes: P04-5 and P04-6a approved; queue has P04-6b left
+updated: 13 Nov 2026, 13:55 UTC
+next: land P04-6b approved, then log the session and set idle
+notes: P04-5, P04-6a and P04-6b all approved; review queue empty
 ```
 
 **Fields**
