@@ -80,10 +80,10 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `39f8234` — P04-5: add projects, task board and notifications
 - **Scope:** Project list with search/status filters, task progress and audited create/status changes; task board by status with assignee, due date and overdue markers; task create/update writing activity log entries and assignment notifications; personal notifications feed with unread state and mark-all-read; server-side task scoping (staff own, managers department); Work nav enabled
 - **Checked by builder:** `npm run typecheck`, `npm run lint`, `npm run build`, `npx prisma validate`; `npm run db:setup` then production-server smoke test — `/dashboard`, `/tasks`, `/projects`, `/notifications`, `/pipeline` all return 200 for an owner session
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 13 Nov 2026
+- **Verdict notes:** Re-ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/04-nexus-business-suite` — all pass; the build emits `/tasks`, `/projects` and `/notifications` as dynamic routes. Read both action files, `notifications/actions.ts`, `lib/work.ts`, `permissions.ts`, and the three pages plus the `domain.ts`/`nav.ts` diff. Auth and RBAC run server-side: `requireUser` gates each route, `can()` gates read/create/update/assign/manage, and task visibility is applied in the query layer via `taskScope` (owner/admin all, manager by assignee department, staff by own assignee). `updateTask` re-checks row access with `canTouchTask` and refuses assignment changes from roles without `task.assign`; `createTask` forces the actor as assignee for scoped roles and validates the assignee's department. Notifications are always filtered by `userId`, including the mark-read update. Every mutation writes its `ActivityLog` row in the same transaction as the change, and assignment/done notifications are created there too. All three pages have empty states and the shared `(app)/loading.tsx` and `(app)/error.tsx` cover loading/error; forms use real labels. Runtime smoke on `npm run start` (:3520) with signed cookies: staff Diego (id 8) `/tasks` returned 200 with only his four tasks and none of the other Sales tasks; manager Marcus (id 4) saw department-1 tasks but not a department-2 task. No secrets, no real data, no `.github` changes, nothing touched outside the project. README voice is clean. Approved, no blocking findings. Non-blocking note: date inputs still accept impossible calendar days (`2026-02-31`), the same accepted nit from P04-4.
 
 ### P04-6a · round 1 — Dashboard attendance rate and trend charts
 
