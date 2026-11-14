@@ -10,9 +10,9 @@ role: builder
 run: 43592444701
 item: P04-6c
 branch: opencode/todo-43592444701-p04-6c
-phase: committed
+phase: handoff-committed
 updated: 14 Nov 2026, 12:02 UTC
-next: mark the TODO done and append the REVIEW entry
+next: land the branch on work
 notes: /activity built; lint, typecheck, build and a seeded query check pass
 ```
 

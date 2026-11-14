@@ -106,3 +106,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** 13 Nov 2026
 - **Verdict notes:** Re-ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/04-nexus-business-suite` — all pass. Read `lib/reports.ts`, the reports page, the export route and the nav diff. The page calls `requireUser` and checks `report.view` server-side; the export route re-checks the session and permission and returns 401/403 itself, rejecting unknown report types with 400. Every series applies department scoping in the query layer (`ownerDepartmentFilter` for leads, `departmentFilter` for employees/attendance and task assignees), so owner/admin see the company and managers their department; staff have no `report.view` and get the access-denied view. Ranges parse to UTC day bounds with an inclusive end (`endExclusive = to + 1 day`), bad ranges fall back with a visible message, and money stays in integer minor units until rendered or exported. Non-empty tables, empty states, accessible table captions and labelled export links are present. Runtime smoke on `npm run start` (:3520) with signed cookies: owner and manager `/reports` returned 200, staff `/reports` rendered the access-denied message; CSV export returned `text/csv` for owner and manager, 403 for staff, 401 unauthenticated and 400 for an unknown type. Owner pipeline CSV totaled 6 leads / 142,200.00 and the manager's 5 leads / 110,200.00, confirming scoping. No secrets, no real data, no `.github` changes, nothing touched outside the project. README voice is clean. Approved, no blocking findings. Non-blocking notes: the Reports nav link is shown to staff who then hit the access-denied view (same pattern as Recruitment), and the date parser still normalises impossible calendar days such as `2026-02-31` instead of rejecting them.
+
+### P04-6c · round 1 — Audit trail viewer
+
+- **Built:** 14 Nov 2026, 12:02 UTC
+- **Commit:** `8d20ac7` — P04-6c: add audit trail viewer
+- **Scope:** `/activity` gated by server-side `activity.read`; append-only ActivityLog table newest first with actor, action, entity and summary; summary/entity/action/actor/date-range filters, 25-row pagination and empty/access-denied states; Activity log nav item enabled
+- **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; seeded Prisma query returned 80 activity rows, 7 distinct actions, 18 actors and a 25-row first page; no browser session smoke
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
