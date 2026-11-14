@@ -40,7 +40,7 @@ Only the builder writes `— review needed`. Only the reviewer writes `— revie
 - [x] `P04-5` Build tasks and projects: project list, task board with assignee and due date, notifications feed, and an append-only activity log written on every mutation. — reviewed 2026-11-13
 - [x] `P04-6a` Extend the executive dashboard with attendance rate and real trend charts for pipeline created and daily attendance, with empty states. — reviewed 2026-11-13
 - [x] `P04-6b` Build a reports page with server-side permission checks, date ranges, and CSV export for pipeline, headcount, attendance and tasks. — reviewed 2026-11-13
-- [x] `P04-6c` Build the audit trail viewer at `/activity` with filters, pagination and a permission gate for owners and admins. — review needed
+- [x] `P04-6c` Build the audit trail viewer at `/activity` with filters, pagination and a permission gate for owners and admins. — reviewed 2026-11-14
 - [ ] `P04-6d` Responsive and accessibility pass across the app, then update the project README case study.
 
 ### 01 · Maison Store — `projects/01-maison-store`

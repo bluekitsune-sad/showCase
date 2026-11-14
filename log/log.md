@@ -132,3 +132,9 @@ _No sessions logged yet._
 - Added `/activity` audit viewer with a server-side `activity.read` gate, summary/entity/action/actor/date filters, 25-row pagination, empty and access-denied states; Activity log nav item enabled
 - Ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; seeded Prisma query returned 80 rows, 7 actions, 18 actors and a 25-row first page; no browser session smoke
 - Landed on work. Next unchecked item: P04-6d.
+
+## 14 November 2026, 12:08 UTC · reviewer · run 43592444701
+- Reviewed: P04-6c approved (1 entry)
+- Re-ran: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass
+- Runtime smoke on `npm run start` (:3521): owner `/activity` 200 (80 entries), staff access-denied, unauthenticated 307 to `/login`, unmatched filter empty state
+- Landed verdict on work. Next review: none (next TODO: P04-6d).
