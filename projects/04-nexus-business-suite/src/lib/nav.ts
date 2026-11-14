@@ -45,6 +45,6 @@ export const NAV_GROUPS: NavGroup[] = [
   },
   {
     label: "System",
-    items: [{ label: "Activity log", href: "/activity", planned: true }],
+    items: [{ label: "Activity log", href: "/activity" }],
   },
 ];

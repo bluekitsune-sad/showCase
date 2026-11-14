@@ -10,10 +10,10 @@ role: builder
 run: 43592444701
 item: P04-6c
 branch: opencode/todo-43592444701-p04-6c
-phase: implementing
-updated: 14 Nov 2026, 11:58 UTC
-next: build the /activity audit viewer with filters, pagination and a permission gate
-notes: -
+phase: committed
+updated: 14 Nov 2026, 12:02 UTC
+next: mark the TODO done and append the REVIEW entry
+notes: /activity built; lint, typecheck, build and a seeded query check pass
 ```
 
 **Fields**
