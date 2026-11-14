@@ -125,3 +125,10 @@ _No sessions logged yet._
 - Batch: 0 reviews — review queue empty; nothing to review.
 - No `Review: needed` entry in `REVIEW.md`; no open builder branches on origin.
 - Left the checkpoint (idle) untouched. Next review: none (next TODO: P04-6c).
+
+## 14 November 2026, 12:03 UTC · builder · run 43592444701
+- Batch: 1 item (limit 1)
+- P04-6c built, commit 8d20ac7, handed to review (40f8088)
+- Added `/activity` audit viewer with a server-side `activity.read` gate, summary/entity/action/actor/date filters, 25-row pagination, empty and access-denied states; Activity log nav item enabled
+- Ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; seeded Prisma query returned 80 rows, 7 actions, 18 actors and a 25-row first page; no browser session smoke
+- Landed on work. Next unchecked item: P04-6d.
