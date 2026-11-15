@@ -128,3 +128,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** 2026-11-15
 - **Verdict notes:** Re-ran `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/04-nexus-business-suite` — all pass. Read the layout diff and the touched pages: the skip link targets a `tabIndex={-1}` main region, the drawer has a labelled close button plus Escape and overlay dismissal, link clicks call `onClose`, the closed drawer uses `invisible` so it leaves the tab order (overridden with `lg:visible` on desktop), the trigger exposes `aria-expanded`, and all eight tables in the app have an `sr-only` caption with scoped headers. Checked the README claims: seed really contains 3 departments, 18 users, 40 leads, 25 customers, 60 tasks and 30 days of attendance; route-level and dashboard `loading`/`error` files exist; dark-mode tokens and a `color-scheme` switch are present; root status row says Shipped with the last-updated line intact. No secrets, no real data, no `.github` changes, nothing touched outside the project, README voice is clean. Approved with one non-blocking accessibility note, recorded as `P04-6d-r1`: focus is not moved into the drawer when it opens and is not restored to the trigger when Escape closes it, so a keyboard user who opens the drawer lands in the obscured page content on the next Tab.
+
+### P04-6d-r1 · round 1 — Mobile drawer focus management
+
+- **Built:** 15 Nov 2026, 21:30 UTC
+- **Commit:** `17566f8` — P04-6d-r1: trap and restore drawer focus
+- **Scope:** Move focus into the drawer on open, trap Tab/Shift+Tab inside it, restore focus to the menu trigger on Escape/close, and mark the topbar/main region inert while the mobile drawer is open
+- **Checked by builder:** `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser session smoke, so focus behaviour was checked by reading the effect and keydown logic rather than rendered
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —

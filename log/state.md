@@ -10,10 +10,10 @@ role: builder
 run: 43763954008
 item: P04-6d-r1
 branch: opencode/todo-43763954008-p04-6d-r1
-phase: implementing
-updated: 15 Nov 2026, 21:30 UTC
-next: implement drawer focus management and inert background, then run lint/typecheck/build
-notes: work written; verify and hand off
+phase: handoff-committed
+updated: 15 Nov 2026, 21:32 UTC
+next: land the branch on work, then write the session update
+notes: lint, typecheck and build pass; no browser session smoke
 ```
 
 **Fields**
