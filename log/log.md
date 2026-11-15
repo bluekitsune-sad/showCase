@@ -159,3 +159,9 @@ _No sessions logged yet._
 - Batch: 1 item (limit 1)
 - P04-6d-r1 built, commit 17566f8, handed to review
 - Landed on work. Next unchecked item: P01-1.
+
+## 15 Nov 2026, 21:36 UTC · reviewer · run 43763954008
+- Reviewed: P04-6d-r1 approved (1 entry)
+- Re-ran: `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass
+- Verified drawer focus move/trap/restore and the inert background by reading the diff; no browser smoke available for client focus
+- Landed verdict on work. Next review: none (next TODO: P01-1).
