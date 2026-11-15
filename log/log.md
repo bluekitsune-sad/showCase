@@ -154,3 +154,8 @@ _No sessions logged yet._
 - Re-ran: `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass.
 - Checked skip link/main target, drawer close/Escape/overlay/link dismissal, `aria-expanded`, `invisible` vs `lg:visible`, captions and scoped headers on all 8 tables, README seed/states/dark-mode claims, root Shipped row.
 - Landed verdict on work. Next review: none (next TODO: P01-1).
+
+## 15 Nov 2026, 21:33 UTC · builder · run 43763954008
+- Batch: 1 item (limit 1)
+- P04-6d-r1 built, commit 17566f8, handed to review
+- Landed on work. Next unchecked item: P01-1.
