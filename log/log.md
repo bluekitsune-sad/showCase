@@ -148,3 +148,9 @@ _No sessions logged yet._
 - P04-6d: skip link and focusable main region, mobile drawer close/Escape/`aria-expanded` with closed drawer out of the tab order, captions on every data table, Nexus README case study and Shipped status; commit `a8cbb05`, handed to review.
 - Ran `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser session smoke.
 - Landed on work. Next unchecked item: P01-1.
+
+## 15 November 2026, 12:37 UTC · reviewer · run 43714384246
+- Reviewed: P04-6d approved (1 entry); added follow-up `P04-6d-r1` for drawer focus management.
+- Re-ran: `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass.
+- Checked skip link/main target, drawer close/Escape/overlay/link dismissal, `aria-expanded`, `invisible` vs `lg:visible`, captions and scoped headers on all 8 tables, README seed/states/dark-mode claims, root Shipped row.
+- Landed verdict on work. Next review: none (next TODO: P01-1).

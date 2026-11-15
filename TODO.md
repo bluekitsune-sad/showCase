@@ -41,7 +41,8 @@ Only the builder writes `— review needed`. Only the reviewer writes `— revie
 - [x] `P04-6a` Extend the executive dashboard with attendance rate and real trend charts for pipeline created and daily attendance, with empty states. — reviewed 2026-11-13
 - [x] `P04-6b` Build a reports page with server-side permission checks, date ranges, and CSV export for pipeline, headcount, attendance and tasks. — reviewed 2026-11-13
 - [x] `P04-6c` Build the audit trail viewer at `/activity` with filters, pagination and a permission gate for owners and admins. — reviewed 2026-11-14
-- [x] `P04-6d` Responsive and accessibility pass across the app, then update the project README case study. — review needed
+- [x] `P04-6d` Responsive and accessibility pass across the app, then update the project README case study. — reviewed 2026-11-15
+- [ ] `P04-6d-r1` Move focus into the mobile navigation drawer when it opens, keep it inside while open, restore it to the menu trigger on Escape/close, and make the page behind the overlay inert.
 
 ### 01 · Maison Store — `projects/01-maison-store`
 
