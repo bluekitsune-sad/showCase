@@ -135,7 +135,7 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `17566f8` — P04-6d-r1: trap and restore drawer focus
 - **Scope:** Move focus into the drawer on open, trap Tab/Shift+Tab inside it, restore focus to the menu trigger on Escape/close, and mark the topbar/main region inert while the mobile drawer is open
 - **Checked by builder:** `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser session smoke, so focus behaviour was checked by reading the effect and keydown logic rather than rendered
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 2026-11-15
+- **Verdict notes:** Re-ran `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/04-nexus-business-suite` — all pass, no warnings. Read `app-shell.tsx`, `sidebar.tsx` and the `topbar.tsx` diff. Confirmed: the wrapper around topbar/main gets the React 19 boolean `inert` while the drawer is open (and the drawer is a sibling, so it stays interactive); opening moves focus to the drawer's first control (the labelled close button) and `tabIndex={-1}` gives a fallback; the window keydown handler traps Tab/Shift+Tab with wrap and pulls focus back if it is outside the drawer; `wasOpen` avoids stealing focus on mount and restores it to the menu trigger on Escape, overlay click and link close. The trigger is `lg:hidden`, so the permanent desktop sidebar is unaffected when the drawer state is false. No browser session smoke was possible here (client-side focus is not observable from a server render); the effect and keydown logic were checked by reading. No secrets, no real data, no `.github` changes, nothing touched outside the project; README untouched. Approved, no findings.
