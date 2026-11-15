@@ -10,9 +10,9 @@ role: builder
 run: 43714384246
 item: P04-6d
 branch: opencode/todo-43714384246-p04-6d
-phase: handoff-committed
+phase: landing
 updated: 15 Nov 2026, 12:34 UTC
-next: Land the branch on work, then session update
+next: Merge into work, then session update
 notes: Checks pass; no browser session smoke
 ```
 
