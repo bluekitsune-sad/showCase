@@ -334,6 +334,9 @@ export default async function DashboardPage() {
             </p>
           ) : (
             <table className="mt-3 w-full text-sm">
+              <caption className="sr-only">
+                Pipeline value and lead count by stage
+              </caption>
               <thead>
                 <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-subtle">
                   <th scope="col" className="py-1.5 font-medium">Stage</th>

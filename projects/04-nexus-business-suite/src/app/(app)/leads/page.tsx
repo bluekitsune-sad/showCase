@@ -215,6 +215,9 @@ export default async function LeadsPage({
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-sm">
+              <caption className="sr-only">
+                Leads matching the current search and filters
+              </caption>
               <thead>
                 <tr className="border-b border-line bg-surface-sunken/60 text-left text-xs uppercase tracking-wide text-ink-subtle">
                   <th scope="col" className="px-4 py-2.5 font-medium">

@@ -195,6 +195,9 @@ export default async function EmployeesPage({
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[820px] text-sm">
+              <caption className="sr-only">
+                Employees matching the current search and department filter
+              </caption>
               <thead>
                 <tr className="border-b border-line bg-surface-sunken/60 text-left text-xs uppercase tracking-wide text-ink-subtle">
                   <th scope="col" className="px-4 py-2.5 font-medium">

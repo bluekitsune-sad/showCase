@@ -264,6 +264,9 @@ export default async function AttendancePage({
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[720px] text-sm">
+              <caption className="sr-only">
+                Attendance records for the selected day
+              </caption>
               <thead>
                 <tr className="border-b border-line bg-surface-sunken/60 text-left text-xs uppercase tracking-wide text-ink-subtle">
                   <th scope="col" className="px-4 py-2.5 font-medium">

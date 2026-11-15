@@ -3,7 +3,7 @@
 **Category:** 2 — I need a business application
 **Built for:** Medium-sized companies whose operations live in spreadsheets and chat
 **Label:** For businesses & enterprises
-**Status:** In progress
+**Status:** Shipped
 **Folder:** `projects/04-nexus-business-suite`
 **Stack:** Next.js (App Router) · TypeScript · Tailwind CSS · Prisma + SQLite · RBAC
 
@@ -127,3 +127,24 @@ Permissions are defined once in `src/lib/permissions.ts` and checked on the serv
 | View reports | ✓ | ✓ | own dept | — |
 
 Sign-in uses a signed, http-only session cookie. The demo password scheme is saltless SHA-256 — fine for a local SQLite demo with a shared throwaway password, not for anything real; a production build would swap in argon2 or scrypt without touching the auth flow.
+
+## How it works
+
+Every page is a server component that resolves the signed-in user, asks `can(actor, action)` whether the action is allowed at all, and then narrows the query with `departmentFilter()` or `ownerDepartmentFilter()` so a permitted role still only sees its own slice. The UI never decides visibility on its own: hiding a nav item or a button is a convenience, not the control.
+
+Mutations run as server actions. Each one validates the input, authorises the actor, writes the record and appends an `ActivityLog` row in the same transaction, so the audit trail cannot drift from the data it describes. The activity viewer at `/activity` reads that log newest first with filters and pagination; it is gated to owners and admins.
+
+The demo database is SQLite through Prisma, seeded with three departments, eighteen users, forty leads, twenty-five customers, sixty tasks and a month of attendance. Notification delivery is a local mock — no email or calendar provider is called — so the notification feed works with no keys and no network.
+
+## Responsive and accessible by default
+
+The layout is a persistent sidebar on desktop and a dismissible drawer on small screens. The drawer closes on `Escape`, on the overlay, on the close button and after following a link; while closed it is removed from the tab order, and the menu button reports its expanded state. A skip link jumps straight to the page body.
+
+Every data table sits in a horizontal scroll container with a screen-reader caption, and every column header is scoped. Search and filter fields have real labels, status is never carried by colour alone, focus rings come from the shared accent token, and the light and dark palettes both keep body text above 4.5:1 contrast. Loading and error states are present at the route level and on the dashboard.
+
+## What I left out, and why
+
+- **Payroll** is deliberately out of scope. It needs tax rules per jurisdiction and a level of correctness that a demo should not pretend to have.
+- **Real email and calendar sync** would require OAuth apps and paid providers. The notification feed is a local mock behind the same interface, so the feature can be demonstrated with no account.
+- **File storage** stops at small attachments in the demo. Production would use object storage with signed URLs rather than the local filesystem.
+- **SSO** is left out so the role matrix stays easy to try: every demo account signs in with one shared password and no external identity provider.
