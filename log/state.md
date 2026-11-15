@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **be
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: building` leaves it alone.
 
 ```
-status: idle
-role: -
-run: 43714384246
-item: -
-branch: -
-phase: -
-updated: 15 Nov 2026, 12:37 UTC
-next: P01-1 (next unchecked item)
-notes: P04-6d approved and landed; follow-up P04-6d-r1 added for drawer focus management
+status: building
+role: builder
+run: 43763954008
+item: P04-6d-r1
+branch: opencode/todo-43763954008-p04-6d-r1
+phase: implementing
+updated: 15 Nov 2026, 21:30 UTC
+next: implement drawer focus management and inert background, then run lint/typecheck/build
+notes: work written; verify and hand off
 ```
 
 **Fields**
