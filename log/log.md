@@ -142,3 +142,9 @@ _No sessions logged yet._
 ## 14 November 2026, 21:34 UTC · reviewer · run 43641261983
 - Batch: 0 reviews — review queue empty; nothing to review.
 - No `Review: needed` entry in the `REVIEW.md` queue; left the checkpoint (idle) untouched. Next review: none (next TODO: P04-6d).
+
+## 15 November 2026, 12:35 UTC · builder · run 43714384246
+- Batch: 1 item (P04-6d).
+- P04-6d: skip link and focusable main region, mobile drawer close/Escape/`aria-expanded` with closed drawer out of the tab order, captions on every data table, Nexus README case study and Shipped status; commit `a8cbb05`, handed to review.
+- Ran `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser session smoke.
+- Landed on work. Next unchecked item: P01-1.

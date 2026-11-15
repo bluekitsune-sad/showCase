@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **be
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: building` leaves it alone.
 
 ```
-status: building
-role: builder
+status: idle
+role: -
 run: 43714384246
-item: P04-6d
-branch: opencode/todo-43714384246-p04-6d
-phase: landing
-updated: 15 Nov 2026, 12:34 UTC
-next: Merge into work, then session update
-notes: Checks pass; no browser session smoke
+item: -
+branch: -
+phase: -
+updated: 15 Nov 2026, 12:35 UTC
+next: P01-1 (next unchecked item)
+notes: P04-6d handed to review and landed; Nexus marked Shipped
 ```
 
 **Fields**
