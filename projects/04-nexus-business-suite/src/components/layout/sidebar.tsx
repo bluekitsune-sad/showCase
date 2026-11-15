@@ -1,17 +1,84 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_GROUPS } from "@/lib/nav";
 
-export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
+const FOCUSABLE_SELECTOR = [
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])',
+].join(",");
+
+function getFocusable(container: HTMLElement): HTMLElement[] {
+  return Array.from(
+    container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+  ).filter(
+    (element) =>
+      !element.hasAttribute("hidden") &&
+      element.getAttribute("aria-hidden") !== "true",
+  );
+}
+
+export function Sidebar({
+  open,
+  onClose,
+  triggerRef,
+}: {
+  open: boolean;
+  onClose: () => void;
+  triggerRef: React.RefObject<HTMLButtonElement | null>;
+}) {
   const pathname = usePathname();
+  const asideRef = useRef<HTMLElement>(null);
+  const wasOpen = useRef(false);
+
+  useEffect(() => {
+    if (open) {
+      wasOpen.current = true;
+      const sidebar = asideRef.current;
+      if (!sidebar) return;
+      const focusable = getFocusable(sidebar);
+      (focusable[0] ?? sidebar).focus();
+      return;
+    }
+    if (wasOpen.current) {
+      wasOpen.current = false;
+      triggerRef.current?.focus();
+    }
+  }, [open, triggerRef]);
 
   useEffect(() => {
     if (!open) return;
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const sidebar = asideRef.current;
+      if (!sidebar) return;
+      const focusable = getFocusable(sidebar);
+      if (focusable.length === 0) {
+        event.preventDefault();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (event.shiftKey) {
+        if (active === first || !sidebar.contains(active)) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else if (active === last || !sidebar.contains(active)) {
+        event.preventDefault();
+        first.focus();
+      }
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -27,7 +94,9 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
         />
       )}
       <aside
+        ref={asideRef}
         id="app-sidebar"
+        tabIndex={-1}
         className={`fixed inset-y-0 left-0 z-40 flex w-[var(--sidebar-width)] flex-col border-r border-line bg-surface transition-transform lg:visible lg:translate-x-0 ${
           open ? "visible translate-x-0" : "invisible -translate-x-full"
         }`}

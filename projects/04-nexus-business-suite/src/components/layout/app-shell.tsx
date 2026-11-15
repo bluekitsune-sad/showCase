@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 import type { Role } from "@/lib/domain";
@@ -21,6 +21,7 @@ export function AppShell({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   return (
     <div className="min-h-screen">
@@ -30,11 +31,19 @@ export function AppShell({
       >
         Skip to main content
       </a>
-      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className="lg:pl-[var(--sidebar-width)]">
+      <Sidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        triggerRef={menuButtonRef}
+      />
+      <div
+        className="lg:pl-[var(--sidebar-width)]"
+        inert={sidebarOpen}
+      >
         <Topbar
           onMenu={() => setSidebarOpen(true)}
           menuOpen={sidebarOpen}
+          menuButtonRef={menuButtonRef}
           user={user}
         />
         <main

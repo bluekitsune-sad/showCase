@@ -17,15 +17,18 @@ function initials(name: string): string {
 export function Topbar({
   onMenu,
   menuOpen,
+  menuButtonRef,
   user,
 }: {
   onMenu: () => void;
   menuOpen: boolean;
+  menuButtonRef: React.RefObject<HTMLButtonElement | null>;
   user: ShellUser;
 }) {
   return (
     <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-line bg-surface px-4 lg:px-6">
       <button
+        ref={menuButtonRef}
         type="button"
         onClick={onMenu}
         aria-label="Open navigation"
