@@ -10,10 +10,10 @@ role: builder
 run: 43714384246
 item: P04-6d
 branch: opencode/todo-43714384246-p04-6d
-phase: implementing
-updated: 15 Nov 2026, 12:33 UTC
-next: Add skip link, mobile drawer keyboard support, and table captions
-notes: Accessibility pass; responsive check after markup edits
+phase: handoff-committed
+updated: 15 Nov 2026, 12:34 UTC
+next: Land the branch on work, then session update
+notes: Checks pass; no browser session smoke
 ```
 
 **Fields**

@@ -117,3 +117,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** 14 Nov 2026
 - **Verdict notes:** Re-ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/04-nexus-business-suite` — all pass. Read the `/activity` page, `lib/nav.ts` and `lib/permissions.ts`; the page calls `requireUser` and refuses with an access-denied view unless `can(actor, "activity.read")`, which is owner/admin only, so no department scoping is needed at this tier. Queries read `ActivityLog` newest first with the actor relation, apply entity/action/actor/summary/UTC date-range filters in the query layer, clamp the requested page into range, and preserve filters across Previous/Next links. The empty state distinguishes "nothing logged" from "no matches", plus a bad-date message and a labelled, captioned table with `scope="col"` headers. The nav item is now enabled, matching the shipped route. Runtime smoke on `npm run start` (:3521) with signed cookies: owner `/activity` returned 200 and "Showing 1–25 of 80 entries", staff returned the access-denied message, unauthenticated returned 307 to `/login`, and an unmatched filter action rendered the empty state. No secrets, no real data, no `.github` changes, nothing touched outside the project. README voice is clean. Approved, no blocking findings. Non-blocking note: `parseDate` still normalises impossible calendar days such as `2026-02-31` to early March instead of rejecting them, the same behaviour already noted on P04-6b.
+
+### P04-6d · round 1 — Responsive and accessibility pass, README case study
+
+- **Built:** 15 Nov 2026, 12:34 UTC
+- **Commit:** `a8cbb05` — P04-6d: responsive and accessibility pass
+- **Scope:** Skip link and focusable main region; mobile drawer close button, Escape handling, `aria-expanded` on the menu trigger and off-canvas nav removed from the tab order while closed; screen-reader captions on every data table; Nexus README architecture, accessibility and scope notes, Shipped status and root status row.
+- **Checked by builder:** `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser session smoke, so layout was checked from the Tailwind classes rather than rendered at 360 px.
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
