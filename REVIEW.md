@@ -124,7 +124,7 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `a8cbb05` — P04-6d: responsive and accessibility pass
 - **Scope:** Skip link and focusable main region; mobile drawer close button, Escape handling, `aria-expanded` on the menu trigger and off-canvas nav removed from the tab order while closed; screen-reader captions on every data table; Nexus README architecture, accessibility and scope notes, Shipped status and root status row.
 - **Checked by builder:** `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser session smoke, so layout was checked from the Tailwind classes rather than rendered at 360 px.
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 2026-11-15
+- **Verdict notes:** Re-ran `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/04-nexus-business-suite` — all pass. Read the layout diff and the touched pages: the skip link targets a `tabIndex={-1}` main region, the drawer has a labelled close button plus Escape and overlay dismissal, link clicks call `onClose`, the closed drawer uses `invisible` so it leaves the tab order (overridden with `lg:visible` on desktop), the trigger exposes `aria-expanded`, and all eight tables in the app have an `sr-only` caption with scoped headers. Checked the README claims: seed really contains 3 departments, 18 users, 40 leads, 25 customers, 60 tasks and 30 days of attendance; route-level and dashboard `loading`/`error` files exist; dark-mode tokens and a `color-scheme` switch are present; root status row says Shipped with the last-updated line intact. No secrets, no real data, no `.github` changes, nothing touched outside the project, README voice is clean. Approved with one non-blocking accessibility note, recorded as `P04-6d-r1`: focus is not moved into the drawer when it opens and is not restored to the trigger when Escape closes it, so a keyboard user who opens the drawer lands in the obscured page content on the next Tab.

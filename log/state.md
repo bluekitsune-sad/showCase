@@ -11,9 +11,9 @@ run: 43714384246
 item: -
 branch: -
 phase: -
-updated: 15 Nov 2026, 12:35 UTC
+updated: 15 Nov 2026, 12:37 UTC
 next: P01-1 (next unchecked item)
-notes: P04-6d handed to review and landed; Nexus marked Shipped
+notes: P04-6d approved and landed; follow-up P04-6d-r1 added for drawer focus management
 ```
 
 **Fields**
