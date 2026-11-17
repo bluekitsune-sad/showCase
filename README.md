@@ -61,7 +61,7 @@ This repository is my working portfolio. Each entry is a self-contained product 
 
 | # | Project | For | Status |
 | --- | --- | --- | --- |
-| 01 | [Maison Store](projects/01-maison-store) | Individuals & customers | Planned |
+| 01 | [Maison Store](projects/01-maison-store) | Individuals & customers | In progress |
 | 02 | [Corporate Digital Presence](projects/02-corporate-cms) | Businesses | Planned |
 | 03 | [ShopFlow](projects/03-shopflow) | Individuals & customers | Planned |
 | 04 | [Nexus Business Suite](projects/04-nexus-business-suite) | Businesses | Shipped |
@@ -113,4 +113,4 @@ MIT — see [LICENSE](LICENSE). Use the code, learn from it, build on it.
 [github.com/bluekitsune-sad](https://github.com/bluekitsune-sad) — open an issue on any project if you want to talk about building something similar.
 
 <!-- last-updated -->
-_Last updated: 15 November 2026, 21:32 UTC._
+_Last updated: 17 November 2026, 14:19 UTC._

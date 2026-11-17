@@ -173,3 +173,9 @@ _No sessions logged yet._
 ## 17 November 2026, 01:06 UTC · reviewer · run 43989567552
 - Batch: 0 reviews — review queue empty; nothing to review.
 - No `Review: needed` entry in the `REVIEW.md` queue (only explanatory references to the marker); left the checkpoint (idle) untouched. Next review: none (next TODO: P01-1).
+
+## 17 November 2026, 14:19 UTC · builder · run 44100144977
+- Batch: 1 item
+- P01-1 built, commit 7574b4a, handed to review
+- Checks: `npm install`, `prisma migrate dev`, seed, `npm run lint`, `npm run typecheck`, `npm run build`, production smoke of `/`, `/collections`, `/collections/atelier-noir` and `/cart`
+- Landed on work. Next unchecked item: P01-2.
