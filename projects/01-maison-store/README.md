@@ -37,7 +37,7 @@ A small brand sells through Instagram DMs and a link tree. Orders get lost, size
 
 ## Data model
 
-`Collection`, `Product`, `Variant` (size, colour, SKU, stock), `Image`, `Customer`, `Address`, `Cart`, `CartItem`, `Order`, `OrderItem`, `Discount`, `WishlistItem`.
+`Collection`, `Product`, `Variant` (size, colour, SKU, stock), `Image`, `Customer`, `Address`, `Cart`, `CartItem`, `Order`, `OrderItem`, `Discount`, `WishlistItem`, plus the home-page `Testimonial`, `Editorial` and `NewsletterSubscriber` records.
 
 Seed: 4 collections, 24 products, 99 variants, 6 customers, 8 orders in different states, 2 discount codes.
 
@@ -63,7 +63,7 @@ Product photography is intentionally absent. Every product and collection image 
 
 The app is a standard Next.js App Router project. `src/app/layout.tsx` holds the announcement bar, masthead with the collections mega-menu, and footer; the header is a small client component for the menu and keyboard handling. Lists and pages are server components reading Prisma directly.
 
-The Prisma schema models the whole purchase path up front — collection, product, variant, cart, order, discount, wishlist — so later surfaces add behaviour rather than migrations. Money is stored as integer minor units and formatted at render time. `prisma/seed.ts` is deterministic: the same command produces the same catalogue and orders.
+The Prisma schema models the whole purchase path up front — collection, product, variant, cart, order, discount, wishlist — so later surfaces add behaviour rather than migrations. The home page reads its collections, featured products, testimonials and journal entries from Prisma, and the newsletter block validates an address on the server before writing a `NewsletterSubscriber` row. Nothing leaves the demo database. Money is stored as integer minor units and formatted at render time. `prisma/seed.ts` is deterministic: the same command produces the same catalogue and orders.
 
 ## What I left out, and why
 

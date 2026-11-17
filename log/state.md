@@ -10,9 +10,9 @@ role: builder
 run: 44202222456
 item: P01-2
 branch: opencode/todo-44202222456-p01-2
-phase: implementing
+phase: committed
 updated: 17 Nov 2026, 23:46 UTC
-next: add home content models, seed and storefront home sections
+next: finish handoff marker and land the branch
 notes: P01-1 is awaiting review; building the home page on top of it
 ```
 

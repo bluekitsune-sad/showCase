@@ -15,6 +15,7 @@ model Collection {
   slug        String    @unique
   tagline     String
   description String
+  featured    Boolean   @default(false)
   sortOrder   Int       @default(0)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -185,4 +186,32 @@ model WishlistItem {
 
   @@unique([customerId, productId])
   @@index([customerId])
+}
+
+// Home page editorial content. Testimonials and journal entries are seeded so
+// the storefront home never depends on hard-coded copy in the component tree.
+model Testimonial {
+  id          Int    @id @default(autoincrement())
+  quote       String
+  author      String
+  detail      String
+  sortOrder   Int    @default(0)
+}
+
+model Editorial {
+  id         Int    @id @default(autoincrement())
+  title      String
+  standfirst String
+  body       String
+  category   String
+  href       String
+  sortOrder  Int    @default(0)
+}
+
+// Newsletter subscriptions from the home page block. Demo data only; the form
+// validates the address server-side before writing.
+model NewsletterSubscriber {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  createdAt DateTime @default(now())
 }

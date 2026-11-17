@@ -45,6 +45,7 @@ type CollectionSeed = {
   slug: string;
   tagline: string;
   description: string;
+  featured?: boolean;
   products: ProductSeed[];
 };
 
@@ -55,6 +56,7 @@ const collections: CollectionSeed[] = [
   {
     name: "Atelier Noir",
     slug: "atelier-noir",
+    featured: true,
     tagline: "Tailored layers cut for cold mornings.",
     description:
       "Structured outerwear and quiet tailoring in ink, ash and charcoal. Pieces made to sit over everything else you own.",
@@ -361,6 +363,9 @@ function skuFor(slug: string, colour: string, size: string): string {
 }
 
 async function main() {
+  await prisma.testimonial.deleteMany();
+  await prisma.editorial.deleteMany();
+  await prisma.newsletterSubscriber.deleteMany();
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
   await prisma.cartItem.deleteMany();
@@ -391,6 +396,7 @@ async function main() {
         slug: collection.slug,
         tagline: collection.tagline,
         description: collection.description,
+        featured: collection.featured ?? false,
         sortOrder: order,
       },
     });
@@ -559,6 +565,67 @@ async function main() {
       },
     });
   }
+
+  await prisma.testimonial.createMany({
+    data: [
+      {
+        quote:
+          "The coat arrived in two days and has not left my shoulders since. It feels like something my mother would have kept for thirty years.",
+        author: "Ada Winters",
+        detail: "Portland, OR — Atelier Noir, second season",
+        sortOrder: 0,
+      },
+      {
+        quote:
+          "I bought one linen shirt to test the fit and came back for three more. The creases are the point, not a flaw.",
+        author: "Rui Nakamura",
+        detail: "Austin, TX — Linen Season",
+        sortOrder: 1,
+      },
+      {
+        quote:
+          "Quiet packaging, a care card with the mill's name on it, and a hem I have already had shortened twice. Small things done properly.",
+        author: "Sofia Almeida",
+        detail: "Brooklyn, NY — made-to-last knitwear",
+        sortOrder: 2,
+      },
+    ],
+  });
+
+  await prisma.editorial.createMany({
+    data: [
+      {
+        title: "The case for a five-winter coat",
+        standfirst:
+          "What a good coat should survive, and the three details worth checking before you commit.",
+        body:
+          "A coat earns its price in the seams. We look for a full lining that can be replaced, a shoulder that sits on the natural line, and cloth heavy enough to hold a press. Everything else is decoration.",
+        category: "Field notes",
+        href: "/collections/atelier-noir",
+        sortOrder: 0,
+      },
+      {
+        title: "Linen, and why it should crease",
+        standfirst:
+          "A short guide to the weave we return to every spring, and how to wash it without losing the hand.",
+        body:
+          "Stone-washed linen softens with every wear. Wash cool, skip the dryer, and hang it damp. The rumple you see after a long lunch is the fibre relaxing, not the shirt failing.",
+        category: "Cloth",
+        href: "/collections/linen-season",
+        sortOrder: 1,
+      },
+      {
+        title: "Repair is part of the design",
+        standfirst:
+          "Send back anything that wears through. We re-stitch, patch and return it for the life of the piece.",
+        body:
+          "Our repair bench sees more elbows and hems than anything else. Bring a garment in at the first sign of wear and it usually costs nothing; leave it a season and the fix gets bigger. Write to the studio with a photograph and we will tell you what it needs.",
+        category: "Care",
+        href: "/#story",
+        sortOrder: 2,
+      },
+    ],
+  });
 
   await prisma.wishlistItem.createMany({
     data: [
