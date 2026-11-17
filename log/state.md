@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **be
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: building` leaves it alone.
 
 ```
-status: idle
-role: -
+status: reviewing
+role: reviewer
 run: 44202222456
-item: -
-branch: -
-phase: -
-updated: 17 November 2026, 23:53 UTC
-next: P01-3 (next unchecked item)
-notes: P01-1 and P01-2 await review on work
+item: P01-1, P01-2
+branch: opencode/review-44202222456-p01-maison
+phase: landing
+updated: 17 Nov 2026, 23:59 UTC
+next: land the two verdicts on work, then set idle
+notes: both approved; P01-1-r1 follow-up added for the unknown-slug 200
 ```
 
 **Fields**

@@ -185,3 +185,10 @@ _No sessions logged yet._
 - P01-2 built, commit 240a790, handed to review
 - Checks: `npm install`, `prisma migrate dev --name home_content`, seed, `npm run lint`, `npm run typecheck`, `npm run build`, production smoke of the home page
 - Landed on work. Next unchecked item: P01-3.
+
+## 17 November 2026, 23:59 UTC · reviewer · run 44202222456
+- Reviewed: P01-1 approved · P01-2 approved (2 entries; follow-up `P01-1-r1` added for the unknown-slug 200)
+- Re-ran: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/01-maison-store` — all pass
+- Runtime smoke on `:3600`: home, collections, both seeded collections and the bag return 200 with seeded content; unknown collection slug renders the not-found body but still returns 200
+- Cosmetic doc fix during review: project README seed-determinism sentence now notes order dates are relative to the seed day
+- Landed verdicts on work. Next review: none (next TODO: P01-3).

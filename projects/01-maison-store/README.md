@@ -63,7 +63,7 @@ Product photography is intentionally absent. Every product and collection image 
 
 The app is a standard Next.js App Router project. `src/app/layout.tsx` holds the announcement bar, masthead with the collections mega-menu, and footer; the header is a small client component for the menu and keyboard handling. Lists and pages are server components reading Prisma directly.
 
-The Prisma schema models the whole purchase path up front — collection, product, variant, cart, order, discount, wishlist — so later surfaces add behaviour rather than migrations. The home page reads its collections, featured products, testimonials and journal entries from Prisma, and the newsletter block validates an address on the server before writing a `NewsletterSubscriber` row. Nothing leaves the demo database. Money is stored as integer minor units and formatted at render time. `prisma/seed.ts` is deterministic: the same command produces the same catalogue and orders.
+The Prisma schema models the whole purchase path up front — collection, product, variant, cart, order, discount, wishlist — so later surfaces add behaviour rather than migrations. The home page reads its collections, featured products, testimonials and journal entries from Prisma, and the newsletter block validates an address on the server before writing a `NewsletterSubscriber` row. Nothing leaves the demo database. Money is stored as integer minor units and formatted at render time. `prisma/seed.ts` rebuilds the same catalogue on every run; order dates are relative to the day you seed.
 
 ## What I left out, and why
 
