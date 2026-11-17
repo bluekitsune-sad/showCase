@@ -46,7 +46,7 @@ Only the builder writes `— review needed`. Only the reviewer writes `— revie
 
 ### 01 · Maison Store — `projects/01-maison-store`
 
-- [ ] `P01-1` Scaffold Next.js + TypeScript + Tailwind + Prisma/SQLite in `projects/01-maison-store`: design system (type scale, colours, spacing), storefront shell (announcement bar, nav, mega-menu, footer), and seed data for collections, products, variants, and images.
+- [x] `P01-1` Scaffold Next.js + TypeScript + Tailwind + Prisma/SQLite in `projects/01-maison-store`: design system (type scale, colours, spacing), storefront shell (announcement bar, nav, mega-menu, footer), and seed data for collections, products, variants, and images. — review needed
 - [ ] `P01-2` Build the storefront home page: hero, featured collection, product grid, editorial sections, testimonials, newsletter block — all driven by seeded data, responsive from 360 px.
 - [ ] `P01-3` Build catalog and product detail: collection and category pages, sort and filter (price, size, colour, availability), product page with variant selection, gallery, size guide, and related products.
 - [ ] `P01-4` Build cart and checkout: persistent cart, quantity and variant editing, discount code validation, address form with server-side validation, order summary, and a mock payment step (no real charge).

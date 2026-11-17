@@ -10,10 +10,10 @@ role: builder
 run: 44100144977
 item: P01-1
 branch: opencode/todo-44100144977-p01-1
-phase: committed
+phase: handoff-committed
 updated: 17 Nov 2026, 14:19 UTC
-next: handoff commit — tick P01-1 in TODO.md, append REVIEW entry, set phase handoff-committed
-notes: scaffold, schema, seed and shell done; lint/typecheck/build pass
+next: land the branch on work, then session update and idle checkpoint
+notes: P01-1 marked review needed; work commit 7574b4a
 ```
 
 **Fields**

@@ -139,3 +139,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** 2026-11-15
 - **Verdict notes:** Re-ran `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/04-nexus-business-suite` — all pass, no warnings. Read `app-shell.tsx`, `sidebar.tsx` and the `topbar.tsx` diff. Confirmed: the wrapper around topbar/main gets the React 19 boolean `inert` while the drawer is open (and the drawer is a sibling, so it stays interactive); opening moves focus to the drawer's first control (the labelled close button) and `tabIndex={-1}` gives a fallback; the window keydown handler traps Tab/Shift+Tab with wrap and pulls focus back if it is outside the drawer; `wasOpen` avoids stealing focus on mount and restores it to the menu trigger on Escape, overlay click and link close. The trigger is `lg:hidden`, so the permanent desktop sidebar is unaffected when the drawer state is false. No browser session smoke was possible here (client-side focus is not observable from a server render); the effect and keydown logic were checked by reading. No secrets, no real data, no `.github` changes, nothing touched outside the project; README untouched. Approved, no findings.
+
+### P01-1 · round 1 — Scaffold Maison Store
+
+- **Built:** 17 Nov 2026, 14:19 UTC
+- **Commit:** `7574b4a` — P01-1: scaffold Maison Store
+- **Scope:** Next.js 16 + strict TypeScript + Tailwind 4 + Prisma 7/SQLite; editorial design tokens (stone paper, ink, one moss accent, serif display); storefront shell with announcement bar, masthead, collections mega-menu, mobile nav, footer and skip link; full commerce schema; deterministic seed (4 collections, 24 products, 99 variants, 6 customers, 8 orders, 2 discount codes); home, collections index/detail, empty bag, custom 404, loading and error states; project README setup, demo data, architecture and limits.
+- **Checked by builder:** `npm install`, `npx prisma migrate dev --name init`, `npx tsx prisma/seed.ts`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. Production `next start` smoke: `/`, `/collections`, `/collections/atelier-noir`, `/cart` return 200 and render seeded collections/products; unknown collection slug renders the custom not-found page and title. Note: that unknown-slug response carries a 200 status rather than 404 because the dynamic shell has already streamed — the body and title are the not-found surface.
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
