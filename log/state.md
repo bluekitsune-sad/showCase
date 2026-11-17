@@ -2,10 +2,10 @@
 
 The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **before doing anything else**. It is the reason a cut-off run can continue instead of starting over.
 
-Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: idle
+Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: building` leaves it alone.
 
 ```
-status: building
+status: idle
 role: -
 run: 44202222456
 item: -
