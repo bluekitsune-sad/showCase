@@ -2,18 +2,18 @@
 
 The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **before doing anything else**. It is the reason a cut-off run can continue instead of starting over.
 
-Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: building` leaves it alone.
+Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: idle
 
 ```
 status: building
-role: builder
+role: -
 run: 44202222456
-item: P01-2
-branch: opencode/todo-44202222456-p01-2
-phase: handoff-committed
-updated: 17 Nov 2026, 23:46 UTC
-next: land the branch on work and close the batch
-notes: P01-1 is awaiting review; building the home page on top of it
+item: -
+branch: -
+phase: -
+updated: 17 November 2026, 23:53 UTC
+next: P01-3 (next unchecked item)
+notes: P01-1 and P01-2 await review on work
 ```
 
 **Fields**

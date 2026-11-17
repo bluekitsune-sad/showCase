@@ -179,3 +179,9 @@ _No sessions logged yet._
 - P01-1 built, commit 7574b4a, handed to review
 - Checks: `npm install`, `prisma migrate dev`, seed, `npm run lint`, `npm run typecheck`, `npm run build`, production smoke of `/`, `/collections`, `/collections/atelier-noir` and `/cart`
 - Landed on work. Next unchecked item: P01-2.
+
+## 17 November 2026, 23:53 UTC · builder · run 44202222456
+- Batch: 1 item
+- P01-2 built, commit 240a790, handed to review
+- Checks: `npm install`, `prisma migrate dev --name home_content`, seed, `npm run lint`, `npm run typecheck`, `npm run build`, production smoke of the home page
+- Landed on work. Next unchecked item: P01-3.
