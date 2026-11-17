@@ -150,3 +150,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** —
 - **Verdict notes:** —
+
+### P01-2 · round 1 — Storefront home page
+
+- **Built:** 17 Nov 2026, 23:52 UTC
+- **Commit:** `240a790` — P01-2: build the storefront home page
+- **Scope:** Hero with featured-collection link; large featured-collection section; collections strip; featured product grid; seeded journal/editorial section; seeded testimonials; newsletter block with server-side validation and a `NewsletterSubscriber` write; empty states for featured, journal, testimonials and product grid; responsive from 360 px with three new home-content models and seed rows.
+- **Checked by builder:** `npm install`, `npx prisma migrate dev --name home_content`, `npm run db:seed`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. Production `next start` smoke: home page returns 200 and renders all six sections (`Featured collection`, `From the journal`, `Worn, mended, kept`, `New cloth, once a month`); the newsletter action was reviewed by reading only, not submitted from a browser.
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —

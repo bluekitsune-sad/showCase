@@ -10,9 +10,9 @@ role: builder
 run: 44202222456
 item: P01-2
 branch: opencode/todo-44202222456-p01-2
-phase: committed
+phase: handoff-committed
 updated: 17 Nov 2026, 23:46 UTC
-next: finish handoff marker and land the branch
+next: land the branch on work and close the batch
 notes: P01-1 is awaiting review; building the home page on top of it
 ```
 
