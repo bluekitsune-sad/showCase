@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — editorial and quiet.
+ * Warm stone paper, ink, and a single deep moss accent.
+ * Semantic names only; components never hard-code raw hex.
+ */
+:root {
+  --paper: #f1efe9;
+  --surface: #fbf9f4;
+  --surface-sunken: #e9e5db;
+  --ink: #191816;
+  --ink-muted: #5d594f;
+  --ink-subtle: #8b857a;
+  --line: #ddd6c8;
+  --line-strong: #c8bfae;
+
+  --accent: #3e4b3a;
+  --accent-hover: #2f3a2c;
+  --accent-soft: #e3e7de;
+  --accent-ink: #2b3527;
+
+  --sale: #8a3b2a;
+  --sale-soft: #f3e4df;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua",
+    Palatino, Georgia, serif;
+  --font-sans: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+
+  --color-sale: var(--sale);
+  --color-sale-soft: var(--sale-soft);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.0625rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+  --text-5xl: 4rem;
+}
+
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+@layer components {
+  .container-x {
+    margin-inline: auto;
+    max-width: 76rem;
+    padding-inline: 1.25rem;
+    width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    .container-x {
+      padding-inline: 1.75rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-x {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.04;
+  }
+
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .btn {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    gap: 0.5rem;
+    justify-content: center;
+    letter-spacing: 0.08em;
+    min-height: 2.75rem;
+    padding: 0.625rem 1.35rem;
+    text-transform: uppercase;
+    transition: background-color 150ms ease, border-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--surface);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-hover);
+  }
+
+  .btn-ghost {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--ink);
+    background: var(--surface);
+  }
+}

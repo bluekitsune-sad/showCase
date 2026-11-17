@@ -10,10 +10,10 @@ role: builder
 run: 44100144977
 item: P01-1
 branch: opencode/todo-44100144977-p01-1
-phase: implementing
-updated: 17 Nov 2026, 00:00 UTC
-next: write Maison Store scaffold files (package, schema, seed, shell, home)
-notes: branch created from origin/work
+phase: committed
+updated: 17 Nov 2026, 14:19 UTC
+next: handoff commit — tick P01-1 in TODO.md, append REVIEW entry, set phase handoff-committed
+notes: scaffold, schema, seed and shell done; lint/typecheck/build pass
 ```
 
 **Fields**
