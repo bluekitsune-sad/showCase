@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { colourHex, formatPrice, toneGradient } from "@/lib/format";
 
 type ProductCardData = {
@@ -22,7 +23,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
     product.compareAtPrice !== null && product.compareAtPrice > product.price;
 
   return (
-    <article>
+    <Link href={`/products/${product.slug}`} className="group block">
       <div
         className="relative overflow-hidden rounded-sm border border-line"
         style={{ background: toneGradient(product.slug) }}
@@ -42,7 +43,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
 
       <div className="mt-3 flex items-start justify-between gap-4">
         <div>
-          <h3 className="font-display text-lg leading-snug text-ink">
+          <h3 className="font-display text-lg leading-snug text-ink group-hover:text-accent">
             {product.name}
           </h3>
           <p className="mt-0.5 text-xs text-ink-subtle">{product.collection.name}</p>
@@ -76,6 +77,6 @@ export function ProductCard({ product }: { product: ProductCardData }) {
               : `Sizes ${sizesInStock.join(", ")}`}
         </span>
       </div>
-    </article>
+    </Link>
   );
 }

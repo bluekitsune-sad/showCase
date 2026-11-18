@@ -33,6 +33,12 @@ export default async function CollectionsPage() {
           Each collection is built around one cloth or one shape. Start where you
           need to, and layer from there.
         </p>
+        <Link
+          href="/products"
+          className="mt-6 inline-block text-sm text-ink underline decoration-line-strong underline-offset-4 hover:text-accent"
+        >
+          Shop all pieces
+        </Link>
       </header>
 
       {collections.length === 0 ? (
