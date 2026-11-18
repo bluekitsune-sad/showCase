@@ -200,3 +200,10 @@ _No sessions logged yet._
 - Checks: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build`, production smoke of `/products`, a filtered catalogue, a product page and a filtered collection — all pass
 - Known: unknown product slugs render the not-found body with HTTP 200, same streaming limit as `P01-1-r1`
 - Landed on work. Next unchecked item: P01-4.
+
+## 18 November 2026, 14:07 UTC · reviewer · run 44316251094
+- Reviewed: P01-3 approved (1 entry; follow-ups `P01-3-r1` product-slug 404 and `P01-3-r2` availability/size semantics)
+- Re-ran: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/01-maison-store` — all pass
+- Runtime smoke on `:3210`: `/products` 24 cards, `?size=M` 13, `?size=S` 11, `?availability=sold-out` 0 with empty state, `?price=over-250&sort=price-asc` 5, product page 200 with 4 related, filtered collection 3; unknown product slug renders not-found body but returns 200 (tracked)
+- SQLite check: 99 variants, 5 zero-stock, no fully sold-out product in seed
+- Landed verdict on work. Next review: none (next TODO: P01-4).
