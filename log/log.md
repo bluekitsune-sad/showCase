@@ -192,3 +192,11 @@ _No sessions logged yet._
 - Runtime smoke on `:3600`: home, collections, both seeded collections and the bag return 200 with seeded content; unknown collection slug renders the not-found body but still returns 200
 - Cosmetic doc fix during review: project README seed-determinism sentence now notes order dates are relative to the seed day
 - Landed verdicts on work. Next review: none (next TODO: P01-3).
+
+## 18 November 2026, 13:54 UTC · builder · run 44316251094
+- Batch: 1 item
+- P01-3 built, commit ab486ce, handed to review
+- Added URL-driven sort/filter on collection pages and a new `/products` catalogue; product pages with gallery, variant stock picker, size guide and related pieces
+- Checks: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build`, production smoke of `/products`, a filtered catalogue, a product page and a filtered collection — all pass
+- Known: unknown product slugs render the not-found body with HTTP 200, same streaming limit as `P01-1-r1`
+- Landed on work. Next unchecked item: P01-4.
