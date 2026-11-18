@@ -13,7 +13,7 @@ branch: -
 phase: -
 updated: 18 Nov 2026, 13:54 UTC
 next: P01-4 (next unchecked item)
-notes: P01-3 handed to review on work; runway smoke of catalogue and product pages returned 200
+notes: P01-3 handed to review on work; runtime smoke of catalogue and product pages returned 200
 ```
 
 **Fields**
