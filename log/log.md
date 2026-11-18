@@ -207,3 +207,9 @@ _No sessions logged yet._
 - Runtime smoke on `:3210`: `/products` 24 cards, `?size=M` 13, `?size=S` 11, `?availability=sold-out` 0 with empty state, `?price=over-250&sort=price-asc` 5, product page 200 with 4 related, filtered collection 3; unknown product slug renders not-found body but returns 200 (tracked)
 - SQLite check: 99 variants, 5 zero-stock, no fully sold-out product in seed
 - Landed verdict on work. Next review: none (next TODO: P01-4).
+
+## 18 Nov 2026, 23:27 UTC · builder · run 44419448086
+- Batch: 1 item (P01-4 split into P01-4a bag / P01-4b checkout before starting)
+- P01-4a built, commit 75b799b, handed to review
+- Re-ran: npm run lint, npm run typecheck, npm run build, npm run db:setup; production smoke test of /cart empty and populated (200, correct totals)
+- Landed on work. Next unchecked item: P01-4b (after P01-4a review).
