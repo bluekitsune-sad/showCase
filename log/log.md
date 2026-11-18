@@ -213,3 +213,10 @@ _No sessions logged yet._
 - P01-4a built, commit 75b799b, handed to review
 - Re-ran: npm run lint, npm run typecheck, npm run build, npm run db:setup; production smoke test of /cart empty and populated (200, correct totals)
 - Landed on work. Next unchecked item: P01-4b (after P01-4a review).
+
+## 18 Nov 2026, 23:30 UTC · reviewer · run 44419448086
+- Reviewed: P01-4a approved (1 entry; no follow-ups needed)
+- Re-ran: `npm ci`, `npx prisma validate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/01-maison-store` — all pass
+- Functional smoke on `:3456` with SQLite fixtures: `/`, product page, `/cart` empty all 200; seeded cart shows "2 pieces", `$840` subtotal, header "Bag, 2 items"; no-JS update form 2→5, 100→10 line cap, 9→2 stock clamp, foreign cookie no-op, remove deletes
+- Non-blocking: "added" message when stock-clamped down; empty `Cart` row lingers after last removal
+- Landed verdict on work. Next review: none (next TODO: P01-4b).
