@@ -10,7 +10,13 @@ const MAIN_LINKS = [
   { label: "Our story", href: "/#story" },
 ];
 
-export function SiteHeader({ collections }: { collections: NavCollection[] }) {
+export function SiteHeader({
+  collections,
+  cartCount,
+}: {
+  collections: NavCollection[];
+  cartCount: number;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
 
@@ -99,8 +105,24 @@ export function SiteHeader({ collections }: { collections: NavCollection[] }) {
         </nav>
 
         <div className="ml-auto flex items-center gap-5">
-          <Link href="/cart" className="text-sm text-ink hover:text-accent">
+          <Link
+            href="/cart"
+            aria-label={
+              cartCount > 0
+                ? `Bag, ${cartCount} ${cartCount === 1 ? "item" : "items"}`
+                : "Bag, empty"
+            }
+            className="flex items-center gap-1.5 text-sm text-ink hover:text-accent"
+          >
             Bag
+            {cartCount > 0 ? (
+              <span
+                aria-hidden="true"
+                className="min-w-5 rounded-full bg-accent px-1.5 py-0.5 text-center text-[0.65rem] leading-tight text-surface"
+              >
+                {cartCount > 99 ? "99+" : cartCount}
+              </span>
+            ) : null}
           </Link>
         </div>
       </div>

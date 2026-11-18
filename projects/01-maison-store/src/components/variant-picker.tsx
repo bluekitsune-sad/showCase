@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AddToBag } from "@/components/add-to-bag";
 import { colourHex } from "@/lib/format";
 
 type Variant = {
@@ -119,19 +120,17 @@ export function VariantPicker({ variants, sizes, colours }: VariantPickerProps) 
         {availability}
       </p>
 
-      <div>
-        <button
-          type="button"
-          disabled={!hasStock}
-          className="btn btn-primary w-full disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          Add to bag
-        </button>
-        <p className="mt-3 text-xs leading-relaxed text-ink-subtle">
-          Online checkout opens with the next collection update. For now every
-          piece is shown with its live size and colour availability.
+      {selected ? (
+        <AddToBag
+          key={selected.id}
+          variantId={selected.id}
+          soldOut={!hasStock}
+        />
+      ) : (
+        <p className="text-xs leading-relaxed text-ink-subtle">
+          Choose a colour and size to add this piece to your bag.
         </p>
-      </div>
+      )}
 
       {selected ? (
         <p className="text-xs text-ink-subtle">SKU {selected.sku}</p>

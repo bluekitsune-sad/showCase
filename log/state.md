@@ -10,10 +10,10 @@ role: builder
 run: 44419448086
 item: P01-4a
 branch: opencode/todo-44419448086-maison-cart
-phase: implementing
-updated: 18 Nov 2026, 23:18 UTC
-next: add the cart library and server actions
-notes: P01-4 split into P01-4a (bag) and P01-4b (checkout); implementing P01-4a
+phase: committed
+updated: 18 Nov 2026, 23:25 UTC
+next: tick P01-4a, append the REVIEW entry and commit the handoff
+notes: cart library, server actions, bag page, header count and README updated; lint, typecheck, build and a production smoke test pass
 ```
 
 **Fields**

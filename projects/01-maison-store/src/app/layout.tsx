@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AnnouncementBar, SiteFooter } from "@/components/layout/site-chrome";
 import { SiteHeader } from "@/components/layout/site-header";
+import { getCartCount } from "@/lib/cart";
 import { prisma } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -26,10 +27,21 @@ async function getNavigation() {
   }
 }
 
+async function getBagCount() {
+  try {
+    return await getCartCount();
+  } catch {
+    return 0;
+  }
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const collections = await getNavigation();
+  const [collections, cartCount] = await Promise.all([
+    getNavigation(),
+    getBagCount(),
+  ]);
 
   return (
     <html lang="en">
@@ -41,7 +53,7 @@ export default async function RootLayout({
           Skip to content
         </a>
         <AnnouncementBar />
-        <SiteHeader collections={collections} />
+        <SiteHeader collections={collections} cartCount={cartCount} />
         <main id="main">{children}</main>
         <SiteFooter collections={collections} />
       </body>
