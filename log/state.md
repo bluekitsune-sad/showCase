@@ -10,9 +10,9 @@ role: builder
 run: 44316251094
 item: P01-3
 branch: opencode/todo-44316251094-p01-3
-phase: implementing
-updated: 18 Nov 2026, 00:20 UTC
-next: commit catalogue, product detail and README updates
+phase: handoff-committed
+updated: 18 Nov 2026, 13:52 UTC
+next: land the branch on work, then session update
 notes: lint, typecheck and build pass; runtime smoke of /products and a product page returns 200
 ```
 

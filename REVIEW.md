@@ -161,3 +161,15 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** 2026-11-17
 - **Verdict notes:** Re-ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/01-maison-store` on the work tip that contains this commit — all pass. Read the `page.tsx` diff, `newsletter/actions.ts`, `newsletter-form.tsx`, the schema and seed additions. The hero, featured collection, collections strip, featured product grid, journal and testimonials all read Prisma in one `Promise.all`; the featured collection falls back to the first seeded collection and the product grid, journal and testimonials each have an empty state. The newsletter form is a labelled, `aria-live` client form whose server action trims and lowercases the address, caps it at 254 characters, validates the format before any write, treats a duplicate as a friendly success, writes a `NewsletterSubscriber` row and returns a visible error on failure. Seed confirmed at 3 testimonials and 3 journal entries, and every seeded editorial `href` resolves (`/collections/atelier-noir`, `/collections/linen-season`, `/#story`). Production smoke on `:3600`: `/` returns 200 with all six section headings present in the rendered HTML. The newsletter write path was checked by reading, not submitted from a browser. No secrets, no real data, no `.github` changes, nothing touched outside the project; README voice is clean. Approved, no blocking findings. Non-blocking note: the "Read more" links on journal cards point at collection pages rather than article destinations, which is acceptable while there is no article surface.
+
+
+### P01-3 · round 1 — Catalogue and product detail
+
+- **Built:** 18 Nov 2026, 13:51 UTC
+- **Commit:** `ab486ce` — P01-3: add catalogue filters and product detail
+- **Scope:** URL-driven sort and filters (price band, size, colour, availability) on every collection page plus a new `/products` catalogue; product pages at `/products/[slug]` with gallery, colour and size picker showing live variant stock and SKU, size guide, material/collection details, related pieces; product cards now link through to their product page; README walkthrough and limits updated.
+- **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. Production `next start` smoke on `:3100`: `/products`, `/products?size=M&sort=price-asc`, `/products/wool-overcoat` and `/collections/atelier-noir?colour=Ink&availability=in-stock` return 200 with rendered content. Known: an unknown product slug renders the not-found body with HTTP 200, the same streaming limitation as the collection route tracked in `P01-1-r1`.
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
