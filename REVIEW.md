@@ -174,3 +174,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Reviewed:** 18 Nov 2026
 - **Verdict notes:** Re-ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/01-maison-store` — all pass; the build emits `/products` and `/products/[slug]` as dynamic routes. Read `lib/catalog.ts`, `components/catalog.tsx`, `variant-picker.tsx`, `product-gallery.tsx`, both new pages, the collection-page diff and the `product-card` diff. Filters are URL-driven through a plain GET form (works without JS), unknown sort values fall back to Featured, array params collapse to the first value, and all queries go through Prisma so there is no injection surface. The empty state distinguishes "collection being prepared" from "no matches" and offers clear actions; the result count is a polite status. Product pages handle the no-variant case, and the picker keeps colour/size/sold-out selection accessible with `aria-pressed` and a live availability line. Production smoke on `:3210`: `/products` (24 cards), `?size=M` (13), `?size=S` (11), `?availability=sold-out` (0, empty state), `?price=over-250&sort=price-asc` (5), `/products/wool-overcoat` (200, 4 related), `/collections/atelier-noir?colour=Ink&availability=in-stock` (3) all return 200. Direct SQLite check: 99 variants, 5 with zero stock, no fully sold-out product in the seed. Only project files touched, no `.github` changes, no secrets, demo data synthetic, README voice clean. Approved, no blocking findings.
 - Non-blocking notes: an unknown product slug (`/products/nope-xyz`) renders the not-found body but returns 200, the same streaming limitation as collections; tracked as `P01-3-r1`. Availability "All pieces" plus a size/colour still requires `stock > 0`, so sold-out matches are hidden; recorded as `P01-3-r2` for a decision. The Add to bag button becomes enabled when a size is in stock but has no handler yet; the note under it explains this and cart work `P01-4` will wire it, so no item was added.
+
+### P01-4a · round 1 — Build the persistent bag
+
+- **Built:** 18 Nov 2026, 23:26 UTC
+- **Commit:** `75b799b` — P01-4a: build the persistent bag
+- **Scope:** Server-backed cart keyed by an HttpOnly cookie; add-to-bag on the product page with stock feedback, quantity steppers and remove with server-enforced stock limits, header bag count, empty and loading states
+- **Checked by builder:** `npm run lint`, `npm run typecheck`, `npm run build`, `npm run db:setup`; production smoke test of `/cart` empty and populated via a seeded cookie (200, correct count and totals; product page 200)
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —

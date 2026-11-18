@@ -10,10 +10,10 @@ role: builder
 run: 44419448086
 item: P01-4a
 branch: opencode/todo-44419448086-maison-cart
-phase: committed
-updated: 18 Nov 2026, 23:25 UTC
-next: tick P01-4a, append the REVIEW entry and commit the handoff
-notes: cart library, server actions, bag page, header count and README updated; lint, typecheck, build and a production smoke test pass
+phase: handoff-committed
+updated: 18 Nov 2026, 23:26 UTC
+next: land the branch on work, then write the session log and footer
+notes: P01-4a handed to review at 75b799b; P01-4b (checkout) is next after review
 ```
 
 **Fields**
