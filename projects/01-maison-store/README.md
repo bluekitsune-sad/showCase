@@ -55,7 +55,7 @@ Useful scripts: `npm run db:reset` rebuilds the demo data from scratch, `npm run
 
 ## Demo account / demo data
 
-The seeded customers are order history only; sign-in arrives with the accounts work, so there is no password to share yet. The storefront is public: open the home page, the collections index, the full catalogue at `/products`, any collection, any product, add a size to the bag, and open `/cart`.
+The seeded customers are order history only; sign-in arrives with the accounts work, so there is no password to share yet. The storefront is public: open the home page, the collections index, the full catalogue at `/products`, any collection, any product, add a size to the bag, open `/cart`, then continue to `/checkout`. Two discount codes are seeded — `WELCOME10` takes 10% off over $100 and `ATELIER25` takes $25 off over $250. The payment step is mocked: any 13–19 digit card number, a future expiry and a 3–4 digit security code place an order without a charge, and the confirmation opens at `/checkout/<order-number>`.
 
 Product photography is intentionally absent. Every product and collection image is a deterministic CSS gradient placeholder so the demo never requests an external asset. Add real captures in `public/` when photography exists.
 
@@ -63,13 +63,13 @@ Product photography is intentionally absent. Every product and collection image 
 
 The app is a standard Next.js App Router project. `src/app/layout.tsx` holds the announcement bar, masthead with the collections mega-menu, and footer; the header is a small client component for the menu and keyboard handling. Lists and pages are server components reading Prisma directly.
 
-Catalogue filters and sorting live in the query string, so a filtered view can be bookmarked and works without JavaScript; the product page is a client island only for the gallery and variant selection. The bag is a `Cart` row keyed by an HttpOnly cookie rather than browser storage: the first add creates it on the server, and quantity changes and removals revalidate the bag and the header count together, with variant stock enforced on the server. The Prisma schema models the whole purchase path up front — collection, product, variant, cart, order, discount, wishlist — so later surfaces add behaviour rather than migrations. The home page reads its collections, featured products, testimonials and journal entries from Prisma, and the newsletter block validates an address on the server before writing a `NewsletterSubscriber` row. Nothing leaves the demo database. Money is stored as integer minor units and formatted at render time. `prisma/seed.ts` rebuilds the same catalogue on every run; order dates are relative to the day you seed.
+Catalogue filters and sorting live in the query string, so a filtered view can be bookmarked and works without JavaScript; the product page is a client island only for the gallery and variant selection. The bag is a `Cart` row keyed by an HttpOnly cookie rather than browser storage: the first add creates it on the server, and quantity changes and removals revalidate the bag and the header count together, with variant stock enforced on the server. Checkout revalidates the cart, stock and discount code on the server, writes the order with line snapshots, decrements variant stock and clears the bag in one transaction; card fields are checked for shape only and never stored. The Prisma schema models the whole purchase path up front — collection, product, variant, cart, order, discount, wishlist — so later surfaces add behaviour rather than migrations. The home page reads its collections, featured products, testimonials and journal entries from Prisma, and the newsletter block validates an address on the server before writing a `NewsletterSubscriber` row. Nothing leaves the demo database. Money is stored as integer minor units and formatted at render time. `prisma/seed.ts` rebuilds the same catalogue on every run; order dates are relative to the day you seed.
 
 ## What I left out, and why
 
-- **Checkout and accounts** are later items in this build. The bag is live — add a size, change quantities, remove pieces and it survives a refresh — but there is no payment step or customer sign-in yet.
+- **Accounts** are later in this build. Checkout collects an email and creates a customer record for the order, but there is no sign-in, order history or wishlist yet.
 - **Photography** is replaced by generated gradients rather than hot-linked files, so the demo needs no external requests and no licensing questions.
-- **Real payments** are out of scope for v1; the provider interface and mock step land with checkout.
+- **Real payments** are out of scope for v1; the checkout step is mocked and no card data is stored.
 
 ## Definition of done
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { removeCartItem, updateCartItem } from "@/app/cart/actions";
 import { cartItemCount, cartSubtotal, getCart, MAX_PER_LINE } from "@/lib/cart";
+import { SHIPPING_THRESHOLD } from "@/lib/checkout";
 import { formatPrice, toneGradient } from "@/lib/format";
 
 export const metadata: Metadata = {
@@ -51,6 +52,10 @@ export default async function CartPage() {
   const subtotal = cartSubtotal(cart);
   const count = cartItemCount(cart);
   const currency = items[0].variant.product.currency;
+  const checkoutBlocked = items.some(
+    (item) =>
+      item.variant.stock === 0 || item.quantity > item.variant.stock,
+  );
 
   return (
     <div className="container-x py-10 lg:py-16">
@@ -216,9 +221,18 @@ export default async function CartPage() {
             <span className="text-ink">Estimated total</span>
             <span className="text-ink">{formatPrice(subtotal, currency)}</span>
           </div>
-          <p className="mt-5 text-xs leading-relaxed text-ink-subtle">
-            Checkout opens with the next collection update. Your bag is saved on
-            this device for 30 days.
+          {checkoutBlocked ? (
+            <p className="mt-5 border border-sale/40 bg-sale-soft px-3 py-2 text-xs leading-relaxed text-sale">
+              Adjust the pieces marked above before checking out.
+            </p>
+          ) : (
+            <Link href="/checkout" className="btn btn-primary mt-5 w-full">
+              Proceed to checkout
+            </Link>
+          )}
+          <p className="mt-3 text-xs leading-relaxed text-ink-subtle">
+            Your bag is saved on this device for 30 days. Delivery is
+            complimentary over {formatPrice(SHIPPING_THRESHOLD, currency)}.
           </p>
         </aside>
       </div>

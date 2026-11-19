@@ -10,10 +10,10 @@ role: builder
 run: 44540861095
 item: P01-4b
 branch: opencode/todo-44540861095-p01-4b-checkout
-phase: implementing
-updated: 19 Nov 2026, 14:12 UTC
-next: add checkout helpers, server actions, page and confirmation route
-notes: starting from work b89970a; cart (P01-4a) already landing
+phase: committed
+updated: 19 Nov 2026, 14:40 UTC
+next: record the work SHA, tick TODO and request review
+notes: checkout built; lint, typecheck and build pass; transaction rollback checked
 ```
 
 **Fields**
