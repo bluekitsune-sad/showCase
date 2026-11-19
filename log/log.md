@@ -220,3 +220,9 @@ _No sessions logged yet._
 - Functional smoke on `:3456` with SQLite fixtures: `/`, product page, `/cart` empty all 200; seeded cart shows "2 pieces", `$840` subtotal, header "Bag, 2 items"; no-JS update form 2→5, 100→10 line cap, 9→2 stock clamp, foreign cookie no-op, remove deletes
 - Non-blocking: "added" message when stock-clamped down; empty `Cart` row lingers after last removal
 - Landed verdict on work. Next review: none (next TODO: P01-4b).
+
+## 19 Nov 2026, 14:24 UTC · builder · run 44540861095
+- Batch: 1 item (limit 1)
+- P01-4b built, commit `9018ca0`, handed to review (checkout, mock payment, discount validation, atomic order write, confirmation)
+- Re-ran: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/01-maison-store` — all pass; checked transaction support and rollback with a throwaway script
+- Landed on work at `99bfd3f` (fast-forward). Next unchecked item: P01-5.
