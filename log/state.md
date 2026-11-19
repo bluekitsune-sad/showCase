@@ -6,14 +6,14 @@ Rewrite this file. Never append to it. Only clear a state you wrote yourself —
 
 ```
 status: idle
-role: -
+role: reviewer
 run: 44540861095
 item: -
 branch: -
 phase: -
-updated: 19 Nov 2026, 14:24 UTC
-next: P01-5 (accounts), after the P01-4b review
-notes: P01-4b landed on work at 99bfd3f; review queue has one entry
+updated: 19 Nov 2026, 14:45 UTC
+next: P01-5 (customer accounts)
+notes: P01-4b approved and landed on work; review queue empty
 ```
 
 **Fields**

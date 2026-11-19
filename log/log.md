@@ -226,3 +226,11 @@ _No sessions logged yet._
 - P01-4b built, commit `9018ca0`, handed to review (checkout, mock payment, discount validation, atomic order write, confirmation)
 - Re-ran: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/01-maison-store` — all pass; checked transaction support and rollback with a throwaway script
 - Landed on work at `99bfd3f` (fast-forward). Next unchecked item: P01-5.
+
+## 19 Nov 2026, 14:45 UTC · reviewer · run 44540861095
+- Reviewed: P01-4b approved (1 entry; 1 follow-up added: P01-4b-r1)
+- Re-ran: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/01-maison-store` — all pass; build emits `/checkout` and `/checkout/[orderNumber]`
+- Logic checked directly: discount thresholds (WELCOME10 9,999 reject / 10,000→1,000 off; ATELIER25 24,999 reject / 25,000→2,500 off), unknown code, expired/bad card, bad email, shipping 850→0 at 15,000
+- Smoke on `:3488`: `/`, empty `/checkout` 200; seeded cart renders summary + demo codes + Place order; `/checkout/MS-1001` renders confirmation with totals and address
+- Non-blocking: public confirmation page with guessable order number (gate in P01-5 or use a token); discount input text lingers after Remove code
+- Landed verdict on work. Next review: none (next TODO: P01-5).

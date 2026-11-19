@@ -50,12 +50,13 @@ Only the builder writes `— review needed`. Only the reviewer writes `— revie
 - [x] `P01-2` Build the storefront home page: hero, featured collection, product grid, editorial sections, testimonials, newsletter block — all driven by seeded data, responsive from 360 px. — reviewed 2026-11-17
 - [x] `P01-3` Build catalog and product detail: collection and category pages, sort and filter (price, size, colour, availability), product page with variant selection, gallery, size guide, and related products. — reviewed 2026-11-18
 - [x] `P01-4a` Build the persistent bag: server-backed cart keyed by an HttpOnly cookie, add-to-bag from the product page, quantity and remove controls, stock limits, live bag count in the header, and empty/loading states. — reviewed 2026-11-18
-- [x] `P01-4b` Build checkout: address form with server-side validation, discount code validation, order summary, and a mock payment step (no real charge) that writes an order and shows a confirmation. — review needed
+- [x] `P01-4b` Build checkout: address form with server-side validation, discount code validation, order summary, and a mock payment step (no real charge) that writes an order and shows a confirmation. — reviewed 2026-11-19
 - [ ] `P01-5` Build customer accounts: sign in/up, order history, order tracking with per-item status, saved addresses, and wishlist.
 - [ ] `P01-6` Polish Maison Store: SEO metadata and JSON-LD, image optimisation, empty/loading/error states, accessibility pass, and a README with case study and screenshots.
 - [ ] `P01-1-r1` Return a real 404 status for an unknown collection slug; `/collections/<missing>` currently renders the not-found body with HTTP 200 after the dynamic shell streams.
 - [ ] `P01-3-r1` Return a real 404 status for an unknown product slug; `/products/<missing>` currently renders the not-found body with HTTP 200 after the dynamic shell streams.
 - [ ] `P01-3-r2` Decide whether a size/colour filter under availability "All pieces" should include sold-out matches; `whereForFilters` currently requires `stock > 0` for either filter, which hides them.
+- [ ] `P01-4b-r1` Return a real 404 status for an unknown order number; `/checkout/<missing>` currently renders the not-found body with HTTP 200 after the dynamic shell streams (same root cause as `P01-3-r1`).
 
 ### 07 · DocuMind — `projects/07-documind`
 
