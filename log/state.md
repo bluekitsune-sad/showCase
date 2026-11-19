@@ -10,10 +10,10 @@ role: builder
 run: 44540861095
 item: P01-4b
 branch: opencode/todo-44540861095-p01-4b-checkout
-phase: committed
-updated: 19 Nov 2026, 14:40 UTC
-next: record the work SHA, tick TODO and request review
-notes: checkout built; lint, typecheck and build pass; transaction rollback checked
+phase: handoff-committed
+updated: 19 Nov 2026, 14:23 UTC
+next: land the branch on work, then end-of-batch log and README footer
+notes: work SHA 9018ca0; review entry appended
 ```
 
 **Fields**
