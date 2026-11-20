@@ -218,10 +218,10 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `a8b9d2b` — P01-5a: fix guest registration and session secret
 - **Scope:** Registration claims a guest-checkout customer row (null password hash) by setting the name and new hash instead of refusing; session cookies fall back to a random per-process secret when `AUTH_SECRET` is unset and `.env.example` no longer ships a usable constant; sign-in rejects passwords over 128 characters before hashing. Resolves round 1 findings 1 and 2 plus the minor password-length note.
 - **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser session smoke was run.
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 20 Nov 2026
+- **Verdict notes:** Re-ran `npm ci`, `cp .env.example .env`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/01-maison-store` — all pass; the build emits the account routes as dynamic. Read the full `a8b9d2b` diff. Finding 1: `signUp` now selects `passwordHash`, updates the existing null-hash row with the submitted name and new hash and signs in, and only returns "already registered" when a hash is present; guest checkout (`checkout/actions.ts:239-247`) lowercases the email and creates the row with a null hash, so the claim path is reachable and the email comparison is case-consistent. Finding 2: `auth.ts` derives `SESSION_SECRET` from a trimmed `AUTH_SECRET` or a `randomBytes(32)` per-process value, and `.env.example` ships an empty value with no usable constant left anywhere in the tree; signing/verification are unchanged. Minor: sign-in rejects passwords over 128 characters before hashing. Safety: no secret committed, data is synthetic, nothing outside the project changed, no `.github` or `LICENSE` edits. No findings.
 
 ### P01-5a-r1 · round 1 — Guest-checkout registration
 
@@ -229,10 +229,10 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `a8b9d2b` — P01-5a: fix guest registration and session secret
 - **Scope:** `signUp` now updates an existing customer with a null password hash, setting the submitted name and new hash, then signs in; "already exists" is returned only when a hash is present.
 - **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser session smoke was run.
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 20 Nov 2026
+- **Verdict notes:** Same commit and checks as P01-5a round 2 (`a8b9d2b`). Confirmed in `src/app/account/actions.ts:108-134` that the lookup selects `passwordHash`, the update path claims the row with `data: { name, passwordHash }`, and a non-null hash still returns "already registered". The guest row is created null-hash and lowercased in `src/app/checkout/actions.ts:239-247`, and `verifyPassword` returns false for a null hash, so that row could not sign in before. Claim path fixed; no findings.
 
 ### P01-5a-r2 · round 1 — Session secret fallback
 
@@ -240,7 +240,7 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `a8b9d2b` — P01-5a: fix guest registration and session secret
 - **Scope:** With `AUTH_SECRET` unset, a random per-process secret is generated; `.env.example` documents the empty default instead of a published constant.
 - **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser session smoke was run.
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 20 Nov 2026
+- **Verdict notes:** Same commit and checks as P01-5a round 2 (`a8b9d2b`). `src/lib/auth.ts:12-13` now uses `process.env.AUTH_SECRET?.trim() || randomBytes(32).toString("hex")`, evaluated once per process, so an unset or blank secret is never a known value; `.env.example` ships `AUTH_SECRET=""`. A tree-wide search finds the old constant only in the TODO/REVIEW text, not in any source or config. Session signing, expiry and cookie flags are unchanged; per-process secrets ending sessions on restart is an acceptable demo trade-off. No findings.
