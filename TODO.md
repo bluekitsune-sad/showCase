@@ -51,7 +51,7 @@ Only the builder writes `— review needed`. Only the reviewer writes `— revie
 - [x] `P01-3` Build catalog and product detail: collection and category pages, sort and filter (price, size, colour, availability), product page with variant selection, gallery, size guide, and related products. — reviewed 2026-11-18
 - [x] `P01-4a` Build the persistent bag: server-backed cart keyed by an HttpOnly cookie, add-to-bag from the product page, quantity and remove controls, stock limits, live bag count in the header, and empty/loading states. — reviewed 2026-11-18
 - [x] `P01-4b` Build checkout: address form with server-side validation, discount code validation, order summary, and a mock payment step (no real charge) that writes an order and shows a confirmation. — reviewed 2026-11-19
-- [x] `P01-5a` Accounts foundation: scrypt password hashing, signed HttpOnly session cookie, sign-in and sign-up pages with server-side validation, header account entry, sign-out, and a seeded demo password. — review needed
+- [ ] `P01-5a` Accounts foundation: scrypt password hashing, signed HttpOnly session cookie, sign-in and sign-up pages with server-side validation, header account entry, sign-out, and a seeded demo password. — changes requested
 - [ ] `P01-5b` Account home and order history: signed-in dashboard, order list, and order detail with per-item status and tracking timeline.
 - [ ] `P01-5c` Saved addresses: list, add, edit, delete and set default from the account area, validated on the server.
 - [ ] `P01-5d` Wishlist: add and remove from the product page, a wishlist page with empty state, and a sign-in prompt for guests.
@@ -60,6 +60,8 @@ Only the builder writes `— review needed`. Only the reviewer writes `— revie
 - [ ] `P01-3-r1` Return a real 404 status for an unknown product slug; `/products/<missing>` currently renders the not-found body with HTTP 200 after the dynamic shell streams.
 - [ ] `P01-3-r2` Decide whether a size/colour filter under availability "All pieces" should include sold-out matches; `whereForFilters` currently requires `stock > 0` for either filter, which hides them.
 - [ ] `P01-4b-r1` Return a real 404 status for an unknown order number; `/checkout/<missing>` currently renders the not-found body with HTTP 200 after the dynamic shell streams (same root cause as `P01-3-r1`).
+- [ ] `P01-5a-r1` Let a guest-checkout customer create an account: when `signUp` finds an existing customer with `passwordHash === null`, set the name and password hash on that row and sign in instead of returning "email already exists".
+- [ ] `P01-5a-r2` Stop shipping a usable session secret: when `AUTH_SECRET` is unset, generate a random per-process secret instead of falling back to the published `maison-demo-session-secret-change-me` constant.
 
 ### 07 · DocuMind — `projects/07-documind`
 
