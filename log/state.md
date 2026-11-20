@@ -10,8 +10,8 @@ role: builder
 run: 44833258838
 item: P01-5a
 branch: opencode/todo-44833258838-p01-5a
-phase: implementing
-updated: 20 Nov 2026, 22:59 UTC
+phase: committed
+updated: 20 Nov 2026, 23:06 UTC
 next: fix guest-checkout registration, random session secret fallback, and cap sign-in password length
 notes: redo of P01-5a round 1 findings 1 and 2 (also resolves P01-5a-r1 and P01-5a-r2) plus the minor password-length note
 ```

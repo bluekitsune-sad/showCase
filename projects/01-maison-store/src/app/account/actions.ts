@@ -30,6 +30,8 @@ export async function signIn(
   }
   if (!password) {
     errors.password = "Enter your password.";
+  } else if (password.length > 128) {
+    errors.password = "Use 128 characters or fewer.";
   }
 
   if (Object.keys(errors).length > 0) {
@@ -106,9 +108,10 @@ export async function signUp(
   try {
     const existing = await prisma.customer.findUnique({
       where: { email },
-      select: { id: true },
+      select: { id: true, passwordHash: true },
     });
-    if (existing) {
+
+    if (existing?.passwordHash) {
       return {
         status: "error",
         message: "An account with that email already exists. Sign in instead.",
@@ -116,14 +119,17 @@ export async function signUp(
       };
     }
 
-    const customer = await prisma.customer.create({
-      data: {
-        name,
-        email,
-        passwordHash: await hashPassword(password),
-      },
-      select: { id: true },
-    });
+    const passwordHash = await hashPassword(password);
+    const customer = existing
+      ? await prisma.customer.update({
+          where: { id: existing.id },
+          data: { name, passwordHash },
+          select: { id: true },
+        })
+      : await prisma.customer.create({
+          data: { name, email, passwordHash },
+          select: { id: true },
+        });
 
     await createSession(customer.id);
   } catch {

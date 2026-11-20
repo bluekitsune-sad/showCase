@@ -1,14 +1,16 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/db";
 
 export const SESSION_COOKIE = "maison_session";
 export const SESSION_MAX_AGE = 60 * 60 * 24 * 30;
 
-// The demo works without configuration. Set AUTH_SECRET to sign cookies with
-// a private value outside a local demo.
+// The demo works without configuration: with no AUTH_SECRET a random secret is
+// generated per process, so sessions end when the server restarts. Set
+// AUTH_SECRET to a private value to keep sessions across restarts or outside a
+// local demo.
 const SESSION_SECRET =
-  process.env.AUTH_SECRET ?? "maison-demo-session-secret-change-me";
+  process.env.AUTH_SECRET?.trim() || randomBytes(32).toString("hex");
 
 export type SessionCustomer = {
   id: number;
