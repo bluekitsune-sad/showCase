@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **be
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: idle` leaves it alone.
 
 ```
-status: idle
-role: -
-run: 44748098599
-item: -
-branch: -
-phase: -
-updated: 20 Nov 2026, 14:07 UTC
-next: P01-5a (address the two changes-requested findings)
-notes: P01-5a rejected round 1; follow-ups P01-5a-r1 (guest-checkout registration) and P01-5a-r2 (session secret) are in TODO.md
+status: building
+role: builder
+run: 44833258838
+item: P01-5a
+branch: opencode/todo-44833258838-p01-5a
+phase: implementing
+updated: 20 Nov 2026, 22:59 UTC
+next: fix guest-checkout registration, random session secret fallback, and cap sign-in password length
+notes: redo of P01-5a round 1 findings 1 and 2 (also resolves P01-5a-r1 and P01-5a-r2) plus the minor password-length note
 ```
 
 **Fields**
