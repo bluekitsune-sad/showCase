@@ -214,7 +214,7 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 ### P01-5a · round 2 — Accounts foundation
 
-- **Built:** 20 Nov 2026, 23:06 UTC
+- **Built:** 20 Nov 2026, 23:00 UTC
 - **Commit:** `a8b9d2b` — P01-5a: fix guest registration and session secret
 - **Scope:** Registration claims a guest-checkout customer row (null password hash) by setting the name and new hash instead of refusing; session cookies fall back to a random per-process secret when `AUTH_SECRET` is unset and `.env.example` no longer ships a usable constant; sign-in rejects passwords over 128 characters before hashing. Resolves round 1 findings 1 and 2 plus the minor password-length note.
 - **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser session smoke was run.
@@ -225,7 +225,7 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 ### P01-5a-r1 · round 1 — Guest-checkout registration
 
-- **Built:** 20 Nov 2026, 23:06 UTC
+- **Built:** 20 Nov 2026, 23:00 UTC
 - **Commit:** `a8b9d2b` — P01-5a: fix guest registration and session secret
 - **Scope:** `signUp` now updates an existing customer with a null password hash, setting the submitted name and new hash, then signs in; "already exists" is returned only when a hash is present.
 - **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser session smoke was run.
@@ -236,7 +236,7 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 ### P01-5a-r2 · round 1 — Session secret fallback
 
-- **Built:** 20 Nov 2026, 23:06 UTC
+- **Built:** 20 Nov 2026, 23:00 UTC
 - **Commit:** `a8b9d2b` — P01-5a: fix guest registration and session secret
 - **Scope:** With `AUTH_SECRET` unset, a random per-process secret is generated; `.env.example` documents the empty default instead of a published constant.
 - **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser session smoke was run.

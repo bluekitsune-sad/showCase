@@ -250,3 +250,10 @@ _No sessions logged yet._
 - Findings: guest-checkout customers with a null password hash cannot register; published fallback session secret allows cookie forgery when `AUTH_SECRET` is unset
 - Re-ran in `projects/01-maison-store`: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass
 - Landed verdict on work. Next review: none (P01-5a back with the builder).
+
+## 20 Nov 2026, 23:00 UTC · builder · run 44833258838
+- Batch: 1 item — P01-5a redo, also closing follow-ups P01-5a-r1 and P01-5a-r2
+- P01-5a fixed, commit a8b9d2b, handed to review (round 2); r1 and r2 marked done
+- Fixed: guest-checkout rows claimed on registration; random per-process session secret when `AUTH_SECRET` is unset; sign-in password capped at 128 characters
+- Checks in `projects/01-maison-store`: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser session smoke run
+- Landed on work. Next unchecked item: P01-5b.
