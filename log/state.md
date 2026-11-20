@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **be
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: idle` leaves it alone.
 
 ```
-status: reviewing
-role: reviewer
+status: idle
+role: -
 run: 44748098599
-item: P01-5a
-branch: opencode/review-44748098599-p01-5a
-phase: verdict
-updated: 20 Nov 2026, 14:05 UTC
-next: land the changes-requested verdict on work
-notes: P01-5a rejected with 2 findings; follow-ups P01-5a-r1 and P01-5a-r2 added
+item: -
+branch: -
+phase: -
+updated: 20 Nov 2026, 14:07 UTC
+next: P01-5a (address the two changes-requested findings)
+notes: P01-5a rejected round 1; follow-ups P01-5a-r1 (guest-checkout registration) and P01-5a-r2 (session secret) are in TODO.md
 ```
 
 **Fields**
