@@ -244,3 +244,9 @@ _No sessions logged yet._
 - P01-5a built, commit 77efdd8, handed to review
 - Checks in `projects/01-maison-store`: `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; seeded demo password hash verified
 - Landed on work. Next unchecked item: P01-5b.
+
+## 20 Nov 2026, 14:05 UTC · reviewer · run 44748098599
+- Reviewed: P01-5a changes requested (2 follow-ups added: P01-5a-r1, P01-5a-r2)
+- Findings: guest-checkout customers with a null password hash cannot register; published fallback session secret allows cookie forgery when `AUTH_SECRET` is unset
+- Re-ran in `projects/01-maison-store`: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass
+- Landed verdict on work. Next review: none (P01-5a back with the builder).

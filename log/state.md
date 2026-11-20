@@ -10,10 +10,10 @@ role: reviewer
 run: 44748098599
 item: P01-5a
 branch: opencode/review-44748098599-p01-5a
-phase: checking
-updated: 20 Nov 2026, 13:56 UTC
-next: read the P01-5a diff, run lint/typecheck/build, then write the verdict
-notes: oldest review-needed entry is P01-5a round 1
+phase: verdict
+updated: 20 Nov 2026, 14:05 UTC
+next: land the changes-requested verdict on work
+notes: P01-5a rejected with 2 findings; follow-ups P01-5a-r1 and P01-5a-r2 added
 ```
 
 **Fields**

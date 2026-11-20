@@ -203,7 +203,11 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `77efdd8` — P01-5a: add account sign-in and sessions
 - **Scope:** scrypt password hashing, signed HttpOnly session cookie, sign-in and registration pages with server-side validation, header account entry, signed-in account page and sign-out, seeded demo password
 - **Checked by builder:** `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build`; a throwaway script confirmed the seeded hash accepts `Maison2026!` and rejects a wrong password
-- **Review:** needed
+- **Review:** changes requested
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 20 Nov 2026
+- **Verdict notes:** Re-ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck` and `npm run build` in `projects/01-maison-store` — all pass. Read the full `77efdd8` diff. The hashing, signed cookie, session lifetime, server-side validation, pending/error states and accessible form wiring are sound, and the README no longer over-claims. Two defects block approval:
+  1. **Registration dead-ends for a customer created by guest checkout.** `checkout/actions.ts:238-249` creates a `Customer` with `passwordHash: null` for any guest order, but `account/actions.ts:107-116` rejects registration for *any* existing email. A shopper who checked out as a guest can then neither register nor sign in (sign-in fails because the hash is null). Fixed looks like: in `signUp`, when the existing row has `passwordHash === null`, set the name and new hash on that row and sign in; only report "already exists" when a hash is present. Keep the email-unique check.
+  2. **A fixed, published session-signing secret.** `src/lib/auth.ts:10-11` falls back to the literal `maison-demo-session-secret-change-me` (also in `.env.example:9`), so an unconfigured deployment can have sessions forged for any customer id. The zero-config demo behaviour is worth keeping, but the fallback must not be a known constant: generate a random per-process secret when `AUTH_SECRET` is unset (cookies then die on restart, which is fine for a demo) or require the env var. Do not commit a usable secret.
+
+  Minor, not blocking: sign-in does not cap password length before running scrypt (`account/actions.ts:25-32`), so a very long string is hashed; mirror the 128-character cap from registration.
