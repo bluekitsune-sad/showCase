@@ -10,9 +10,9 @@ role: builder
 run: 44748098599
 item: P01-5a
 branch: opencode/todo-44748098599-p01-5a
-phase: handoff-committed
-updated: 20 Nov 2026, 13:55 UTC
-next: land the branch on work
+phase: landing
+updated: 20 Nov 2026, 13:56 UTC
+next: merge the task branch into work
 notes: lint, typecheck and build pass; demo password verifies against the seeded hash
 ```
 
