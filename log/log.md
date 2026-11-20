@@ -238,3 +238,9 @@ _No sessions logged yet._
 ## 19 Nov 2026, 23:51 UTC · reviewer · run 44637599001
 - Reviewed: nothing — review queue has no `Review: needed` entries (newest is P01-4b, already approved)
 - No checks run, no verdicts, nothing to land. Next review: none (next TODO: P01-5).
+
+## 20 Nov 2026, 13:56 UTC · builder · run 44748098599
+- Batch: 1 item; P01-5 split into P01-5a to P01-5d first
+- P01-5a built, commit 77efdd8, handed to review
+- Checks in `projects/01-maison-store`: `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; seeded demo password hash verified
+- Landed on work. Next unchecked item: P01-5b.
