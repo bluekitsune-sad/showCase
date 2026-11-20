@@ -13,9 +13,11 @@ const MAIN_LINKS = [
 export function SiteHeader({
   collections,
   cartCount,
+  customerName,
 }: {
   collections: NavCollection[];
   cartCount: number;
+  customerName: string | null;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
@@ -105,6 +107,12 @@ export function SiteHeader({
         </nav>
 
         <div className="ml-auto flex items-center gap-5">
+          <Link
+            href={customerName ? "/account" : "/account/sign-in"}
+            className="text-sm text-ink hover:text-accent"
+          >
+            {customerName ? customerName.split(" ")[0] : "Account"}
+          </Link>
           <Link
             href="/cart"
             aria-label={
@@ -198,6 +206,15 @@ export function SiteHeader({
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href={customerName ? "/account" : "/account/sign-in"}
+                  onClick={closeAll}
+                  className="block py-2 text-base text-ink"
+                >
+                  {customerName ? "Your account" : "Sign in"}
+                </Link>
+              </li>
               <li>
                 <Link
                   href="/cart"

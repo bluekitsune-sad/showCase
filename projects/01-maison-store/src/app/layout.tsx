@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AnnouncementBar, SiteFooter } from "@/components/layout/site-chrome";
 import { SiteHeader } from "@/components/layout/site-header";
+import { getCurrentCustomer } from "@/lib/auth";
 import { getCartCount } from "@/lib/cart";
 import { prisma } from "@/lib/db";
 
@@ -35,12 +36,22 @@ async function getBagCount() {
   }
 }
 
+async function getAccountName() {
+  try {
+    const customer = await getCurrentCustomer();
+    return customer?.name ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const [collections, cartCount] = await Promise.all([
+  const [collections, cartCount, customerName] = await Promise.all([
     getNavigation(),
     getBagCount(),
+    getAccountName(),
   ]);
 
   return (
@@ -53,7 +64,11 @@ export default async function RootLayout({
           Skip to content
         </a>
         <AnnouncementBar />
-        <SiteHeader collections={collections} cartCount={cartCount} />
+        <SiteHeader
+          collections={collections}
+          cartCount={cartCount}
+          customerName={customerName}
+        />
         <main id="main">{children}</main>
         <SiteFooter collections={collections} />
       </body>

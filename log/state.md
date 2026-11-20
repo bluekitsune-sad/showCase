@@ -10,10 +10,10 @@ role: builder
 run: 44748098599
 item: P01-5a
 branch: opencode/todo-44748098599-p01-5a
-phase: implementing
-updated: 20 Nov 2026, 13:53 UTC
-next: add password and session helpers, then sign-in and sign-up pages
-notes: P01-5 split into P01-5a to P01-5d
+phase: committed
+updated: 20 Nov 2026, 13:55 UTC
+next: tick P01-5a, append the review entry, and land the branch
+notes: lint, typecheck and build pass; demo password verifies against the seeded hash
 ```
 
 **Fields**
