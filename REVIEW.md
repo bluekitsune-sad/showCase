@@ -251,7 +251,7 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `dd774ac` — P01-5b: add account order history and tracking
 - **Scope:** Account dashboard with recent orders; `/account/orders` list; `/account/orders/[orderNumber]` detail scoped to the signed-in customer; per-item status via new `OrderItem.status`; derived tracking timeline; seed gives Ada one delivered and one in-transit order
 - **Checked by builder:** `npx prisma validate`, `npx prisma generate`, `npm run lint`, `npm run typecheck`, `npm run build`, `prisma db push`, `npm run db:seed`; verified Ada's two orders and item statuses in SQLite. No browser click-through.
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 21 Nov 2026
+- **Verdict notes:** Re-ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/01-maison-store` — all pass. Read `src/lib/orders.ts`, both account order routes, the account-home block, the schema/seed/migration and the checkout item write: `/account/orders` and `/account/orders/[orderNumber]` both gate on `getCurrentCustomer()` and scope the query with `customerId`, so another customer's order number falls through to `notFound()`; empty state is present on both the list and the account home; the timeline handles delivered, in-transit, upcoming and cancelled orders. Seed gives Ada `MS-1001` (delivered) and `MS-1007` (in transit), matching the README claim; item status defaults to `processing` for existing rows and checkout writes it explicitly. No secrets, no real data, no files outside the project, no `.github` changes, no agent/automation language in the README. No findings.

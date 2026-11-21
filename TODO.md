@@ -52,7 +52,7 @@ Only the builder writes `— review needed`. Only the reviewer writes `— revie
 - [x] `P01-4a` Build the persistent bag: server-backed cart keyed by an HttpOnly cookie, add-to-bag from the product page, quantity and remove controls, stock limits, live bag count in the header, and empty/loading states. — reviewed 2026-11-18
 - [x] `P01-4b` Build checkout: address form with server-side validation, discount code validation, order summary, and a mock payment step (no real charge) that writes an order and shows a confirmation. — reviewed 2026-11-19
 - [x] `P01-5a` Accounts foundation: scrypt password hashing, signed HttpOnly session cookie, sign-in and sign-up pages with server-side validation, header account entry, sign-out, and a seeded demo password. — reviewed 2026-11-20
-- [x] `P01-5b` Account home and order history: signed-in dashboard, order list, and order detail with per-item status and tracking timeline. — review needed
+- [x] `P01-5b` Account home and order history: signed-in dashboard, order list, and order detail with per-item status and tracking timeline. — reviewed 2026-11-21
 - [ ] `P01-5c` Saved addresses: list, add, edit, delete and set default from the account area, validated on the server.
 - [ ] `P01-5d` Wishlist: add and remove from the product page, a wishlist page with empty state, and a sign-in prompt for guests.
 - [ ] `P01-6` Polish Maison Store: SEO metadata and JSON-LD, image optimisation, empty/loading/error states, accessibility pass, and a README with case study and screenshots.

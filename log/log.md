@@ -270,3 +270,9 @@ _No sessions logged yet._
 - Added recent orders to the account home, `/account/orders`, and `/account/orders/[orderNumber]` scoped to the signed-in customer; per-item status and a derived tracking timeline; `OrderItem.status` migration and seed
 - Checks in `projects/01-maison-store`: `npx prisma validate`, `npx prisma generate`, `npm run lint`, `npm run typecheck`, `npm run build`, `prisma db push`, `npm run db:seed` — all pass; verified Ada's orders and item statuses in SQLite, no browser click-through
 - Landed on work. Next unchecked item: P01-5c.
+
+## 21 Nov 2026, 13:24 UTC · reviewer · run 44907997400
+- Reviewed: P01-5b round 1 approved (commit dd774ac)
+- Re-ran in `projects/01-maison-store`: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass
+- Checked customer-scoped order queries, empty/not-found states, timeline for delivered/in-transit/cancelled, seed and README claim; no findings
+- Landed verdict on work. Review queue empty.
