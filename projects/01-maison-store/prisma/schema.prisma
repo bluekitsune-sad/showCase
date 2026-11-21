@@ -156,6 +156,7 @@ model OrderItem {
   variant      Variant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
   productName  String
   variantLabel String
+  status       String  @default("processing")
   quantity     Int
   unitPrice    Int
   lineTotal    Int

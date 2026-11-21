@@ -3,6 +3,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { signOut } from "@/app/account/actions";
 import { getCurrentCustomer } from "@/lib/auth";
+import { prisma } from "@/lib/db";
+import { formatPrice } from "@/lib/format";
+import { statusLabel } from "@/lib/orders";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +24,23 @@ export default async function AccountPage() {
     month: "long",
     year: "numeric",
   }).format(customer.createdAt);
+
+  const orders = await prisma.order.findMany({
+    where: { customerId: customer.id },
+    orderBy: { placedAt: "desc" },
+    take: 3,
+    select: {
+      orderNumber: true,
+      status: true,
+      total: true,
+      currency: true,
+      placedAt: true,
+      _count: { select: { items: true } },
+    },
+  });
+  const orderCount = await prisma.order.count({
+    where: { customerId: customer.id },
+  });
 
   return (
     <div className="container-x py-10 lg:py-16">
@@ -61,6 +81,64 @@ export default async function AccountPage() {
                 <dd className="text-ink">{memberSince}</dd>
               </div>
             </dl>
+          </div>
+
+          <div className="mt-8 border border-line bg-surface p-6">
+            <div className="flex flex-wrap items-baseline justify-between gap-3">
+              <h2 className="font-display text-xl text-ink">Order history</h2>
+              <Link
+                href="/account/orders"
+                className="text-sm text-accent hover:text-accent-hover"
+              >
+                {orderCount === 0
+                  ? "View orders"
+                  : `All ${orderCount} orders`}
+              </Link>
+            </div>
+
+            {orders.length === 0 ? (
+              <div className="mt-5">
+                <p className="text-sm text-ink-muted">
+                  No orders yet. Anything you buy while signed in will appear
+                  here with its status and delivery timeline.
+                </p>
+                <Link href="/collections" className="btn btn-ghost mt-4">
+                  Browse collections
+                </Link>
+              </div>
+            ) : (
+              <ul className="mt-5 divide-y divide-line border-y border-line">
+                {orders.map((order) => {
+                  const placed = new Intl.DateTimeFormat("en-US", {
+                    dateStyle: "medium",
+                  }).format(order.placedAt);
+                  return (
+                    <li
+                      key={order.orderNumber}
+                      className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-4"
+                    >
+                      <div>
+                        <Link
+                          href={`/account/orders/${order.orderNumber}`}
+                          className="text-sm text-ink hover:text-accent"
+                        >
+                          {order.orderNumber}
+                        </Link>
+                        <p className="mt-1 text-xs text-ink-muted">
+                          {placed} · {statusLabel(order.status)} ·{" "}
+                          {order._count.items === 1
+                            ? "1 piece"
+                            : `${order._count.items} pieces`}
+                        </p>
+                      </div>
+                      <p className="text-sm text-ink">
+                        {formatPrice(order.total, order.currency)}
+                      </p>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
           </div>
         </section>
 

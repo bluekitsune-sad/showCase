@@ -294,6 +294,7 @@ export async function placeOrder(
               variantId: item.variant.id,
               productName: item.variant.product.name,
               variantLabel: `${item.variant.colour} / ${item.variant.size}`,
+              status: "processing",
               quantity: item.quantity,
               unitPrice: item.variant.product.price,
               lineTotal: item.variant.product.price * item.quantity,

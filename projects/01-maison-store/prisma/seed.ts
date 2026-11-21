@@ -517,7 +517,7 @@ async function main() {
     "processing",
     "packed",
     "cancelled",
-    "delivered",
+    "in_transit",
     "shipped",
   ];
 
@@ -539,6 +539,7 @@ async function main() {
         variantId: variant.id,
         productName: variant.productName,
         variantLabel: `${variant.colour} / ${variant.size}`,
+        status: statuses[i],
         quantity,
         unitPrice: variant.price,
         lineTotal: variant.price * quantity,
