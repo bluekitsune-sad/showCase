@@ -263,3 +263,10 @@ _No sessions logged yet._
 - Re-ran: npm ci, npm run db:setup, npm run lint, npm run typecheck, npm run build — all pass
 - Checked guest-claim registration path and per-process session secret; no findings
 - Landed verdicts on work. Next review: queue empty.
+
+## 21 Nov 2026, 13:22 UTC · builder · run 44907997400
+- Batch: 1 item — P01-5b
+- P01-5b built, commit dd774ac, handed to review
+- Added recent orders to the account home, `/account/orders`, and `/account/orders/[orderNumber]` scoped to the signed-in customer; per-item status and a derived tracking timeline; `OrderItem.status` migration and seed
+- Checks in `projects/01-maison-store`: `npx prisma validate`, `npx prisma generate`, `npm run lint`, `npm run typecheck`, `npm run build`, `prisma db push`, `npm run db:seed` — all pass; verified Ada's orders and item statuses in SQLite, no browser click-through
+- Landed on work. Next unchecked item: P01-5c.
