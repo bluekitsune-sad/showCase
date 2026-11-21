@@ -244,3 +244,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** 20 Nov 2026
 - **Verdict notes:** Same commit and checks as P01-5a round 2 (`a8b9d2b`). `src/lib/auth.ts:12-13` now uses `process.env.AUTH_SECRET?.trim() || randomBytes(32).toString("hex")`, evaluated once per process, so an unset or blank secret is never a known value; `.env.example` ships `AUTH_SECRET=""`. A tree-wide search finds the old constant only in the TODO/REVIEW text, not in any source or config. Session signing, expiry and cookie flags are unchanged; per-process secrets ending sessions on restart is an acceptable demo trade-off. No findings.
+
+### P01-5b · round 1 — Account home and order history
+
+- **Built:** 21 Nov 2026, 13:21 UTC
+- **Commit:** `dd774ac` — P01-5b: add account order history and tracking
+- **Scope:** Account dashboard with recent orders; `/account/orders` list; `/account/orders/[orderNumber]` detail scoped to the signed-in customer; per-item status via new `OrderItem.status`; derived tracking timeline; seed gives Ada one delivered and one in-transit order
+- **Checked by builder:** `npx prisma validate`, `npx prisma generate`, `npm run lint`, `npm run typecheck`, `npm run build`, `prisma db push`, `npm run db:seed`; verified Ada's two orders and item statuses in SQLite. No browser click-through.
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —

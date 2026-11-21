@@ -10,10 +10,10 @@ role: builder
 run: 44907997400
 item: P01-5b
 branch: opencode/todo-44907997400-p01-5b
-phase: implementing
-updated: 21 Nov 2026, 13:19 UTC
-next: verify lint, typecheck and build, then hand off
-notes: account dashboard, order list and detail with per-item status and tracking timeline written; needs npm install for checks
+phase: handoff-committed
+updated: 21 Nov 2026, 13:21 UTC
+next: land the task branch on work
+notes: P01-5b handed to review at dd774ac; lint, typecheck, build, db push and seed pass
 ```
 
 **Fields**
