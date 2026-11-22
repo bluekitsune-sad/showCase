@@ -283,3 +283,10 @@ _No sessions logged yet._
 - Added `/account/addresses` list with empty state, add/edit forms, delete and set-default actions; server-side validation and customer-scoped writes; one default address kept across changes; account-home link and README update
 - Checks in `projects/01-maison-store`: `npm install`, `npx prisma generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser click-through
 - Landed on work. Next unchecked item: P01-5d.
+
+## 22 Nov 2026, 13:18 UTC · reviewer · run 45025804538
+- Reviewed: P01-5c round 1 approved (commit a79dcb9)
+- Re-ran in `projects/01-maison-store`: `npm install`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass
+- Checked customer-scoped address reads/writes, server-side validation, one-default invariant across create/edit/delete, empty/loading/error states, seed and README claims; no findings
+- Runtime smoke: unauthenticated `/account/addresses` redirects to `/account/sign-in`
+- Landed verdict on work. Review queue empty. Next unchecked item: P01-5d.
