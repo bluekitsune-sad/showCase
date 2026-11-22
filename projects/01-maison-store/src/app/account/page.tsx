@@ -158,6 +158,16 @@ export default async function AccountPage() {
             </div>
           </div>
 
+          <div className="border border-line bg-surface p-6">
+            <h2 className="font-display text-xl text-ink">Saved addresses</h2>
+            <p className="mt-2 text-sm text-ink-muted">
+              Keep the places you ship to most often and choose a default.
+            </p>
+            <Link href="/account/addresses" className="btn btn-ghost mt-5 w-full">
+              Manage addresses
+            </Link>
+          </div>
+
           <form action={signOut} className="border border-line bg-surface p-6">
             <h2 className="font-display text-xl text-ink">Sign out</h2>
             <p className="mt-2 text-sm text-ink-muted">

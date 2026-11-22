@@ -10,10 +10,10 @@ role: builder
 run: 45025804538
 item: P01-5c
 branch: opencode/todo-45025804538-p01-5c
-phase: implementing
-updated: 22 Nov 2026, 13:10 UTC
-next: add address validation helpers, server actions, list and edit pages
-notes: scope is Maison Store saved addresses only
+phase: committed
+updated: 22 Nov 2026, 13:16 UTC
+next: mark TODO and append REVIEW entry
+notes: lint, typecheck and build pass; db:setup ran for the build
 ```
 
 **Fields**
