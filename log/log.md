@@ -276,3 +276,10 @@ _No sessions logged yet._
 - Re-ran in `projects/01-maison-store`: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass
 - Checked customer-scoped order queries, empty/not-found states, timeline for delivered/in-transit/cancelled, seed and README claim; no findings
 - Landed verdict on work. Review queue empty.
+
+## 22 Nov 2026, 13:12 UTC · builder · run 45025804538
+- Batch: 1 item — P01-5c
+- P01-5c built, commit a79dcb9, handed to review
+- Added `/account/addresses` list with empty state, add/edit forms, delete and set-default actions; server-side validation and customer-scoped writes; one default address kept across changes; account-home link and README update
+- Checks in `projects/01-maison-store`: `npm install`, `npx prisma generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; no browser click-through
+- Landed on work. Next unchecked item: P01-5d.
