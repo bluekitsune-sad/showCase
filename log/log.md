@@ -290,3 +290,7 @@ _No sessions logged yet._
 - Checked customer-scoped address reads/writes, server-side validation, one-default invariant across create/edit/delete, empty/loading/error states, seed and README claims; no findings
 - Runtime smoke: unauthenticated `/account/addresses` redirects to `/account/sign-in`
 - Landed verdict on work. Review queue empty. Next unchecked item: P01-5d.
+
+## 22 Nov 2026, 22:21 UTC · reviewer · run 45077164994
+- Batch: 0 reviews — review queue empty; nothing to review.
+- No `Review: needed` entry in the `REVIEW.md` queue (only the two explanatory references to the marker); left the checkpoint (idle) untouched. Next review: none (next TODO: P01-5d).
