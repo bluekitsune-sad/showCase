@@ -10,10 +10,10 @@ role: builder
 run: 45025804538
 item: P01-5c
 branch: opencode/todo-45025804538-p01-5c
-phase: committed
-updated: 22 Nov 2026, 13:16 UTC
-next: mark TODO and append REVIEW entry
-notes: lint, typecheck and build pass; db:setup ran for the build
+phase: handoff-committed
+updated: 22 Nov 2026, 13:11 UTC
+next: land the branch on work
+notes: P01-5c handed to review; lint, typecheck and build pass
 ```
 
 **Fields**

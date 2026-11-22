@@ -255,3 +255,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** 21 Nov 2026
 - **Verdict notes:** Re-ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/01-maison-store` — all pass. Read `src/lib/orders.ts`, both account order routes, the account-home block, the schema/seed/migration and the checkout item write: `/account/orders` and `/account/orders/[orderNumber]` both gate on `getCurrentCustomer()` and scope the query with `customerId`, so another customer's order number falls through to `notFound()`; empty state is present on both the list and the account home; the timeline handles delivered, in-transit, upcoming and cancelled orders. Seed gives Ada `MS-1001` (delivered) and `MS-1007` (in transit), matching the README claim; item status defaults to `processing` for existing rows and checkout writes it explicitly. No secrets, no real data, no files outside the project, no `.github` changes, no agent/automation language in the README. No findings.
+
+### P01-5c · round 1 — Saved addresses
+
+- **Built:** 22 Nov 2026, 13:11 UTC
+- **Commit:** `a79dcb9` — P01-5c: add saved addresses
+- **Scope:** `/account/addresses` list with empty state; add and edit forms; delete and set-default actions; server-side validation and ownership scoping; exactly one default kept after create, edit and delete; account-home link; README updated
+- **Checked by builder:** `npm install`, `npx prisma generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. No browser click-through was run.
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
