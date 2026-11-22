@@ -10,9 +10,9 @@ role: builder
 run: 45025804538
 item: P01-5c
 branch: opencode/todo-45025804538-p01-5c
-phase: handoff-committed
+phase: landing
 updated: 22 Nov 2026, 13:11 UTC
-next: land the branch on work
+next: merge the task branch into work and push
 notes: P01-5c handed to review; lint, typecheck and build pass
 ```
 
