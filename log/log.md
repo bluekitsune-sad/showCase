@@ -294,3 +294,10 @@ _No sessions logged yet._
 ## 22 Nov 2026, 22:21 UTC · reviewer · run 45077164994
 - Batch: 0 reviews — review queue empty; nothing to review.
 - No `Review: needed` entry in the `REVIEW.md` queue (only the two explanatory references to the marker); left the checkpoint (idle) untouched. Next review: none (next TODO: P01-5d).
+
+## 23 Nov 2026, 15:48 UTC · builder · run 45208503934
+- Batch: 1 item (limit 1)
+- P01-5d built, commit e6b3329, handed to review (commit 370269a)
+- Added customer-scoped wishlist server actions, a save control on the product page with a guest sign-in prompt, a `/wishlist` page with empty and guest states, and header/account links; README updated
+- Checks in `projects/01-maison-store`: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `DATABASE_URL=file:./prisma/dev.db npm run build` — all pass; no browser click-through
+- Landed on work. Next unchecked item: P01-6.
