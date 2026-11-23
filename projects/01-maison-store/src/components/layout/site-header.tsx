@@ -108,6 +108,12 @@ export function SiteHeader({
 
         <div className="ml-auto flex items-center gap-5">
           <Link
+            href="/wishlist"
+            className="hidden text-sm text-ink hover:text-accent sm:inline"
+          >
+            Wishlist
+          </Link>
+          <Link
             href={customerName ? "/account" : "/account/sign-in"}
             className="text-sm text-ink hover:text-accent"
           >
@@ -222,6 +228,15 @@ export function SiteHeader({
                   className="block py-2 text-base text-ink"
                 >
                   Bag
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/wishlist"
+                  onClick={closeAll}
+                  className="block py-2 text-base text-ink"
+                >
+                  Wishlist
                 </Link>
               </li>
             </ul>

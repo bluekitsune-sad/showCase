@@ -159,6 +159,16 @@ export default async function AccountPage() {
           </div>
 
           <div className="border border-line bg-surface p-6">
+            <h2 className="font-display text-xl text-ink">Wishlist</h2>
+            <p className="mt-2 text-sm text-ink-muted">
+              Pieces you save from the shop wait here until you are ready.
+            </p>
+            <Link href="/wishlist" className="btn btn-ghost mt-5 w-full">
+              View wishlist
+            </Link>
+          </div>
+
+          <div className="border border-line bg-surface p-6">
             <h2 className="font-display text-xl text-ink">Saved addresses</h2>
             <p className="mt-2 text-sm text-ink-muted">
               Keep the places you ship to most often and choose a default.

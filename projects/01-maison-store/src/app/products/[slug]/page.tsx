@@ -5,6 +5,8 @@ import { cache } from "react";
 import { ProductGallery } from "@/components/product-gallery";
 import { ProductCard } from "@/components/product-card";
 import { VariantPicker } from "@/components/variant-picker";
+import { WishlistButton } from "@/components/wishlist-button";
+import { getCurrentCustomer } from "@/lib/auth";
 import { PRODUCT_CARD_INCLUDE, sortSizes } from "@/lib/catalog";
 import { prisma } from "@/lib/db";
 import { formatPrice } from "@/lib/format";
@@ -74,6 +76,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const onSale =
     product.compareAtPrice !== null && product.compareAtPrice > product.price;
 
+  const customer = await getCurrentCustomer();
+  const saved = customer
+    ? Boolean(
+        await prisma.wishlistItem.findUnique({
+          where: {
+            customerId_productId: {
+              customerId: customer.id,
+              productId: product.id,
+            },
+          },
+          select: { id: true },
+        }),
+      )
+    : false;
+
   return (
     <div className="container-x py-10 lg:py-16">
       <nav aria-label="Breadcrumb" className="text-sm text-ink-subtle">
@@ -138,6 +155,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <p className="mt-5 leading-relaxed text-ink-muted">
             {product.description}
           </p>
+
+          <WishlistButton
+            productId={product.id}
+            productName={product.name}
+            saved={saved}
+            signedIn={Boolean(customer)}
+          />
 
           {product.variants.length > 0 ? (
             <VariantPicker
