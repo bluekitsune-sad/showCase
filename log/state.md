@@ -10,10 +10,10 @@ role: builder
 run: 45208503934
 item: P01-5d
 branch: opencode/todo-45208503934-p01-5d-wishlist
-phase: implementing
-updated: 23 Nov 2026, 15:46 UTC
-next: run lint, typecheck and build for 01-maison-store
-notes: wishlist actions, button, page, header link and account card written; README updated
+phase: handoff-committed
+updated: 23 Nov 2026, 15:47 UTC
+next: merge the task branch into work and push
+notes: lint, typecheck and build all pass; review entry P01-5d round 1 awaiting reviewer
 ```
 
 **Fields**

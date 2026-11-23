@@ -266,3 +266,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** 2026-11-22
 - **Verdict notes:** Re-ran `npm install`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/01-maison-store` — all pass. Read `addresses/actions.ts`, `lib/addresses.ts`, the list/edit pages and `address-form.tsx`: every read and write is scoped by `customerId` from the signed session, hidden ids are re-checked against ownership, and input is validated server-side before any write. Create, edit and delete each keep exactly one default (first address becomes default, unsetting the current default promotes another, deleting the default promotes the lowest id). The list has an empty state, the route has a loading skeleton, forms expose labelled fields with `aria-invalid`/`aria-describedby` and a `role="alert"` summary. Runtime smoke on `npm run start` (:3535): unauthenticated `/account/addresses` streams the Next redirect to `/account/sign-in` (`NEXT_REDIRECT` 307); build output includes both address routes. Seed gives each demo customer a default address, matching the README claim. No secrets, no real data, no `.github` changes, nothing outside the project. README voice is clean. Approved, no findings.
+
+### P01-5d · round 1 — Wishlist
+
+- **Built:** 23 Nov 2026, 15:47 UTC
+- **Commit:** `e6b3329` — P01-5d: add customer wishlist
+- **Scope:** Customer-scoped save/remove/toggle server actions; save control on the product page with a guest sign-in prompt; `/wishlist` page with empty and guest states; header and account-home links; README updated
+- **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `DATABASE_URL=file:./prisma/dev.db npm run build` — all pass. No browser click-through was run.
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
