@@ -321,3 +321,10 @@ _No sessions logged yet._
 - Added a shared `ProductMedia` component: `next/image` with responsive sizes and priority when a photo URL exists, accessible gradient placeholders otherwise; wired into product cards, the product gallery, home featured/collection panels and the collections index
 - Checks in `projects/01-maison-store`: `npm ci`, `npm run db:generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. No browser click-through was run.
 - Landed on work. Next unchecked item: P01-6c.
+
+## 24 Nov 2026, 15:48 UTC · reviewer · run 45427316337
+- Batch: 1 review (limit 3)
+- Reviewed: P01-6b approved (commit 4df8fd7)
+- Re-ran in `projects/01-maison-store`: `npm ci`, `DATABASE_URL=file:./prisma/dev.db npm run db:setup`, `npm run lint`, `npm run typecheck`, `DATABASE_URL=file:./prisma/dev.db npm run build` — all pass. No browser click-through.
+- Checks: `ProductMedia` fills a positioned parent in both branches; placeholder carries `role="img"` + descriptive label; gallery main image uses priority and responsive sizes; gallery query selects `url`. Seeded image URLs are null by design, and local `public/` paths are the documented photo route (no remote hosts configured).
+- Landed verdict on work. Review queue empty. Next build item: P01-6c.

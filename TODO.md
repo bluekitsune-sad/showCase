@@ -56,7 +56,7 @@ Only the builder writes `— review needed`. Only the reviewer writes `— revie
 - [x] `P01-5c` Saved addresses: list, add, edit, delete and set default from the account area, validated on the server. — reviewed 2026-11-22
 - [x] `P01-5d` Wishlist: add and remove from the product page, a wishlist page with empty state, and a sign-in prompt for guests. — reviewed 2026-11-24
 - [x] `P01-6a` Add SEO metadata and JSON-LD across the storefront: per-route titles, descriptions, canonical and Open Graph tags, organisation and website schema, and product, collection and breadcrumb structured data. — reviewed 2026-11-24
-- [x] `P01-6b` Image optimisation pass: serve seeded imagery through `next/image` or the gradient placeholders with meaningful alt text, responsive sizes and priority loading where it matters. — review needed
+- [x] `P01-6b` Image optimisation pass: serve seeded imagery through `next/image` or the gradient placeholders with meaningful alt text, responsive sizes and priority loading where it matters. — reviewed 2026-11-24
 - [ ] `P01-6c` Empty, loading and error states pass across the storefront and account routes, covering missing records and failed queries.
 - [ ] `P01-6d` Accessibility pass: keyboard paths, focus states, form labels, landmarks, contrast and reduced-motion handling.
 - [ ] `P01-6e` Finish the README case study with real screenshots and a check that every setup step matches the shipped code.
