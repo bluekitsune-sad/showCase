@@ -301,3 +301,10 @@ _No sessions logged yet._
 - Added customer-scoped wishlist server actions, a save control on the product page with a guest sign-in prompt, a `/wishlist` page with empty and guest states, and header/account links; README updated
 - Checks in `projects/01-maison-store`: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `DATABASE_URL=file:./prisma/dev.db npm run build` — all pass; no browser click-through
 - Landed on work. Next unchecked item: P01-6.
+
+## 24 Nov 2026, 03:21 UTC · builder · run 45317647054
+- Batch: 1 item (limit 1)
+- P01-6 split into P01-6a..e; P01-6a built, commit 2951327, handed to review (commit 438801b)
+- Added storefront SEO metadata, Open Graph and JSON-LD, plus noindex on private routes
+- Checks in `projects/01-maison-store`: `npm ci`, `npm run db:generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; production smoke confirmed canonical links, JSON-LD types and the cart noindex tag
+- Landed on work. Next unchecked item: P01-6b.

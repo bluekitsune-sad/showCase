@@ -113,4 +113,4 @@ MIT — see [LICENSE](LICENSE). Use the code, learn from it, build on it.
 [github.com/bluekitsune-sad](https://github.com/bluekitsune-sad) — open an issue on any project if you want to talk about building something similar.
 
 <!-- last-updated -->
-_Last updated: 23 November 2026, 15:48 UTC._
+_Last updated: 24 November 2026, 03:21 UTC._
