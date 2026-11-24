@@ -308,3 +308,9 @@ _No sessions logged yet._
 - Added storefront SEO metadata, Open Graph and JSON-LD, plus noindex on private routes
 - Checks in `projects/01-maison-store`: `npm ci`, `npm run db:generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; production smoke confirmed canonical links, JSON-LD types and the cart noindex tag
 - Landed on work. Next unchecked item: P01-6b.
+
+## 24 Nov 2026, 03:55 UTC · reviewer · run 45317647054
+- Batch: 2 reviews (limit 3)
+- Reviewed: P01-5d approved (commit e6b3329) · P01-6a approved (commit 2951327)
+- Re-ran in `projects/01-maison-store`: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `DATABASE_URL=file:./prisma/dev.db npm run build` — all pass; production smoke on :3541 confirmed wishlist scoping plus Product/CollectionPage/Breadcrumb/Organization/WebSite JSON-LD, canonical tags and `noindex, nofollow` on cart and wishlist
+- Landed verdicts on work. Review queue empty. Next build item: P01-6b.

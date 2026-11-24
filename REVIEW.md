@@ -273,10 +273,10 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `e6b3329` — P01-5d: add customer wishlist
 - **Scope:** Customer-scoped save/remove/toggle server actions; save control on the product page with a guest sign-in prompt; `/wishlist` page with empty and guest states; header and account-home links; README updated
 - **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `DATABASE_URL=file:./prisma/dev.db npm run build` — all pass. No browser click-through was run.
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 2026-11-24
+- **Verdict notes:** Re-ran `npm ci`, `DATABASE_URL=file:./prisma/dev.db npm run db:setup` (seeded 4 collections / 24 products / 99 variants / 8 orders), `npm run lint`, `npm run typecheck`, and `DATABASE_URL=file:./prisma/dev.db npm run build` in `projects/01-maison-store` — all pass; build output includes `/wishlist` as a dynamic route. Read `app/wishlist/actions.ts`, `app/wishlist/page.tsx`, `components/wishlist-button.tsx`, and the product/header/account diffs. `toggleWishlist` and `removeFromWishlist` derive the customer from the signed session and never accept a customer id from the form; `productId` is parsed and validated, the product is existence-checked, and removal uses `deleteMany` scoped to `{ customerId, productId }`, so one customer cannot read, save or remove another's rows. The wishlist page queries only `where: { customerId }`, shows a guest sign-in prompt when signed out and an empty state when signed in with no items. The save control uses `aria-pressed`, a polite `role="status"` live region, and a disabled pending state. The `WishlistItem` model predates this item (scaffold) and `db:setup` uses `prisma db push`, so no migration gap. No secrets, no real data beyond synthetic seed, no `.github` changes, nothing outside the project folder. README voice is clean and the "left out" note was updated honestly. No findings.
 
 ### P01-6a · round 1 — Storefront SEO metadata and JSON-LD
 
@@ -284,7 +284,7 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `2951327` — P01-6a: add storefront SEO metadata and JSON-LD
 - **Scope:** Shared `src/lib/seo.ts` helpers (site URL, canonical/Open Graph metadata, safe JSON-LD serialisation); Organization and WebSite schema in the root layout; Product, CollectionPage and BreadcrumbList schema on product, collection and catalogue routes; per-route canonical and Open Graph metadata; `noindex, nofollow` on cart, wishlist and all account/checkout routes; `P01-6` split into five children in `TODO.md`
 - **Checked by builder:** `npm ci`, `npm run db:generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. Production smoke on `npm run start`: `/products/alpaca-beanie` emits the canonical link plus Product/Brand/Offer/BreadcrumbList JSON-LD, `/collections/atelier-noir` emits CollectionPage and breadcrumbs, `/` emits Organization and WebSite, and `/cart` emits `noindex, nofollow`. Canonical URLs use the `NEXT_PUBLIC_SITE_URL` fallback `http://localhost:3000`.
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 2026-11-24
+- **Verdict notes:** Re-ran `npm ci`, `DATABASE_URL=file:./prisma/dev.db npm run db:generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, and `DATABASE_URL=file:./prisma/dev.db npm run build` in `projects/01-maison-store` — all pass. Independent production smoke on `npm run start` (:3541): `/products/alpaca-beanie` returned the canonical link plus Product, Brand, Offer, BreadcrumbList, Organization and WebSite nodes; `/collections/atelier-noir` returned CollectionPage and breadcrumbs; `/cart` and `/wishlist` returned `<meta name="robots" content="noindex, nofollow">`. Read `lib/seo.ts`, `components/structured-data.tsx`, the root layout, and the product/collection/catalogue route diffs: `serializeJsonLd` escapes `<`, `>`, `&`, U+2028 and U+2029 before injection, `price` is divided from integer minor units then formatted, availability derives from variant stock, and `metadataBase` plus relative canonicals resolve to absolute URLs via the documented `NEXT_PUBLIC_SITE_URL` fallback. Account and checkout layouts plus cart and wishlist pages carry noindex. No secrets, no real data, no auth or control weakened, no `.github` changes, nothing outside the project. README voice is clean. No findings.
