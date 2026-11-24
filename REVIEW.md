@@ -277,3 +277,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** —
 - **Verdict notes:** —
+
+### P01-6a · round 1 — Storefront SEO metadata and JSON-LD
+
+- **Built:** 24 Nov 2026, 03:19 UTC
+- **Commit:** `2951327` — P01-6a: add storefront SEO metadata and JSON-LD
+- **Scope:** Shared `src/lib/seo.ts` helpers (site URL, canonical/Open Graph metadata, safe JSON-LD serialisation); Organization and WebSite schema in the root layout; Product, CollectionPage and BreadcrumbList schema on product, collection and catalogue routes; per-route canonical and Open Graph metadata; `noindex, nofollow` on cart, wishlist and all account/checkout routes; `P01-6` split into five children in `TODO.md`
+- **Checked by builder:** `npm ci`, `npm run db:generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. Production smoke on `npm run start`: `/products/alpaca-beanie` emits the canonical link plus Product/Brand/Offer/BreadcrumbList JSON-LD, `/collections/atelier-noir` emits CollectionPage and breadcrumbs, `/` emits Organization and WebSite, and `/cart` emits `noindex, nofollow`. Canonical URLs use the `NEXT_PUBLIC_SITE_URL` fallback `http://localhost:3000`.
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —

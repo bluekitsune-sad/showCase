@@ -10,10 +10,10 @@ role: builder
 run: 45317647054
 item: P01-6a
 branch: opencode/todo-45317647054-p01-6a
-phase: committed
-updated: 24 Nov 2026, 03:19 UTC
-next: write the handoff entry for P01-6a and land on work
-notes: P01-6 split into P01-6a..e; SEO metadata, Open Graph and JSON-LD added and verified
+phase: handoff-committed
+updated: 24 Nov 2026, 03:20 UTC
+next: land P01-6a on work, then set idle for P01-6b
+notes: P01-6 split into P01-6a..e; P01-6a handed to review
 ```
 
 **Fields**
