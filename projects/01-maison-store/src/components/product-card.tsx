@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { colourHex, formatPrice, toneGradient } from "@/lib/format";
+import { ProductMedia } from "@/components/product-media";
+import { colourHex, formatPrice } from "@/lib/format";
 
 type ProductCardData = {
   name: string;
@@ -24,11 +25,11 @@ export function ProductCard({ product }: { product: ProductCardData }) {
 
   return (
     <Link href={`/products/${product.slug}`} className="group block">
-      <div
-        className="relative overflow-hidden rounded-sm border border-line"
-        style={{ background: toneGradient(product.slug) }}
-      >
-        <div className="aspect-[4/5]" />
+      <div className="relative aspect-[4/5] overflow-hidden rounded-sm border border-line">
+        <ProductMedia
+          seed={product.slug}
+          alt={`${product.name} from ${product.collection.name}`}
+        />
         <div className="absolute left-3 top-3 flex flex-col gap-1.5">
           {soldOut ? (
             <span className="bg-surface px-2 py-1 text-xs text-ink-muted">

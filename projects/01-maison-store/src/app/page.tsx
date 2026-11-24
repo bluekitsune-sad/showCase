@@ -3,7 +3,7 @@ import Link from "next/link";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { ProductCard } from "@/components/product-card";
 import { prisma } from "@/lib/db";
-import { toneGradient } from "@/lib/format";
+import { ProductMedia } from "@/components/product-media";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -83,10 +83,12 @@ export default async function HomePage() {
           {featuredCollection ? (
             <>
               <div className="lg:col-span-7">
-                <div
-                  className="relative aspect-[16/11] overflow-hidden rounded-sm border border-line"
-                  style={{ background: toneGradient(featuredCollection.slug) }}
-                >
+                <div className="relative aspect-[16/11] overflow-hidden rounded-sm border border-line">
+                  <ProductMedia
+                    seed={featuredCollection.slug}
+                    alt={`${featuredCollection.name} collection`}
+                    sizes="(min-width: 1024px) 58vw, 100vw"
+                  />
                   <span className="absolute left-4 top-4 bg-surface/95 px-3 py-1.5 text-xs uppercase tracking-[0.14em] text-ink">
                     Featured collection
                   </span>
@@ -167,10 +169,11 @@ export default async function HomePage() {
                 href={`/collections/${collection.slug}`}
                 className="group block"
               >
-                <div
-                  className="relative aspect-[3/4] overflow-hidden rounded-sm border border-line"
-                  style={{ background: toneGradient(collection.slug) }}
-                >
+                <div className="relative aspect-[3/4] overflow-hidden rounded-sm border border-line">
+                  <ProductMedia
+                    seed={collection.slug}
+                    alt={`${collection.name} collection`}
+                  />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/55 to-transparent p-5 pt-14">
                     <p className="font-display text-2xl text-surface">
                       {collection.name}

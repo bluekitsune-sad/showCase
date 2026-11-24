@@ -24,7 +24,7 @@ const getProduct = cache(async (slug: string) =>
       collection: { select: { name: true, slug: true } },
       images: {
         orderBy: { sortOrder: "asc" },
-        select: { id: true, alt: true },
+        select: { id: true, alt: true, url: true },
       },
       variants: {
         orderBy: [{ colour: "asc" }, { size: "asc" }],

@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { ProductMedia } from "@/components/product-media";
 import { toneGradient } from "@/lib/format";
 
 type GalleryImage = {
   id: number;
   alt: string;
+  url?: string | null;
 };
 
 type ProductGalleryProps = {
@@ -23,11 +25,14 @@ export function ProductGallery({ slug, name, images }: ProductGalleryProps) {
 
   return (
     <div>
-      <div
-        className="relative overflow-hidden rounded-sm border border-line"
-        style={{ background: toneGradient(`${slug}-${active}`) }}
-      >
-        <div className="aspect-[4/5]" role="img" aria-label={current.alt} />
+      <div className="relative aspect-[4/5] overflow-hidden rounded-sm border border-line">
+        <ProductMedia
+          seed={`${slug}-${active}`}
+          alt={current.alt}
+          url={current.url}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          priority
+        />
       </div>
 
       {images.length > 1 ? (

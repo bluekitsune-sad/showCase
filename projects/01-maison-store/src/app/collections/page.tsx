@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { StructuredData } from "@/components/structured-data";
 import { prisma } from "@/lib/db";
-import { toneGradient } from "@/lib/format";
+import { ProductMedia } from "@/components/product-media";
 import { breadcrumbNode, buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -63,10 +63,13 @@ export default async function CollectionsPage() {
                 href={`/collections/${collection.slug}`}
                 className="group grid gap-6 py-7 sm:grid-cols-12 sm:items-center"
               >
-                <div
-                  className="aspect-[4/3] overflow-hidden rounded-sm border border-line sm:col-span-3 sm:aspect-[3/2]"
-                  style={{ background: toneGradient(collection.slug) }}
-                />
+                <div className="relative aspect-[4/3] overflow-hidden rounded-sm border border-line sm:col-span-3 sm:aspect-[3/2]">
+                  <ProductMedia
+                    seed={collection.slug}
+                    alt={`${collection.name} collection`}
+                    sizes="(min-width: 640px) 25vw, 100vw"
+                  />
+                </div>
                 <div className="sm:col-span-7">
                   <h2 className="font-display text-2xl text-ink group-hover:text-accent sm:text-3xl">
                     {collection.name}
