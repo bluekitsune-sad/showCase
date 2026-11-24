@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **be
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: idle` leaves it alone.
 
 ```
-status: idle
-role: -
-run: 45317647054
-item: -
-branch: -
-phase: -
-updated: 24 Nov 2026, 03:55 UTC
-next: P01-6b
-notes: reviewer batch approved and landed P01-5d and P01-6a; review queue empty
+status: building
+role: builder
+run: 45427316337
+item: P01-6b
+branch: opencode/todo-45427316337-p01-6b
+phase: implementing
+updated: 24 Nov 2026, 15:37 UTC
+next: add shared ProductMedia component and wire it into storefront imagery
+notes: gradient placeholders are the seeded image medium; add next/image path for future urls
 ```
 
 **Fields**
