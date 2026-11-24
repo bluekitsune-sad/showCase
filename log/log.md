@@ -314,3 +314,10 @@ _No sessions logged yet._
 - Reviewed: P01-5d approved (commit e6b3329) · P01-6a approved (commit 2951327)
 - Re-ran in `projects/01-maison-store`: `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `DATABASE_URL=file:./prisma/dev.db npm run build` — all pass; production smoke on :3541 confirmed wishlist scoping plus Product/CollectionPage/Breadcrumb/Organization/WebSite JSON-LD, canonical tags and `noindex, nofollow` on cart and wishlist
 - Landed verdicts on work. Review queue empty. Next build item: P01-6b.
+
+## 24 Nov 2026, 15:42 UTC · builder · run 45427316337
+- Batch: 1 item (limit 1)
+- P01-6b built, commit 4df8fd7, handed to review (commit 62bf468)
+- Added a shared `ProductMedia` component: `next/image` with responsive sizes and priority when a photo URL exists, accessible gradient placeholders otherwise; wired into product cards, the product gallery, home featured/collection panels and the collections index
+- Checks in `projects/01-maison-store`: `npm ci`, `npm run db:generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. No browser click-through was run.
+- Landed on work. Next unchecked item: P01-6c.
