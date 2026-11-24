@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { StructuredData } from "@/components/structured-data";
 import { prisma } from "@/lib/db";
 import { toneGradient } from "@/lib/format";
+import { breadcrumbNode, buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Collections",
   description:
     "Four small collections of tailoring, linen, leather goods and knitwear, made in short runs.",
-};
+  path: "/collections",
+});
 
 export default async function CollectionsPage() {
   const collections = await prisma.collection.findMany({
@@ -17,6 +20,12 @@ export default async function CollectionsPage() {
 
   return (
     <div className="container-x py-14 lg:py-20">
+      <StructuredData
+        nodes={breadcrumbNode([
+          { name: "Home", path: "/" },
+          { name: "Collections", path: "/collections" },
+        ])}
+      />
       <nav aria-label="Breadcrumb" className="text-sm text-ink-subtle">
         <Link href="/" className="hover:text-accent">
           Home

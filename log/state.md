@@ -10,10 +10,10 @@ role: builder
 run: 45317647054
 item: P01-6a
 branch: opencode/todo-45317647054-p01-6a
-phase: implementing
-updated: 24 Nov 2026, 03:11 UTC
-next: split P01-6 into P01-6a..e, then add route metadata and JSON-LD helpers
-notes: P01-6 was too large for one batch; split into five children, implementing SEO first
+phase: committed
+updated: 24 Nov 2026, 03:19 UTC
+next: write the handoff entry for P01-6a and land on work
+notes: P01-6 split into P01-6a..e; SEO metadata, Open Graph and JSON-LD added and verified
 ```
 
 **Fields**

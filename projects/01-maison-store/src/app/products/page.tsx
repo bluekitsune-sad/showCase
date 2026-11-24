@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Catalog } from "@/components/catalog";
+import { StructuredData } from "@/components/structured-data";
 import {
   PRODUCT_CARD_INCLUDE,
   catalogOptions,
@@ -10,12 +11,14 @@ import {
   type CatalogSearchParams,
 } from "@/lib/catalog";
 import { prisma } from "@/lib/db";
+import { breadcrumbNode, buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Shop all pieces",
   description:
     "The full Maison Store catalogue: tailoring, linen, leather goods and knitwear, filterable by size, colour, price and availability.",
-};
+  path: "/products",
+});
 
 type ProductsPageProps = {
   searchParams: Promise<CatalogSearchParams>;
@@ -35,6 +38,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <div className="container-x py-14 lg:py-20">
+      <StructuredData
+        nodes={breadcrumbNode([
+          { name: "Home", path: "/" },
+          { name: "Shop all", path: "/products" },
+        ])}
+      />
       <nav aria-label="Breadcrumb" className="text-sm text-ink-subtle">
         <Link href="/" className="hover:text-accent">
           Home

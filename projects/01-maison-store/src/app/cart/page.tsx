@@ -7,6 +7,7 @@ import { formatPrice, toneGradient } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Your bag",
+  robots: { index: false, follow: false },
 };
 
 export default async function CartPage() {

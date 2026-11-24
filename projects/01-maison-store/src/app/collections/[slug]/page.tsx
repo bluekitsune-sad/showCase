@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { Catalog } from "@/components/catalog";
+import { StructuredData } from "@/components/structured-data";
 import {
   PRODUCT_CARD_INCLUDE,
   catalogOptions,
@@ -11,6 +12,7 @@ import {
   type CatalogSearchParams,
 } from "@/lib/catalog";
 import { prisma } from "@/lib/db";
+import { breadcrumbNode, buildMetadata, collectionNode } from "@/lib/seo";
 
 type CollectionPageProps = {
   params: Promise<{ slug: string }>;
@@ -36,7 +38,11 @@ export async function generateMetadata({ params }: CollectionPageProps) {
   if (!collection) {
     notFound();
   }
-  return { title: collection.name, description: collection.tagline };
+  return buildMetadata({
+    title: collection.name,
+    description: collection.tagline,
+    path: `/collections/${collection.slug}`,
+  });
 }
 
 export default async function CollectionPage({
@@ -63,6 +69,16 @@ export default async function CollectionPage({
 
   return (
     <div className="container-x py-14 lg:py-20">
+      <StructuredData
+        nodes={[
+          collectionNode(collection),
+          breadcrumbNode([
+            { name: "Home", path: "/" },
+            { name: "Collections", path: "/collections" },
+            { name: collection.name, path: `/collections/${collection.slug}` },
+          ]),
+        ]}
+      />
       <nav aria-label="Breadcrumb" className="text-sm text-ink-subtle">
         <Link href="/" className="hover:text-accent">
           Home

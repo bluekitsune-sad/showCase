@@ -4,12 +4,14 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import { ProductGallery } from "@/components/product-gallery";
 import { ProductCard } from "@/components/product-card";
+import { StructuredData } from "@/components/structured-data";
 import { VariantPicker } from "@/components/variant-picker";
 import { WishlistButton } from "@/components/wishlist-button";
 import { getCurrentCustomer } from "@/lib/auth";
 import { PRODUCT_CARD_INCLUDE, sortSizes } from "@/lib/catalog";
 import { prisma } from "@/lib/db";
 import { formatPrice } from "@/lib/format";
+import { breadcrumbNode, buildMetadata, productNode } from "@/lib/seo";
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
@@ -46,10 +48,11 @@ export async function generateMetadata({
   if (!product) {
     notFound();
   }
-  return {
+  return buildMetadata({
     title: product.name,
     description: product.description,
-  };
+    path: `/products/${product.slug}`,
+  });
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
@@ -93,6 +96,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="container-x py-10 lg:py-16">
+      <StructuredData
+        nodes={[
+          productNode(product),
+          breadcrumbNode([
+            { name: "Home", path: "/" },
+            { name: "Collections", path: "/collections" },
+            {
+              name: product.collection.name,
+              path: `/collections/${product.collection.slug}`,
+            },
+            { name: product.name, path: `/products/${product.slug}` },
+          ]),
+        ]}
+      />
       <nav aria-label="Breadcrumb" className="text-sm text-ink-subtle">
         <Link href="/" className="hover:text-accent">
           Home
