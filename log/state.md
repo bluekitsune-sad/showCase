@@ -10,10 +10,10 @@ role: builder
 run: 45427316337
 item: P01-6b
 branch: opencode/todo-45427316337-p01-6b
-phase: implementing
-updated: 24 Nov 2026, 15:37 UTC
-next: add shared ProductMedia component and wire it into storefront imagery
-notes: gradient placeholders are the seeded image medium; add next/image path for future urls
+phase: handoff-committed
+updated: 24 Nov 2026, 15:44 UTC
+next: land the task branch on work
+notes: lint, typecheck and build pass; review requested
 ```
 
 **Fields**

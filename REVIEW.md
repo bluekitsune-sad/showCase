@@ -288,3 +288,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** 2026-11-24
 - **Verdict notes:** Re-ran `npm ci`, `DATABASE_URL=file:./prisma/dev.db npm run db:generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, and `DATABASE_URL=file:./prisma/dev.db npm run build` in `projects/01-maison-store` — all pass. Independent production smoke on `npm run start` (:3541): `/products/alpaca-beanie` returned the canonical link plus Product, Brand, Offer, BreadcrumbList, Organization and WebSite nodes; `/collections/atelier-noir` returned CollectionPage and breadcrumbs; `/cart` and `/wishlist` returned `<meta name="robots" content="noindex, nofollow">`. Read `lib/seo.ts`, `components/structured-data.tsx`, the root layout, and the product/collection/catalogue route diffs: `serializeJsonLd` escapes `<`, `>`, `&`, U+2028 and U+2029 before injection, `price` is divided from integer minor units then formatted, availability derives from variant stock, and `metadataBase` plus relative canonicals resolve to absolute URLs via the documented `NEXT_PUBLIC_SITE_URL` fallback. Account and checkout layouts plus cart and wishlist pages carry noindex. No secrets, no real data, no auth or control weakened, no `.github` changes, nothing outside the project. README voice is clean. No findings.
+
+### P01-6b · round 1 — Storefront image optimisation
+
+- **Built:** 24 Nov 2026, 15:44 UTC
+- **Commit:** `4df8fd7` — P01-6b: optimise seeded storefront imagery
+- **Scope:** Shared `ProductMedia` component that serves a photo URL through `next/image` with responsive `sizes` and optional priority, and renders the seeded gradient placeholder as an accessible image otherwise; wired into product cards, the product gallery (priority main image), home featured/collection panels and the collections index with descriptive labels; gallery query now carries the image URL; README photography note updated
+- **Checked by builder:** `npm ci`, `npm run db:generate`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. No browser click-through was run.
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
