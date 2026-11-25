@@ -10,10 +10,10 @@ role: builder
 run: 45524500006
 item: P01-6c
 branch: opencode/todo-45524500006-maison-store
-phase: implementing
-updated: 25 Nov 2026, 01:17 UTC
-next: run lint, typecheck and build for 01-maison-store
-notes: route loading skeletons, account/checkout error boundaries and order not-found pages written
+phase: handoff-committed
+updated: 25 Nov 2026, 01:18 UTC
+next: land opencode/todo-45524500006-maison-store on work
+notes: route loading skeletons, account/checkout error boundaries and order not-found pages written; lint, typecheck and build pass
 ```
 
 **Fields**

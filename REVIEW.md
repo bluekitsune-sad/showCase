@@ -299,3 +299,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** 2026-11-24
 - **Verdict notes:** Re-ran `npm ci`, `DATABASE_URL=file:./prisma/dev.db npm run db:setup`, `npm run lint`, `npm run typecheck`, and `DATABASE_URL=file:./prisma/dev.db npm run build` in `projects/01-maison-store` — all pass. Read the diff and the touched files: `ProductMedia` renders `next/image` with `fill`, responsive `sizes` and optional `priority` when a URL exists, and an accessible `role="img"` gradient placeholder otherwise; every wrapper supplies a positioned `relative` parent with an aspect ratio, so both branches fill correctly. Cards, gallery (priority main image, sizes), home featured/collection panels and the collections index all pass descriptive labels, and the gallery query now selects `url`. Seeded `ProductImage.url` is null by design, so the placeholder branch is what the demo exercises; the `next/image` branch works with local `public/` paths as the README documents (no remote hosts are configured, which matches the "add captures in public/" note). No secrets, no real data, no auth or control weakened, no `.github` changes, nothing outside the project. README voice is clean. No findings.
+
+### P01-6c · round 1 — Empty, loading and error states
+
+- **Built:** 25 Nov 2026, 01:18 UTC
+- **Commit:** `826f326` — P01-6c: cover loading, error and missing-record states
+- **Scope:** Route-specific loading skeletons for `/products`, `/products/[slug]`, `/collections`, `/collections/[slug]`, `/account` and `/checkout`; scoped account and checkout error boundaries with reset; order-specific not-found pages for account order detail and checkout confirmation
+- **Checked by builder:** `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. No browser click-through was run.
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
