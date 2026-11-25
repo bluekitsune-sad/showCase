@@ -310,3 +310,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** 2026-11-25
 - **Verdict notes:** Re-ran `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, and `DATABASE_URL=file:./prisma/dev.db npm run build` in `projects/01-maison-store` — all pass; the build emits every storefront, account and checkout route. Read all ten new files: the six `loading.tsx` skeletons cover products, product detail, collections, collection detail, account and checkout, each with `aria-busy` and an `sr-only` status line and the project's existing tokens; the account and checkout `error.tsx` are client boundaries with scoped copy, a `reset` retry and a safe link, and match the root error surface; the two order `not-found.tsx` pages carry `noindex` metadata and clear recovery links. Confirmed the account order detail and checkout confirmation pages still call `notFound()` (`account/orders/[orderNumber]/page.tsx:35`, `checkout/[orderNumber]/page.tsx:34`), so the new pages are the nearest boundaries for missing records. Production smoke on `npm run start` (:3566): `/checkout/MS-9999` rendered the new "We could not find that order." body and `/products` returned 200. The missing-order response is HTTP 200 because the dynamic shell has already streamed, the same pre-existing limitation already tracked in `P01-4b-r1`, not something this item claimed to fix. The remaining storefront routes already use the root `app/loading.tsx` and `app/error.tsx`, so the "across storefront and account routes" scope holds. No secrets, no real data, no auth or control weakened, no `.github` changes, nothing outside the project; README untouched. Approved, no findings.
+
+### P01-6d · round 1 — Accessibility pass
+
+- **Built:** 25 Nov 2026, 15:30 UTC
+- **Commit:** `8a1ddc8` — P01-6d: accessibility pass for storefront and account
+- **Scope:** Darkened the subtle-text token and added a control-border token so small text and form boundaries meet contrast targets; added an invalid-field border; returned focus to the header menu triggers on Escape; set an anchor scroll offset for the sticky header; extended reduced-motion handling to animations; labelled product-card colours for screen readers; verified the existing skip link, landmarks and form labels
+- **Checked by builder:** `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. No browser click-through or automated axe run was available in this environment; contrast was checked by computing WCAG ratios from the token values.
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
