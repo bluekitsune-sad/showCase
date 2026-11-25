@@ -342,3 +342,10 @@ _No sessions logged yet._
 - Re-ran in `projects/01-maison-store`: `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `DATABASE_URL=file:./prisma/dev.db npm run build` — all pass.
 - Checks: six route loading skeletons with `aria-busy` + `sr-only` status, account/checkout client error boundaries with reset, and order-specific `noindex` not-found pages; both order pages still call `notFound()`. Smoke on `:3566`: `/checkout/MS-9999` rendered the new not-found body (HTTP 200 — the pre-existing streaming limitation tracked in P01-4b-r1) and `/products` returned 200.
 - Landed verdict on work. Review queue empty. Next build item: P01-6d.
+
+## 25 Nov 2026, 15:32 UTC · builder · run 45644058948
+- Batch: 1 item (limit 1)
+- P01-6d built and handed to review, commit 8a1ddc8 (handoff 587e0d2)
+- Accessibility pass: darkened the subtle-text token and added a control-border token for contrast, added an invalid-field border, returned focus to the header menu triggers on Escape, set the sticky-header anchor offset, extended reduced-motion to animations, and labelled product-card colours for screen readers
+- Re-ran in `projects/01-maison-store`: `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. No browser click-through or automated axe run.
+- Landed on work. Next unchecked item: P01-6e.
