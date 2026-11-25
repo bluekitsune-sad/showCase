@@ -1,19 +1,19 @@
 # Session state
 
-The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **before doing anything else**. It is the reason a cut-off run can continue instead of starting over.
+The checkpoint. Whoever ran last wrote it, and whoever runs next reads it **before doing anything else**. It is the reason a cut-off run can continue instead of starting over.
 
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: idle` leaves it alone.
 
 ```
-status: idle
-role: -
-run: 45524500006
-item: -
-branch: -
-phase: -
-updated: 25 Nov 2026, 01:25 UTC
-next: P01-6d
-notes: P01-6c approved and landed on work
+status: building
+role: builder
+run: 45644058948
+item: P01-6d
+branch: opencode/todo-45644058948-p01-6d
+phase: implementing
+updated: 25 Nov 2026, 15:24 UTC
+next: darken subtle text and control borders, improve header Escape focus, then run lint/typecheck/build
+notes: accessibility pass on Maison Store
 ```
 
 **Fields**
