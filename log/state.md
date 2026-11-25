@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote this, and whoever runs next reads it **be
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: idle` leaves it alone.
 
 ```
-status: idle
-role: -
-run: 45427316337
-item: -
-branch: -
-phase: -
-updated: 24 Nov 2026, 15:49 UTC
-next: P01-6c
-notes: P01-6b reviewed and approved; review queue empty
+status: building
+role: builder
+run: 45524500006
+item: P01-6c
+branch: opencode/todo-45524500006-maison-store
+phase: implementing
+updated: 25 Nov 2026, 01:17 UTC
+next: run lint, typecheck and build for 01-maison-store
+notes: route loading skeletons, account/checkout error boundaries and order not-found pages written
 ```
 
 **Fields**
