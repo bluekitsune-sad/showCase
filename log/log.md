@@ -335,3 +335,10 @@ _No sessions logged yet._
 - Added route loading skeletons for products, product detail, collections, collection detail, account and checkout; account and checkout error boundaries; order-specific not-found pages for account order detail and checkout confirmation
 - Re-ran in `projects/01-maison-store`: `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. No browser click-through.
 - Landed on work. Next unchecked item: P01-6d.
+
+## 25 Nov 2026, 01:25 UTC · reviewer · run 45524500006
+- Batch: 1 review (limit 3)
+- Reviewed: P01-6c approved (commit 826f326)
+- Re-ran in `projects/01-maison-store`: `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `DATABASE_URL=file:./prisma/dev.db npm run build` — all pass.
+- Checks: six route loading skeletons with `aria-busy` + `sr-only` status, account/checkout client error boundaries with reset, and order-specific `noindex` not-found pages; both order pages still call `notFound()`. Smoke on `:3566`: `/checkout/MS-9999` rendered the new not-found body (HTTP 200 — the pre-existing streaming limitation tracked in P01-4b-r1) and `/products` returned 200.
+- Landed verdict on work. Review queue empty. Next build item: P01-6d.
