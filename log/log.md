@@ -328,3 +328,10 @@ _No sessions logged yet._
 - Re-ran in `projects/01-maison-store`: `npm ci`, `DATABASE_URL=file:./prisma/dev.db npm run db:setup`, `npm run lint`, `npm run typecheck`, `DATABASE_URL=file:./prisma/dev.db npm run build` — all pass. No browser click-through.
 - Checks: `ProductMedia` fills a positioned parent in both branches; placeholder carries `role="img"` + descriptive label; gallery main image uses priority and responsive sizes; gallery query selects `url`. Seeded image URLs are null by design, and local `public/` paths are the documented photo route (no remote hosts configured).
 - Landed verdict on work. Review queue empty. Next build item: P01-6c.
+
+## 25 Nov 2026, 01:18 UTC · builder · run 45524500006
+- Batch: 1 item (limit 1)
+- P01-6c built and handed to review, commit 826f326 (handoff 91d9a7b)
+- Added route loading skeletons for products, product detail, collections, collection detail, account and checkout; account and checkout error boundaries; order-specific not-found pages for account order detail and checkout confirmation
+- Re-ran in `projects/01-maison-store`: `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. No browser click-through.
+- Landed on work. Next unchecked item: P01-6d.
