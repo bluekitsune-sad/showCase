@@ -29,7 +29,7 @@ function Field({ id, label, error, hint, ...input }: FieldProps) {
         aria-describedby={
           error ? `${id}-error` : hint ? `${id}-hint` : undefined
         }
-        className="mt-2 w-full border border-line-strong bg-surface px-3 py-2.5 text-sm text-ink transition-colors placeholder:text-ink-subtle focus:border-accent"
+        className="mt-2 w-full border border-line-control bg-surface px-3 py-2.5 text-sm text-ink transition-colors placeholder:text-ink-subtle focus:border-accent aria-invalid:border-sale"
         {...input}
       />
       {error ? (

@@ -10,10 +10,10 @@ role: builder
 run: 45644058948
 item: P01-6d
 branch: opencode/todo-45644058948-p01-6d
-phase: implementing
-updated: 25 Nov 2026, 15:24 UTC
-next: darken subtle text and control borders, improve header Escape focus, then run lint/typecheck/build
-notes: accessibility pass on Maison Store
+phase: committed
+updated: 25 Nov 2026, 15:29 UTC
+next: write the TODO tick and REVIEW entry, then land on work
+notes: lint, typecheck and build pass
 ```
 
 **Fields**

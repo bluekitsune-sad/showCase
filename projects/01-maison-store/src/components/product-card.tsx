@@ -60,7 +60,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
       </div>
 
       <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-        <span className="flex items-center gap-1.5">
+        <span className="flex items-center gap-1.5" aria-hidden="true">
           {colours.map((colour) => (
             <span
               key={colour}
@@ -70,6 +70,9 @@ export function ProductCard({ product }: { product: ProductCardData }) {
             />
           ))}
         </span>
+        {colours.length > 0 ? (
+          <span className="sr-only">Colours: {colours.join(", ")}.</span>
+        ) : null}
         <span className="text-xs text-ink-subtle">
           {soldOut
             ? "Restocking"

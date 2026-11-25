@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type NavCollection = { name: string; slug: string };
 
@@ -21,17 +21,26 @@ export function SiteHeader({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const megaButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
+      if (event.key !== "Escape") {
+        return;
+      }
+      if (megaOpen) {
         setMegaOpen(false);
+        megaButtonRef.current?.focus();
+      }
+      if (menuOpen) {
         setMenuOpen(false);
+        menuButtonRef.current?.focus();
       }
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, []);
+  }, [menuOpen, megaOpen]);
 
   function closeAll() {
     setMegaOpen(false);
@@ -42,8 +51,9 @@ export function SiteHeader({
     <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur">
       <div className="container-x flex h-16 items-center gap-4">
         <button
+          ref={menuButtonRef}
           type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-sm border border-line text-ink lg:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-sm border border-line-control text-ink lg:hidden"
           aria-expanded={menuOpen}
           aria-controls="mobile-nav"
           onClick={() => setMenuOpen((open) => !open)}
@@ -76,6 +86,7 @@ export function SiteHeader({
         <nav aria-label="Main" className="ml-6 hidden items-center gap-7 lg:flex">
           <div className="relative">
             <button
+              ref={megaButtonRef}
               type="button"
               className="inline-flex h-16 items-center gap-1.5 text-sm text-ink hover:text-accent"
               aria-expanded={megaOpen}

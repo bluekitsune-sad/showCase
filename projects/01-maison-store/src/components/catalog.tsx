@@ -29,7 +29,7 @@ type CatalogProps = {
 };
 
 const selectClass =
-  "mt-1.5 block min-h-11 w-full appearance-none rounded-sm border border-line-strong bg-surface px-3 py-2 text-sm text-ink";
+  "mt-1.5 block min-h-11 w-full appearance-none rounded-sm border border-line-control bg-surface px-3 py-2 text-sm text-ink";
 
 function SelectField({
   label,

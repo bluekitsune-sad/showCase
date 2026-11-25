@@ -54,7 +54,7 @@ function Field({
         aria-describedby={
           error ? `${id}-error` : hint ? `${id}-hint` : undefined
         }
-        className="mt-2 w-full border border-line-strong bg-surface px-3 py-2.5 text-sm text-ink transition-colors placeholder:text-ink-subtle focus:border-accent"
+        className="mt-2 w-full border border-line-control bg-surface px-3 py-2.5 text-sm text-ink transition-colors placeholder:text-ink-subtle focus:border-accent aria-invalid:border-sale"
         {...input}
       />
       {error ? (
@@ -331,7 +331,7 @@ export function CheckoutForm({
               name="code"
               defaultValue={appliedCode}
               placeholder="WELCOME10"
-              className="min-w-0 flex-1 border border-line-strong bg-surface px-3 py-2 text-sm uppercase tracking-wide text-ink placeholder:normal-case placeholder:tracking-normal placeholder:text-ink-subtle focus:border-accent"
+              className="min-w-0 flex-1 border border-line-control bg-surface px-3 py-2 text-sm uppercase tracking-wide text-ink placeholder:normal-case placeholder:tracking-normal placeholder:text-ink-subtle focus:border-accent"
             />
             <button
               type="submit"

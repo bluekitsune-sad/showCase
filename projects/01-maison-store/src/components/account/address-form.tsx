@@ -30,7 +30,7 @@ function Field({ id, label, error, ...input }: FieldProps) {
         id={id}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
-        className="mt-2 w-full border border-line-strong bg-surface px-3 py-2.5 text-sm text-ink transition-colors placeholder:text-ink-subtle focus:border-accent"
+        className="mt-2 w-full border border-line-control bg-surface px-3 py-2.5 text-sm text-ink transition-colors placeholder:text-ink-subtle focus:border-accent aria-invalid:border-sale"
         {...input}
       />
       {error ? (
@@ -147,7 +147,7 @@ export function AddressForm({
           name="isDefault"
           type="checkbox"
           defaultChecked={values?.isDefault}
-          className="mt-0.5 h-4 w-4 border border-line-strong accent-accent"
+          className="mt-0.5 h-4 w-4 border border-line-control accent-accent"
         />
         <label htmlFor="address-default" className="text-sm text-ink-muted">
           Use this as my default address

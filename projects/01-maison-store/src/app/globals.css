@@ -11,9 +11,10 @@
   --surface-sunken: #e9e5db;
   --ink: #191816;
   --ink-muted: #5d594f;
-  --ink-subtle: #8b857a;
+  --ink-subtle: #666157;
   --line: #ddd6c8;
   --line-strong: #c8bfae;
+  --line-control: #8f8570;
 
   --accent: #3e4b3a;
   --accent-hover: #2f3a2c;
@@ -41,6 +42,7 @@
   --color-ink-subtle: var(--ink-subtle);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
+  --color-line-control: var(--line-control);
 
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
@@ -71,6 +73,7 @@
 html {
   color-scheme: light;
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -81,6 +84,8 @@ html {
   *,
   *::before,
   *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
@@ -163,7 +168,7 @@ body {
   }
 
   .btn-ghost {
-    border-color: var(--line-strong);
+    border-color: var(--line-control);
     color: var(--ink);
   }
 
