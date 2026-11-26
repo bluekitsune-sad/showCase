@@ -58,8 +58,8 @@ Only the builder writes `— review needed`. Only the reviewer writes `— revie
 - [x] `P01-6a` Add SEO metadata and JSON-LD across the storefront: per-route titles, descriptions, canonical and Open Graph tags, organisation and website schema, and product, collection and breadcrumb structured data. — reviewed 2026-11-24
 - [x] `P01-6b` Image optimisation pass: serve seeded imagery through `next/image` or the gradient placeholders with meaningful alt text, responsive sizes and priority loading where it matters. — reviewed 2026-11-24
 - [x] `P01-6c` Empty, loading and error states pass across the storefront and account routes, covering missing records and failed queries. — reviewed 2026-11-25
-- [x] `P01-6d` Accessibility pass: keyboard paths, focus states, form labels, landmarks, contrast and reduced-motion handling. — review needed
-- [x] `P01-6e` Finish the README case study with real screenshots and a check that every setup step matches the shipped code. — review needed
+- [x] `P01-6d` Accessibility pass: keyboard paths, focus states, form labels, landmarks, contrast and reduced-motion handling. — reviewed 2026-11-26
+- [x] `P01-6e` Finish the README case study with real screenshots and a check that every setup step matches the shipped code. — reviewed 2026-11-26
 - [ ] `P01-1-r1` Return a real 404 status for an unknown collection slug; `/collections/<missing>` currently renders the not-found body with HTTP 200 after the dynamic shell streams.
 - [ ] `P01-3-r1` Return a real 404 status for an unknown product slug; `/products/<missing>` currently renders the not-found body with HTTP 200 after the dynamic shell streams.
 - [ ] `P01-3-r2` Decide whether a size/colour filter under availability "All pieces" should include sold-out matches; `whereForFilters` currently requires `stock > 0` for either filter, which hides them.

@@ -317,10 +317,10 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `8a1ddc8` — P01-6d: accessibility pass for storefront and account
 - **Scope:** Darkened the subtle-text token and added a control-border token so small text and form boundaries meet contrast targets; added an invalid-field border; returned focus to the header menu triggers on Escape; set an anchor scroll offset for the sticky header; extended reduced-motion handling to animations; labelled product-card colours for screen readers; verified the existing skip link, landmarks and form labels
 - **Checked by builder:** `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. No browser click-through or automated axe run was available in this environment; contrast was checked by computing WCAG ratios from the token values.
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 2026-11-26
+- **Verdict notes:** Re-ran `npm ci`, `cp .env.example .env`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, and `DATABASE_URL=file:./prisma/dev.db npm run build` in `projects/01-maison-store` — all pass; the build emits every storefront and account route. Read the full diff and the touched files. Contrast: computed WCAG ratios from the tokens — `--ink-subtle` (#666157) is 5.35:1 on paper and 5.85:1 on surface (was 3.19:1), and the new `--line-control` (#8f8570) is 3.17:1 on paper and 3.47:1 on surface, meeting the 3:1 non-text target for input and ghost-button borders; `--sale` invalid borders are 6.67:1. Confirmed every changed input still carries `<label htmlFor={id}>` and an `id` (address-form:26, auth-form:23, checkout-form:48, discount code:322), and `aria-invalid` is set only when an error exists, driving the new `aria-invalid:border-sale` border. The Escape handler now returns focus to the correct trigger for both the mobile menu and the desktop mega-menu (`site-header.tsx:23`), with the effect re-bound on open-state changes; both triggers have accessible names via `sr-only` text or visible label. Verified the existing skip link targets `#main` and that `main`, both `nav` landmarks and the footer are present. `scroll-padding-top: 5rem` offsets the sticky 4rem header for in-page anchors, and the reduced-motion block now neutralises animation as well as transition. No secrets, no real data, no auth or control weakened, no `.github` changes, nothing outside the project; README untouched. No findings.
 
 ### P01-6e · round 1 — README case study screenshots and setup check
 
@@ -328,7 +328,7 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `ec833bf` — P01-6e: add real screenshots and fix setup docs
 - **Scope:** Captured real 1440×900 screenshots of the home, catalogue and product pages from the running demo into `public/screenshots/` and added a Screenshots section to the project README; aligned the definition-of-done setup step with the shipped `npm run db:setup` / `npm run dev` flow and re-checked the README's demo account, discount codes and order states against `prisma/seed.ts`
 - **Checked by builder:** `npm install`, `cp .env.example .env`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; ran `npm start` and confirmed `/`, `/products`, `/products/wool-overcoat` return 200 before capturing the screenshots with headless Chromium
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 2026-11-26
+- **Verdict notes:** Re-ran `npm ci`, `cp .env.example .env`, `npm run db:setup` (seeded 4 collections, 24 products, 99 variants, 8 orders), `npm run lint`, `npm run typecheck`, and `DATABASE_URL=file:./prisma/dev.db npm run build` in `projects/01-maison-store` — all pass. Verified the three new files are valid non-interlaced 1440×900 PNGs and opened each one: they are real captures of the home page (hero "Clothes that earn their place"), the `/products` catalogue ("All pieces", filters, 24 pieces) and the Wool Overcoat product page (variants, size guide), matching their README captions and the demo data — not placeholders or blank images. The README Screenshots section uses relative `public/screenshots/*.png` paths and the project-README voice is clean (no agent/automation/commit talk). Checked the revised definition-of-done setup line against the shipped scripts and the Run it locally block (`npm install`, `cp .env.example .env`, `npm run db:setup`, `npm run dev`) — they agree. Cross-checked the README demo facts against `prisma/seed.ts`: `ada.winters@example.com` / `Maison2026!` (DEMO_PASSWORD), `WELCOME10` over $100 (minSubtotal 10000), `ATELIER25` over $250 (minSubtotal 25000), and seeded orders including a delivered and an in-transit one — all match. No secrets, no real data, no auth or control weakened, no `.github` changes, nothing outside the project. No findings.

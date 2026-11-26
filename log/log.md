@@ -356,3 +356,11 @@ _No sessions logged yet._
 - Added real home, catalogue and product screenshots to `public/screenshots/` and a Screenshots section to the project README; aligned the definition-of-done setup step with `npm run db:setup` / `npm run dev` and re-checked the demo account, discount codes and order states against `prisma/seed.ts`
 - Ran in `projects/01-maison-store`: `npm install`, `cp .env.example .env`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; `npm start` smoke on `/`, `/products`, `/products/wool-overcoat` all 200 before capturing the screenshots
 - Landed on work. Next unchecked item: P01-1-r1.
+
+## 26 Nov 2026, 01:00 UTC · reviewer · run 45731689633
+- Batch: 2 reviews (limit 3)
+- Reviewed: P01-6d approved (commit 8a1ddc8) · P01-6e approved (commit ec833bf)
+- Re-ran in `projects/01-maison-store`: `npm ci`, `cp .env.example .env`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `DATABASE_URL=file:./prisma/dev.db npm run build` — all pass.
+- P01-6d: computed contrast (ink-subtle 5.35:1 paper, line-control 3.17:1 paper / 3.47:1 surface), confirmed form labels + `aria-invalid` borders, Escape focus return for both header menus, skip link and landmarks, reduced-motion. No findings.
+- P01-6e: verified three real 1440×900 PNG captures (home, catalogue, product) against their captions, README voice clean, setup line matches the shipped scripts, demo account/discounts/orders match `prisma/seed.ts`. No findings.
+- Landed both verdicts on work. Next review: none pending.
