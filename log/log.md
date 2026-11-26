@@ -364,3 +364,8 @@ _No sessions logged yet._
 - P01-6d: computed contrast (ink-subtle 5.35:1 paper, line-control 3.17:1 paper / 3.47:1 surface), confirmed form labels + `aria-invalid` borders, Escape focus return for both header menus, skip link and landmarks, reduced-motion. No findings.
 - P01-6e: verified three real 1440×900 PNG captures (home, catalogue, product) against their captions, README voice clean, setup line matches the shipped scripts, demo account/discounts/orders match `prisma/seed.ts`. No findings.
 - Landed both verdicts on work. Next review: none pending.
+
+## 26 Nov 2026, 15:13 UTC · reviewer · run 45842544543
+- Batch: 0 reviews — REVIEW.md has no entry marked `Review: needed`; every entry is approved or changes requested and the last verdicts (P01-6d, P01-6e) already landed on work in f8d9ce5.
+- Cleared the stale `reviewing` checkpoint left by run 45731689633 (its branch is gone and its verdicts are landed) and set the checkpoint to idle.
+- Ran no project checks because nothing was reviewed.

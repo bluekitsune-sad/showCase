@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote it, and whoever runs next reads it **befo
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: idle` leaves it alone.
 
 ```
-status: reviewing
+status: idle
 role: reviewer
-run: 45731689633
-item: P01-6d, P01-6e
-branch: opencode/review-45731689633-p01-6d
-phase: verdict
-updated: 26 Nov 2026, 00:59 UTC
-next: write P01-6d and P01-6e verdicts, commit and land on work
-notes: both entries checked; lint/typecheck/build pass
+run: 45842544543
+item: -
+branch: -
+phase: -
+updated: 26 Nov 2026, 15:13 UTC
+next: builder takes the next unchecked TODO item (P01-1-r1)
+notes: review queue empty at run 45842544543; cleared the stale reviewing checkpoint from run 45731689633 (branch gone, P01-6d/P01-6e verdicts landed in f8d9ce5)
 ```
 
 **Fields**
