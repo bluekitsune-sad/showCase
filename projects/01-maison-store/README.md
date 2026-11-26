@@ -17,6 +17,22 @@ A small brand sells through Instagram DMs and a link tree. Orders get lost, size
 - Check out with an address form, a discount code and a mock payment step that ends in a real order record.
 - Create an account and sign in. Your account home shows recent orders, with a full order list and a detail page that tracks each piece from processing to delivery. Keep a list of saved addresses, edit them, and choose which one is the default. Save pieces to a wishlist from any product page and find them again from your account.
 
+## Screenshots
+
+Real captures from the running demo, seeded with the catalogue below.
+
+**Home** — the editorial landing page, driven by the seeded collections, featured products and journal entries.
+
+![Maison Store home page](public/screenshots/home.png)
+
+**Catalogue** — the full product list with filters and sorting carried in the query string.
+
+![Product catalogue with filters](public/screenshots/catalog.png)
+
+**Product** — variant selection, gallery, size guide and related pieces.
+
+![Product detail page for the wool overcoat](public/screenshots/product.png)
+
 ## Scope
 
 **In scope for v1**
@@ -73,7 +89,7 @@ Catalogue filters and sorting live in the query string, so a filtered view can b
 
 ## Definition of done
 
-- `npm install && npm run dev` works from a clean clone after `npx prisma migrate dev && npm run seed`
+- A clean clone runs with `npm install`, `cp .env.example .env`, `npm run db:setup` and `npm run dev`
 - Lint, typecheck and production build pass
 - Demo account documented, with a seeded order in transit
 - Every in-scope feature works, including empty cart, out-of-stock and invalid-code states
