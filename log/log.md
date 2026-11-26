@@ -349,3 +349,10 @@ _No sessions logged yet._
 - Accessibility pass: darkened the subtle-text token and added a control-border token for contrast, added an invalid-field border, returned focus to the header menu triggers on Escape, set the sticky-header anchor offset, extended reduced-motion to animations, and labelled product-card colours for screen readers
 - Re-ran in `projects/01-maison-store`: `npm ci`, `npm run db:generate`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass. No browser click-through or automated axe run.
 - Landed on work. Next unchecked item: P01-6e.
+
+## 26 Nov 2026, 00:56 UTC · builder · run 45731689633
+- Batch: 1 item (limit 1)
+- P01-6e built and handed to review, commit ec833bf (handoff a56dca9)
+- Added real home, catalogue and product screenshots to `public/screenshots/` and a Screenshots section to the project README; aligned the definition-of-done setup step with `npm run db:setup` / `npm run dev` and re-checked the demo account, discount codes and order states against `prisma/seed.ts`
+- Ran in `projects/01-maison-store`: `npm install`, `cp .env.example .env`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; `npm start` smoke on `/`, `/products`, `/products/wool-overcoat` all 200 before capturing the screenshots
+- Landed on work. Next unchecked item: P01-1-r1.
