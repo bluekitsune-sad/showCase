@@ -10,10 +10,10 @@ role: builder
 run: 45731689633
 item: P01-6e
 branch: opencode/todo-45731689633-p01-6e
-phase: implementing
-updated: 26 Nov 2026, 00:55 UTC
-next: commit checkpoint, then the README screenshots and setup fix
-notes: screenshots captured, README edited; checks pass
+phase: handoff-committed
+updated: 26 Nov 2026, 00:56 UTC
+next: land the branch on work, then session update
+notes: P01-6e handed to review as commit ec833bf
 ```
 
 **Fields**

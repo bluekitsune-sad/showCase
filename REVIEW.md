@@ -321,3 +321,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** —
 - **Verdict notes:** —
+
+### P01-6e · round 1 — README case study screenshots and setup check
+
+- **Built:** 26 Nov 2026, 00:55 UTC
+- **Commit:** `ec833bf` — P01-6e: add real screenshots and fix setup docs
+- **Scope:** Captured real 1440×900 screenshots of the home, catalogue and product pages from the running demo into `public/screenshots/` and added a Screenshots section to the project README; aligned the definition-of-done setup step with the shipped `npm run db:setup` / `npm run dev` flow and re-checked the README's demo account, discount codes and order states against `prisma/seed.ts`
+- **Checked by builder:** `npm install`, `cp .env.example .env`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; ran `npm start` and confirmed `/`, `/products`, `/products/wool-overcoat` return 200 before capturing the screenshots with headless Chromium
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —
