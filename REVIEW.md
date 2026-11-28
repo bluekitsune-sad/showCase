@@ -332,3 +332,14 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 
 - **Reviewed:** 2026-11-26
 - **Verdict notes:** Re-ran `npm ci`, `cp .env.example .env`, `npm run db:setup` (seeded 4 collections, 24 products, 99 variants, 8 orders), `npm run lint`, `npm run typecheck`, and `DATABASE_URL=file:./prisma/dev.db npm run build` in `projects/01-maison-store` — all pass. Verified the three new files are valid non-interlaced 1440×900 PNGs and opened each one: they are real captures of the home page (hero "Clothes that earn their place"), the `/products` catalogue ("All pieces", filters, 24 pieces) and the Wool Overcoat product page (variants, size guide), matching their README captions and the demo data — not placeholders or blank images. The README Screenshots section uses relative `public/screenshots/*.png` paths and the project-README voice is clean (no agent/automation/commit talk). Checked the revised definition-of-done setup line against the shipped scripts and the Run it locally block (`npm install`, `cp .env.example .env`, `npm run db:setup`, `npm run dev`) — they agree. Cross-checked the README demo facts against `prisma/seed.ts`: `ada.winters@example.com` / `Maison2026!` (DEMO_PASSWORD), `WELCOME10` over $100 (minSubtotal 10000), `ATELIER25` over $250 (minSubtotal 25000), and seeded orders including a delivered and an in-transit one — all match. No secrets, no real data, no auth or control weakened, no `.github` changes, nothing outside the project. No findings.
+
+### P01-1-r1 · round 1 — Return a real 404 for unknown collection slugs
+
+- **Built:** 28 Nov 2026, 00:26 UTC
+- **Commit:** `97c362c` — P01-1-r1: return a real 404 for unknown collection slugs
+- **Scope:** Node-runtime `src/proxy.ts` that checks `/collections/<slug>` against the database before the route renders and rewrites an unknown slug to the app's not-found route, so the response carries a real 404 instead of the streamed 200; valid collection pages and their query-string filters are unchanged
+- **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; production smoke on `npm run start` — `/collections` 200, `/collections/atelier-noir` 200, `/collections/atelier-noir?colour=Ink&availability=in-stock` 200, `/collections/does-not-exist` 404 with the "Page not found" body
+- **Review:** needed
+
+- **Reviewed:** —
+- **Verdict notes:** —

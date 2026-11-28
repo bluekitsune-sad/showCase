@@ -10,10 +10,10 @@ role: builder
 run: 46087559950
 item: P01-1-r1
 branch: opencode/todo-46087559950-p01-1-r1
-phase: implementing
-updated: 28 Nov 2026, 00:24 UTC
-next: add generateStaticParams + dynamicParams=false to the collection route and verify a real 404
-notes: unknown collection slug currently streams a 200 because loading.tsx commits the response first
+phase: handoff-committed
+updated: 28 Nov 2026, 00:26 UTC
+next: land the branch on work, then idle with P01-3-r1 next
+notes: proxy check verified a real 404 for unknown collection slugs; products and checkout still tracked separately (P01-3-r1, P01-4b-r1)
 ```
 
 **Fields**
