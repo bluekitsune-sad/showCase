@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote it, and whoever runs next reads it **befo
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: idle` leaves it alone.
 
 ```
-status: building
-role: builder
+status: idle
+role: -
 run: 46087559950
-item: P01-1-r1
-branch: opencode/todo-46087559950-p01-1-r1
-phase: handoff-committed
+item: -
+branch: -
+phase: -
 updated: 28 Nov 2026, 00:26 UTC
-next: land the branch on work, then idle with P01-3-r1 next
-notes: proxy check verified a real 404 for unknown collection slugs; products and checkout still tracked separately (P01-3-r1, P01-4b-r1)
+next: P01-3-r1 (return a real 404 for an unknown product slug)
+notes: P01-1-r1 landed on work at 97c362c; one entry awaits the reviewer in REVIEW.md; products and checkout 404s remain tracked as P01-3-r1 and P01-4b-r1
 ```
 
 **Fields**

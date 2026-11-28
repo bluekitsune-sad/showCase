@@ -377,3 +377,9 @@ _No sessions logged yet._
 ## 27 Nov 2026, 15:11 UTC · reviewer · run 46018773454
 - Batch: 0 reviews — REVIEW.md has no entry marked `Review: needed`; every entry is approved or changes requested and no new build has been handed over since the last verdicts landed.
 - Ran no project checks because nothing was reviewed. Next unchecked builder item: P01-1-r1.
+
+## 28 Nov 2026, 00:26 UTC · builder · run 46087559950
+- Batch: 1 item (P01-1-r1)
+- P01-1-r1 built, commit 97c362c, handed to review: a Node-runtime proxy checks the collection slug and rewrites unknown slugs to the not-found route for a real 404.
+- Ran npm ci, npm run db:setup, npm run lint, npm run typecheck, npm run build; production smoke on npm run start — /collections/does-not-exist → 404, valid collections and filters → 200.
+- Landed on work. Next unchecked item: P01-3-r1.
