@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote it, and whoever runs next reads it **befo
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: idle` leaves it alone.
 
 ```
-status: idle
-role: -
+status: reviewing
+role: reviewer
 run: 46087559950
-item: -
-branch: -
-phase: -
-updated: 28 Nov 2026, 00:26 UTC
-next: P01-3-r1 (return a real 404 for an unknown product slug)
-notes: P01-1-r1 landed on work at 97c362c; one entry awaits the reviewer in REVIEW.md; products and checkout 404s remain tracked as P01-3-r1 and P01-4b-r1
+item: P01-1-r1
+branch: opencode/review-46087559950-p01-1-r1
+phase: verdict
+updated: 28 Nov 2026, 00:30 UTC
+next: land the P01-1-r1 approval on work, then set idle
+notes: P01-1-r1 approved; npm ci, db:setup, lint, typecheck, build pass; proxy smoke gives 404 for unknown collection slugs and 200 for valid ones
 ```
 
 **Fields**

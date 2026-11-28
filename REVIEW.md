@@ -339,7 +339,7 @@ The reviewer flips `**Review:**` to `approved` or `changes requested`, fills the
 - **Commit:** `97c362c` — P01-1-r1: return a real 404 for unknown collection slugs
 - **Scope:** Node-runtime `src/proxy.ts` that checks `/collections/<slug>` against the database before the route renders and rewrites an unknown slug to the app's not-found route, so the response carries a real 404 instead of the streamed 200; valid collection pages and their query-string filters are unchanged
 - **Checked by builder:** `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` — all pass; production smoke on `npm run start` — `/collections` 200, `/collections/atelier-noir` 200, `/collections/atelier-noir?colour=Ink&availability=in-stock` 200, `/collections/does-not-exist` 404 with the "Page not found" body
-- **Review:** needed
+- **Review:** approved
 
-- **Reviewed:** —
-- **Verdict notes:** —
+- **Reviewed:** 2026-11-28
+- **Verdict notes:** Re-ran `npm ci`, `npm run db:setup`, `npm run lint`, `npm run typecheck`, `npm run build` in `projects/01-maison-store` — all pass; the build reports `ƒ Proxy (Middleware)` and keeps `/collections/[slug]` dynamic. Read `src/proxy.ts`: a Node-runtime proxy matches a single-segment `/collections/<slug>`, decodes the slug, checks `prisma.collection.findUnique`, passes known slugs (and their query strings) through, and rewrites unknown slugs to `/_not-found` with the search cleared. Production smoke on `npm run start` (:3577): `/collections` 200, `/collections/atelier-noir` 200, `/collections/atelier-noir?colour=Ink&availability=in-stock` 200, `/collections/does-not-exist` 404 with the "Page not found" body, `/collections/does-not-exist?x=1` 404; `/products` and `/` still 200. Only `src/proxy.ts` was added — no secrets, synthetic data, no `.github` or `LICENSE` changes, nothing outside the project; README untouched. No blocking findings. Non-blocking edge: a malformed percent-encoded slug (`decodeURIComponent` throws) falls through to the old streamed-200 not-found body; negligible and not worth a follow-up.

@@ -383,3 +383,9 @@ _No sessions logged yet._
 - P01-1-r1 built, commit 97c362c, handed to review: a Node-runtime proxy checks the collection slug and rewrites unknown slugs to the not-found route for a real 404.
 - Ran npm ci, npm run db:setup, npm run lint, npm run typecheck, npm run build; production smoke on npm run start — /collections/does-not-exist → 404, valid collections and filters → 200.
 - Landed on work. Next unchecked item: P01-3-r1.
+
+## 28 Nov 2026, 00:30 UTC · reviewer · run 46087559950
+- Batch: 1 review (P01-1-r1)
+- P01-1-r1 approved: Node-runtime `src/proxy.ts` returns a real 404 for unknown collection slugs while valid slugs and filters stay 200.
+- Re-ran: npm ci, npm run db:setup, npm run lint, npm run typecheck, npm run build; production smoke on :3577 — /collections/does-not-exist 404, /collections/atelier-noir (and filtered) 200.
+- Landed verdict on work. Next review: queue empty; next unchecked builder item P01-3-r1.
