@@ -5,15 +5,15 @@ The checkpoint. Whoever ran last wrote it, and whoever runs next reads it **befo
 Rewrite this file. Never append to it. Only clear a state you wrote yourself — a reviewer that finds `status: idle` leaves it alone.
 
 ```
-status: idle
-role: reviewer
-run: 45842544543
-item: -
-branch: -
-phase: -
-updated: 26 Nov 2026, 15:13 UTC
-next: builder takes the next unchecked TODO item (P01-1-r1)
-notes: review queue empty at run 45842544543; cleared the stale reviewing checkpoint from run 45731689633 (branch gone, P01-6d/P01-6e verdicts landed in f8d9ce5)
+status: building
+role: builder
+run: 46087559950
+item: P01-1-r1
+branch: opencode/todo-46087559950-p01-1-r1
+phase: implementing
+updated: 28 Nov 2026, 00:24 UTC
+next: add generateStaticParams + dynamicParams=false to the collection route and verify a real 404
+notes: unknown collection slug currently streams a 200 because loading.tsx commits the response first
 ```
 
 **Fields**
