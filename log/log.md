@@ -389,3 +389,7 @@ _No sessions logged yet._
 - P01-1-r1 approved: Node-runtime `src/proxy.ts` returns a real 404 for unknown collection slugs while valid slugs and filters stay 200.
 - Re-ran: npm ci, npm run db:setup, npm run lint, npm run typecheck, npm run build; production smoke on :3577 — /collections/does-not-exist 404, /collections/atelier-noir (and filtered) 200.
 - Landed verdict on work. Next review: queue empty; next unchecked builder item P01-3-r1.
+
+## 28 Nov 2026, 14:22 UTC · reviewer · run 46152123973
+- Batch: 0 reviews — review queue empty; no entry marked "Review: needed".
+- Changed nothing except this log line. Next unchecked builder item: P01-3-r1.
